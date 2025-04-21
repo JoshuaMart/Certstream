@@ -10,52 +10,52 @@ class DomainResolver
   # Resolve a domain name to an IP address
   def resolve(domain)
     return nil if domain.nil? || domain.empty?
-    
+
     begin
       @logger.debug("Resolving domain: #{domain}")
-      
+
       # Try to resolve as IPv4 first
       ip = @resolver.getaddress(domain).to_s
-      
+
       @logger.debug("Domain #{domain} resolved to IP: #{ip}")
-      
-      return ip
+
+      ip
     rescue Resolv::ResolvError => e
       @logger.debug("Resolution error for domain #{domain}: #{e.message}")
-      return nil
+      nil
     rescue StandardError => e
       @logger.error("Error resolving domain #{domain}: #{e.message}")
-      return nil
+      nil
     end
   end
 
   # Check if an IP address is private/internal
   def private_ip?(ip)
     return true if ip.nil? || ip.empty?
-    
+
     begin
       ip_addr = IPAddress.parse(ip)
-      
+
       # Check if it's a private IP address
       if ip_addr.ipv4?
         return true if ip_addr.private? || ip_addr.loopback? || ip_addr.link_local?
       elsif ip_addr.ipv6?
         return true if ip_addr.loopback? || ip_addr.link_local? || ip_addr.unique_local?
       end
-      
-      return false
+
+      false
     rescue ArgumentError => e
       @logger.error("Error parsing IP address #{ip}: #{e.message}")
-      return true  # Default to true (private) for safety
+      true # Default to true (private) for safety
     end
   end
-  
+
   # Get all IP addresses for a domain (both IPv4 and IPv6)
   def resolve_all(domain)
     return [] if domain.nil? || domain.empty?
-    
+
     ips = []
-    
+
     begin
       # Try IPv4 resolution
       @resolver.each_address(domain) do |addr|
@@ -66,7 +66,7 @@ class DomainResolver
     rescue StandardError => e
       @logger.error("Error during IPv4 resolution for domain #{domain}: #{e.message}")
     end
-    
+
     ips
   end
 end

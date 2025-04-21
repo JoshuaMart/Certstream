@@ -25,52 +25,52 @@ CONFIG = YAML.load_file(File.expand_path('config/config.yml', __dir__))
 # Setup logger
 logger = Logger.new(CONFIG['logging']['file'] || STDOUT)
 logger.level = Logger.const_get(CONFIG['logging']['level'].upcase || 'INFO')
-logger.formatter = proc do |severity, datetime, progname, msg|
+logger.formatter = proc do |severity, datetime, _progname, msg|
   "#{datetime.strftime('%Y-%m-%d %H:%M:%S')} [#{severity}] #{msg}\n"
 end
 
 # Initialize components
 db = Database.new(CONFIG['database']['path'], logger)
 resolver = DomainResolver.new(logger)
-notifier = DiscordNotifier.new(CONFIG['discord']['webhook_url'], 
-                              CONFIG['discord']['username'],
-                              CONFIG['discord']['avatar_url'],
+notifier = DiscordNotifier.new(CONFIG['discord']['webhook_url'],
+                               CONFIG['discord']['username'],
+                               CONFIG['discord']['avatar_url'],
+                               logger)
+fetcher = WildcardFetcher.new(CONFIG['api']['url'],
+                              CONFIG['api']['headers'],
+                              db,
                               logger)
-fetcher = WildcardFetcher.new(CONFIG['api']['url'], 
-                             CONFIG['api']['headers'],
-                             db,
-                             logger)
 
 # Create scheduler
 scheduler = Rufus::Scheduler.new
 
 # Setup wildcards fetch schedule
 scheduler.every "#{CONFIG['api']['update_interval']}s" do
-  logger.info("Scheduled fetch of wildcards")
+  logger.info('Scheduled fetch of wildcards')
   fetcher.fetch_wildcards
 end
 
 # Setup domain resolution retry schedule
 scheduler.every "#{CONFIG['database']['retry_interval']}s" do
-  logger.info("Starting scheduled retry of unresolvable domains")
-  
+  logger.info('Starting scheduled retry of unresolvable domains')
+
   domains = db.get_unresolvable_domains
   domains.each do |domain|
     logger.debug("Retrying resolution for domain: #{domain['domain']}")
-    
+
     # Check if we've exceeded max retries
     if domain['retry_count'] >= CONFIG['database']['max_retries']
       logger.info("Max retries exceeded for domain: #{domain['domain']}, removing from database")
       db.remove_unresolvable_domain(domain['domain'])
       next
     end
-    
+
     # Try to resolve the domain
     ip = resolver.resolve(domain['domain'])
-    
+
     if ip
       logger.info("Successfully resolved previously unresolvable domain: #{domain['domain']} to IP: #{ip}")
-      
+
       # Check if IP is private
       if resolver.private_ip?(ip)
         logger.info("Domain #{domain['domain']} resolved to private IP: #{ip}, removing from unresolvable")
@@ -93,9 +93,9 @@ end
 fetcher.fetch_wildcards
 
 # Setup and start the certstream monitor
-certstream = CertstreamMonitor.new(CONFIG['certstream']['url'], 
-                                   db, 
-                                   resolver, 
+certstream = CertstreamMonitor.new(CONFIG['certstream']['url'],
+                                   db,
+                                   resolver,
                                    notifier,
                                    CONFIG['certstream']['reconnect_interval'],
                                    logger)
@@ -107,7 +107,7 @@ begin
     sleep 1
   end
 rescue Interrupt
-  logger.info("Received interrupt signal, shutting down...")
+  logger.info('Received interrupt signal, shutting down...')
   scheduler.shutdown
   exit(0)
 end
