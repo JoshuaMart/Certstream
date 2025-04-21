@@ -1,19 +1,11 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
-
-# Add lib directory to load path
-$LOAD_PATH.unshift(File.expand_path('lib', __dir__))
 
 require 'yaml'
 require 'logger'
 require 'fileutils'
 require 'rufus-scheduler'
 
-require 'wildcard_fetcher'
-require 'certstream_monitor'
-require 'database'
-require 'domain_resolver'
-require 'discord_notifier'
+Dir[File.join(__dir__, 'lib', '*.rb')].sort.each { |file| require file }
 
 # Create directories if they don't exist
 FileUtils.mkdir_p('logs')
@@ -92,12 +84,15 @@ end
 fetcher.fetch_wildcards
 
 # Setup and start the certstream monitor
-certstream = CertstreamMonitor.new(CONFIG['certstream']['url'],
-                                   db,
-                                   resolver,
-                                   notifier,
-                                   CONFIG['certstream']['reconnect_interval'],
-                                   logger)
+certstream = CertstreamMonitor.new(
+  CONFIG['certstream']['url'],
+  db,
+  resolver,
+  notifier,
+  logger,
+  CONFIG['certstream']['exclusions'],
+  CONFIG['certstream']['reconnect_interval']
+)
 certstream.start
 
 # Keep the main thread alive

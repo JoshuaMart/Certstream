@@ -40,9 +40,11 @@ class DomainResolver
 
       # Check if it's a private IP address
       if ip_addr.ipv4?
-        return true if ip_addr.private? || ip_addr.loopback? || ip_addr.link_local?
+        # IPv4 link-local addresses are in the range 169.254.0.0/16
+        is_link_local = ip_addr.to_string.start_with?('169.254.')
+        return true if ip_addr.private? || ip_addr.loopback? || is_link_local
       elsif ip_addr.ipv6?
-        return true if ip_addr.loopback? || ip_addr.link_local? || ip_addr.unique_local?
+        return true if ip_addr.loopback?
       end
 
       false

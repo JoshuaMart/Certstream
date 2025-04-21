@@ -52,44 +52,25 @@ class WildcardFetcher
     wildcards_count = 0
 
     # The JSON format from the provided example has a structure where programs are keys
-    json_data.each do |program_id, program_data|
-      # Skip if not a Hash
-      next unless program_data.is_a?(Hash)
-
-      program_name = program_data['slug'] || program_id
-
-      # Process scopes if they exist
-      if program_data['scopes'] && program_data['scopes']['in']
-        process_scope(program_data['scopes']['in'], program_name)
+    json_data.each do |platforms, programs|
+      programs.each do |name, infos|
         wildcards_count += 1
+        urls = infos.dig('scopes', 'in', 'url')
+        next unless urls
+
+        process_scope(urls, name)
       end
     end
 
     @logger.info("Extracted wildcards for #{wildcards_count} programs")
   end
 
-  def process_scope(scope, program_name)
-    # Check for URL scopes which contain wildcards
-    if scope['url'].is_a?(Array)
-      scope['url'].each do |url|
-        # Check if the URL contains a wildcard
-        if url.include?('*.')
-          @logger.debug("Found wildcard: #{url} in program: #{program_name}")
-          @db.add_wildcard(url, program_name)
-        end
-      end
-    end
-
-    # Also check other fields that might contain wildcards
-    %w[other mobile executable].each do |field|
-      next unless scope[field].is_a?(Array)
-
-      scope[field].each do |item|
-        # Check if the item contains a wildcard
-        if item.is_a?(String) && item.include?('*.')
-          @logger.debug("Found wildcard in #{field}: #{item} in program: #{program_name}")
-          @db.add_wildcard(item, program_name)
-        end
+  def process_scope(urls, program_name)
+    urls.each do |url|
+      # Check if the URL contains a wildcard
+      if url.start_with?('*.')
+        @logger.debug("Found wildcard: #{url} in program: #{program_name}")
+        @db.add_wildcard(url, program_name)
       end
     end
   end

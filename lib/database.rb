@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sqlite3'
+require 'public_suffix'
 
 class Database
   def initialize(db_path, logger)
@@ -67,18 +68,10 @@ class Database
     @db.execute('SELECT * FROM wildcards;')
   end
 
-  def domain_matches_wildcards?(domain)
+  def domain_matches_wildcards(domain)
     wildcards = get_wildcards
 
-    wildcards.each do |wildcard|
-      pattern = wildcard['pattern']
-      # Convert the wildcard pattern to a regex pattern
-      regex_pattern = pattern.gsub('.', '\\.').gsub('*', '.*')
-
-      return wildcard if /^#{regex_pattern}$/i.match?(domain)
-    end
-
-    nil
+    wildcards.find { |wildcard| PublicSuffix.domain(domain) == wildcard['pattern'][2..] }
   end
 
   # Discovered domains methods
@@ -122,7 +115,6 @@ class Database
   end
 
   def get_program_for_domain(domain)
-    wildcard = domain_matches_wildcards?(domain)
-    wildcard if wildcard
+    domain_matches_wildcards(domain)
   end
 end

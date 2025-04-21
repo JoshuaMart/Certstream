@@ -9,7 +9,10 @@ api:
 
 # Certstream Configuration
 certstream:
-  url: "ws://certstream-server:8181/domains-only"
+  url: "ws://certstream-server:8080/domains-only"
+  exclusions:
+    - ui.com
+    - imperva.com
   reconnect_interval: 5 # seconds
 
 # Database Configuration
