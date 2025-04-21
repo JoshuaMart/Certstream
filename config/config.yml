@@ -5,26 +5,26 @@ api:
   url: http://scopes.jomar.ovh
   headers:
     X-API-Key: "your-api-key-here"
-  update_interval: 86400  # 24 hours in seconds
+  update_interval: 86400 # 24 hours in seconds
 
-# Certstream Configuration  
+# Certstream Configuration
 certstream:
   url: "ws://certstream-server:8181/domains-only"
-  reconnect_interval: 5  # seconds
+  reconnect_interval: 5 # seconds
 
 # Database Configuration
 database:
   path: "./data/certstream.db"
-  retry_interval: 10800  # 3 hours in seconds
-  max_retries: 112  # Approximately 14 days worth of retries (112 * 3 hours)
+  retry_interval: 10800 # 3 hours in seconds
+  max_retries: 336 # 14 days worth of retries (112 * 3 hours)
 
 # Discord Configuration
 discord:
   webhook_url: "your-webhook-url-here"
   username: "Certstream Monitor"
-  avatar_url: "https://example.com/avatar.png"  # Optional
+  avatar_url: "https://example.com/avatar.png" # Optional
 
-# Logging Configuration  
+# Logging Configuration
 logging:
-  level: "info"  # debug, info, warn, error, fatal
+  level: "info" # debug, info, warn, error, fatal
   file: "./logs/certstream.log"
