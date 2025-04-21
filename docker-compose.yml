@@ -1,12 +1,7 @@
-version: '3'
-
 services:
   certstream-server:
     image: 0rickyy0/certstream-server-go:latest
-    container_name: certstream-server
     restart: unless-stopped
-    ports:
-      - "8181:8080"
     networks:
       - certstream-network
 
@@ -14,7 +9,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: certstream-monitor
     restart: unless-stopped
     volumes:
       - ./config:/app/config
