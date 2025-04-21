@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sqlite3'
 
 class Database
@@ -82,7 +84,7 @@ class Database
   # Discovered domains methods
   def domain_already_discovered?(domain)
     result = @db.get_first_row('SELECT COUNT(*) as count FROM discovered_domains WHERE domain = ?;', [domain])
-    result['count'] > 0
+    result['count'].positive?
   end
 
   def add_discovered_domain(domain, ip, program = nil)

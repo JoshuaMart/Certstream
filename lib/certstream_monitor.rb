@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'websocket-client-simple'
 require 'json'
 
@@ -23,8 +25,8 @@ class CertstreamMonitor
 
   def stop
     @logger.info('Stopping Certstream monitor')
-    @ws.close if @ws && @ws.open?
-    @thread.exit if @thread && @thread.alive?
+    @ws.close if @ws&.open?
+    @thread.exit if @thread&.alive?
   end
 
   private
@@ -60,7 +62,7 @@ class CertstreamMonitor
       loop do
         sleep 1
         # Send ping every 30 seconds to keep the connection alive
-        if @ws.open? && Time.now.to_i % 30 == 0
+        if @ws.open? && (Time.now.to_i % 30).zero?
           @logger.debug('Sending PING to maintain connection')
           @ws.send('', type: :ping)
         end

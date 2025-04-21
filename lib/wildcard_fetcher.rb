@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'httparty'
 require 'json'
 
@@ -68,7 +70,7 @@ class WildcardFetcher
 
   def process_scope(scope, program_name)
     # Check for URL scopes which contain wildcards
-    if scope['url'] && scope['url'].is_a?(Array)
+    if scope['url'].is_a?(Array)
       scope['url'].each do |url|
         # Check if the URL contains a wildcard
         if url.include?('*.')
@@ -80,7 +82,7 @@ class WildcardFetcher
 
     # Also check other fields that might contain wildcards
     %w[other mobile executable].each do |field|
-      next unless scope[field] && scope[field].is_a?(Array)
+      next unless scope[field].is_a?(Array)
 
       scope[field].each do |item|
         # Check if the item contains a wildcard
