@@ -4,10 +4,9 @@ require 'httparty'
 require 'json'
 
 class DiscordNotifier
-  def initialize(webhook_url, username = nil, avatar_url = nil, logger)
+  def initialize(webhook_url, username = nil, logger)
     @webhook_url = webhook_url
     @username = username || 'Certstream Monitor'
-    @avatar_url = avatar_url
     @logger = logger
   end
 
@@ -55,9 +54,6 @@ class DiscordNotifier
         username: @username,
         embeds: [embed]
       }
-
-      # Add avatar URL if provided
-      payload[:avatar_url] = @avatar_url if @avatar_url && !@avatar_url.empty?
 
       response = HTTParty.post(
         @webhook_url,

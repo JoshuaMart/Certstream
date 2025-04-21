@@ -34,7 +34,6 @@ db = Database.new(CONFIG['database']['path'], logger)
 resolver = DomainResolver.new(logger)
 notifier = DiscordNotifier.new(CONFIG['discord']['webhook_url'],
                                CONFIG['discord']['username'],
-                               CONFIG['discord']['avatar_url'],
                                logger)
 fetcher = WildcardFetcher.new(CONFIG['api']['url'],
                               CONFIG['api']['headers'],
