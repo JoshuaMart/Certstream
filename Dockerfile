@@ -7,7 +7,8 @@ RUN apk add --no-cache build-base sqlite-dev
 
 # Copy Gemfile and install dependencies
 COPY Gemfile ./
-RUN bundle install
+RUN bundle config set --local without 'development test' && \
+    bundle install
 
 # Copy application code
 COPY . .
