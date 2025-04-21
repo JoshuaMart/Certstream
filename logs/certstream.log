@@ -1,0 +1,870 @@
+
+2025-04-21 16:37:51 [INFO] Setting up database at ./data/certstream.db
+2025-04-21 16:37:51 [INFO] Database setup complete
+2025-04-21 16:37:51 [INFO] Fetching wildcards from API: http://192.168.1.25:4567
+2025-04-21 16:37:51 [INFO] Successfully fetched wildcards data
+2025-04-21 16:37:51 [INFO] Cleared all wildcards from database
+2025-04-21 16:37:52 [INFO] Extracted wildcards for 901 programs
+2025-04-21 16:37:52 [INFO] Wildcards updated successfully
+2025-04-21 16:37:52 [INFO] Starting Certstream monitor
+2025-04-21 16:37:52 [INFO] Connecting to Certstream websocket at ws://certstream-server:8080/domains-only
+2025-04-21 16:37:52 [INFO] Certstream websocket connection established
+2025-04-21 16:39:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:39:27 [INFO] Resolved domain: imperva.com to IP: 45.60.73.225
+2025-04-21 16:39:27 [INFO] Sending Discord alert for domain: imperva.com
+2025-04-21 16:39:27 [INFO] Discord notification sent successfully
+2025-04-21 16:39:27 [INFO] Added discovered domain: imperva.com with IP: 45.60.73.225
+2025-04-21 16:40:00 [ERROR] Connection error: Connection reset by peer
+2025-04-21 16:40:00 [ERROR] /usr/local/bundle/gems/websocket-client-simple-0.9.0/lib/websocket-client-simple/client.rb:78:in 'IO#write'
+/usr/local/bundle/gems/websocket-client-simple-0.9.0/lib/websocket-client-simple/client.rb:78:in 'WebSocket::Client::Simple::Client#send'
+/app/lib/certstream_monitor.rb:120:in 'block in CertstreamMonitor#connect_websocket'
+<internal:kernel>:168:in 'Kernel#loop'
+/app/lib/certstream_monitor.rb:116:in 'CertstreamMonitor#connect_websocket'
+/app/lib/certstream_monitor.rb:19:in 'CertstreamMonitor#start'
+main.rb:95:in '<main>'
+2025-04-21 16:40:00 [INFO] Reconnecting in 5 seconds
+2025-04-21 16:40:04 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:40:06 [INFO] Certstream websocket connection established
+2025-04-21 16:40:10 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:40:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:34 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:48 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:48 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:48 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:48 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:48 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:48 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:48 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:51 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:55 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:55 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:55 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:41:55 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:42:06 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:42:12 [INFO] Domain fce-sdx-or.intel.com matched wildcard: *.intel.com
+2025-04-21 16:42:13 [INFO] Resolved domain: fce-sdx-or.intel.com to IP: 20.59.36.221
+2025-04-21 16:42:13 [INFO] Sending Discord alert for domain: fce-sdx-or.intel.com
+2025-04-21 16:42:13 [INFO] Discord notification sent successfully
+2025-04-21 16:42:13 [INFO] Added discovered domain: fce-sdx-or.intel.com with IP: 20.59.36.221
+2025-04-21 16:42:13 [INFO] Domain fce-sdx-or-dev.intel.com matched wildcard: *.intel.com
+2025-04-21 16:42:13 [INFO] Couldn't resolve fce-sdx-or-dev.intel.com, adding to retry queue
+2025-04-21 16:42:13 [INFO] Domain fce-sdx-or-test.intel.com matched wildcard: *.intel.com
+2025-04-21 16:42:14 [INFO] Resolved domain: fce-sdx-or-test.intel.com to IP: 4.154.26.164
+2025-04-21 16:42:14 [INFO] Sending Discord alert for domain: fce-sdx-or-test.intel.com
+2025-04-21 16:42:14 [INFO] Discord notification sent successfully
+2025-04-21 16:42:14 [INFO] Added discovered domain: fce-sdx-or-test.intel.com with IP: 4.154.26.164
+2025-04-21 16:42:23 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:42:35 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:42:47 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:02 [INFO] Domain 1.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 16:43:02 [INFO] Couldn't resolve 1.nflxso.net, adding to retry queue
+2025-04-21 16:43:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:06 [INFO] Domain ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:43:06 [INFO] Resolved domain: ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net to IP: 23.246.59.163
+2025-04-21 16:43:06 [INFO] Sending Discord alert for domain: ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net
+2025-04-21 16:43:07 [INFO] Discord notification sent successfully
+2025-04-21 16:43:07 [INFO] Added discovered domain: ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net with IP: 23.246.59.163
+2025-04-21 16:43:07 [INFO] Domain ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:43:07 [INFO] Resolved domain: ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net to IP: 23.246.59.163
+2025-04-21 16:43:07 [INFO] Sending Discord alert for domain: ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net
+2025-04-21 16:43:07 [INFO] Discord notification sent successfully
+2025-04-21 16:43:07 [INFO] Added discovered domain: ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net with IP: 23.246.59.163
+2025-04-21 16:43:07 [INFO] Domain ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:43:07 [INFO] Couldn't resolve ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 16:43:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:15 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:15 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:15 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:43:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:00 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:02 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:02 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:02 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:02 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:04 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:09 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:35 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:40 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:44:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:45:25 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:45:25 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:45:43 [INFO] Domain splunk-heclb.service.prod-cus-01.github.net matched wildcard: *.github.net
+2025-04-21 16:45:44 [INFO] Couldn't resolve splunk-heclb.service.prod-cus-01.github.net, adding to retry queue
+2025-04-21 16:45:44 [INFO] Domain splunk-heclb.service.prod-cus-01.github.net matched wildcard: *.github.net
+2025-04-21 16:45:44 [INFO] Couldn't resolve splunk-heclb.service.prod-cus-01.github.net, adding to retry queue
+2025-04-21 16:46:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:45 [INFO] Domain splunk-heclb.service.prod-cus-01.github.net matched wildcard: *.github.net
+2025-04-21 16:46:45 [INFO] Couldn't resolve splunk-heclb.service.prod-cus-01.github.net, adding to retry queue
+2025-04-21 16:46:47 [INFO] Domain splunk-heclb.service.prod-cus-01.github.net matched wildcard: *.github.net
+2025-04-21 16:46:47 [INFO] Couldn't resolve splunk-heclb.service.prod-cus-01.github.net, adding to retry queue
+2025-04-21 16:46:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:50 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:46:50 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:25 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:25 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:25 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:26 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:29 [INFO] Domain ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:47:29 [INFO] Domain ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:47:29 [INFO] Domain ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:47:29 [INFO] Couldn't resolve ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 16:47:29 [INFO] Domain ipv6-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:47:30 [INFO] Resolved domain: ipv6-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net to IP: 23.246.59.164
+2025-04-21 16:47:30 [INFO] Sending Discord alert for domain: ipv6-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net
+2025-04-21 16:47:30 [INFO] Discord notification sent successfully
+2025-04-21 16:47:30 [INFO] Added discovered domain: ipv6-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net with IP: 23.246.59.164
+2025-04-21 16:47:30 [INFO] Domain ipv4-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:47:30 [INFO] Resolved domain: ipv4-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net to IP: 23.246.59.164
+2025-04-21 16:47:30 [INFO] Sending Discord alert for domain: ipv4-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net
+2025-04-21 16:47:31 [INFO] Discord notification sent successfully
+2025-04-21 16:47:31 [INFO] Added discovered domain: ipv4-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net with IP: 23.246.59.164
+2025-04-21 16:47:31 [INFO] Domain ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:47:31 [INFO] Couldn't resolve ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 16:47:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:32 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:32 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:32 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:32 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:47:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:48:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:48:36 [INFO] Domain 1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:48:37 [INFO] Couldn't resolve 1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 16:48:37 [INFO] Domain 1.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 16:48:37 [INFO] Couldn't resolve 1.nflxso.net, adding to retry queue
+2025-04-21 16:48:37 [INFO] Domain a.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 16:48:37 [INFO] Couldn't resolve a.nflxso.net, adding to retry queue
+2025-04-21 16:48:37 [INFO] Domain assets.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 16:48:37 [INFO] Resolved domain: assets.nflxext.com to IP: 45.57.91.1
+2025-04-21 16:48:37 [INFO] Sending Discord alert for domain: assets.nflxext.com
+2025-04-21 16:48:37 [INFO] Discord notification sent successfully
+2025-04-21 16:48:37 [INFO] Added discovered domain: assets.nflxext.com with IP: 45.57.91.1
+2025-04-21 16:48:37 [INFO] Domain games.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 16:48:37 [INFO] Couldn't resolve games.nflxext.com, adding to retry queue
+2025-04-21 16:48:37 [INFO] Domain assets.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 16:48:37 [INFO] Domain codex.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 16:48:37 [INFO] Resolved domain: codex.nflxext.com to IP: 45.57.91.1
+2025-04-21 16:48:37 [INFO] Sending Discord alert for domain: codex.nflxext.com
+2025-04-21 16:48:38 [INFO] Discord notification sent successfully
+2025-04-21 16:48:38 [INFO] Added discovered domain: codex.nflxext.com with IP: 45.57.91.1
+2025-04-21 16:48:38 [INFO] Domain dnm.nflximg.net matched wildcard: *.nflximg.net
+2025-04-21 16:48:38 [INFO] Resolved domain: dnm.nflximg.net to IP: 45.57.90.1
+2025-04-21 16:48:38 [INFO] Sending Discord alert for domain: dnm.nflximg.net
+2025-04-21 16:48:38 [INFO] Discord notification sent successfully
+2025-04-21 16:48:38 [INFO] Added discovered domain: dnm.nflximg.net with IP: 45.57.90.1
+2025-04-21 16:48:38 [INFO] Domain scdn.nflximg.net matched wildcard: *.nflximg.net
+2025-04-21 16:48:38 [INFO] Resolved domain: scdn.nflximg.net to IP: 104.82.132.58
+2025-04-21 16:48:38 [INFO] Sending Discord alert for domain: scdn.nflximg.net
+2025-04-21 16:48:38 [INFO] Discord notification sent successfully
+2025-04-21 16:48:38 [INFO] Added discovered domain: scdn.nflximg.net with IP: 104.82.132.58
+2025-04-21 16:48:39 [INFO] Domain 1.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 16:48:39 [INFO] Couldn't resolve 1.nflxso.net, adding to retry queue
+2025-04-21 16:48:39 [INFO] Domain a.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 16:48:39 [INFO] Couldn't resolve a.nflxso.net, adding to retry queue
+2025-04-21 16:48:39 [INFO] Domain assets.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 16:48:39 [INFO] Domain games.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 16:48:39 [INFO] Couldn't resolve games.nflxext.com, adding to retry queue
+2025-04-21 16:48:39 [INFO] Domain assets.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 16:48:39 [INFO] Domain codex.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 16:48:39 [INFO] Domain dnm.nflximg.net matched wildcard: *.nflximg.net
+2025-04-21 16:48:39 [INFO] Domain scdn.nflximg.net matched wildcard: *.nflximg.net
+2025-04-21 16:48:39 [INFO] Domain ipv6-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:48:39 [INFO] Domain ipv4-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:48:39 [INFO] Domain ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:48:39 [INFO] Couldn't resolve ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 16:48:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:48:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:48:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:50:13 [INFO] Domain prizmdoc.awscmhqa4.k8s.indeed.tech matched wildcard: *.indeed.tech
+2025-04-21 16:50:13 [INFO] Resolved domain: prizmdoc.awscmhqa4.k8s.indeed.tech to IP: 10.115.206.123
+2025-04-21 16:50:13 [INFO] Domain prizmdoc.awscmhqa4.k8s.indeed.tech has private IP: 10.115.206.123, skipping
+2025-04-21 16:50:58 [INFO] Domain drive.moveit.qms.grab.com matched wildcard: *.grab.com
+2025-04-21 16:50:58 [INFO] Resolved domain: drive.moveit.qms.grab.com to IP: 13.229.53.100
+2025-04-21 16:50:58 [INFO] Sending Discord alert for domain: drive.moveit.qms.grab.com
+2025-04-21 16:50:58 [INFO] Discord notification sent successfully
+2025-04-21 16:50:58 [INFO] Added discovered domain: drive.moveit.qms.grab.com with IP: 13.229.53.100
+2025-04-21 16:51:13 [INFO] Domain aea-console-canary.aea.amazon.com matched wildcard: *.amazon.com
+2025-04-21 16:51:13 [INFO] Couldn't resolve aea-console-canary.aea.amazon.com, adding to retry queue
+2025-04-21 16:51:57 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:52:15 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:53:04 [INFO] Domain api.epm-rexp.projects.epam.com matched wildcard: *.epam.com
+2025-04-21 16:53:04 [INFO] Resolved domain: api.epm-rexp.projects.epam.com to IP: 104.18.40.171
+2025-04-21 16:53:04 [INFO] Sending Discord alert for domain: api.epm-rexp.projects.epam.com
+2025-04-21 16:53:05 [INFO] Discord notification sent successfully
+2025-04-21 16:53:05 [INFO] Added discovered domain: api.epm-rexp.projects.epam.com with IP: 104.18.40.171
+2025-04-21 16:53:11 [INFO] Domain ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:53:11 [INFO] Domain ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:53:11 [INFO] Domain ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:53:11 [INFO] Couldn't resolve ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 16:53:11 [INFO] Domain ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:53:11 [INFO] Domain ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:53:11 [INFO] Domain ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:53:11 [INFO] Couldn't resolve ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 16:53:20 [INFO] Domain ipv6-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:53:20 [INFO] Domain ipv4-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:53:20 [INFO] Domain ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 16:53:20 [INFO] Couldn't resolve ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 16:54:56 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:55:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:56:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:56:29 [INFO] Domain api.epm-rexp.projects.epam.com matched wildcard: *.epam.com
+2025-04-21 16:56:47 [INFO] Domain 990acf1c-3917-4830-9a18-371e644048a9.unifi-hosting.ui.com matched wildcard: *.ui.com
+2025-04-21 16:56:47 [INFO] Resolved domain: 990acf1c-3917-4830-9a18-371e644048a9.unifi-hosting.ui.com to IP: 146.190.99.180
+2025-04-21 16:56:47 [INFO] Sending Discord alert for domain: 990acf1c-3917-4830-9a18-371e644048a9.unifi-hosting.ui.com
+2025-04-21 16:56:47 [INFO] Discord notification sent successfully
+2025-04-21 16:56:47 [INFO] Added discovered domain: 990acf1c-3917-4830-9a18-371e644048a9.unifi-hosting.ui.com with IP: 146.190.99.180
+2025-04-21 16:57:09 [INFO] Domain 83008c2e-b203-4893-94be-0ab167aee55c.unifi-hosting.ui.com matched wildcard: *.ui.com
+2025-04-21 16:57:09 [INFO] Resolved domain: 83008c2e-b203-4893-94be-0ab167aee55c.unifi-hosting.ui.com to IP: 178.128.12.16
+2025-04-21 16:57:09 [INFO] Sending Discord alert for domain: 83008c2e-b203-4893-94be-0ab167aee55c.unifi-hosting.ui.com
+2025-04-21 16:57:10 [INFO] Discord notification sent successfully
+2025-04-21 16:57:10 [INFO] Added discovered domain: 83008c2e-b203-4893-94be-0ab167aee55c.unifi-hosting.ui.com with IP: 178.128.12.16
+2025-04-21 16:57:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:36 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:36 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:36 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:40 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:40 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:58:50 [INFO] Domain 1.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 16:58:50 [INFO] Couldn't resolve 1.nflxso.net, adding to retry queue
+2025-04-21 16:59:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 16:59:25 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:00:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:00:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:00:14 [INFO] Domain 47905e21-8c3c-445a-9a0b-1f27f3f6595e.unifi-hosting.ui.com matched wildcard: *.ui.com
+2025-04-21 17:00:14 [INFO] Resolved domain: 47905e21-8c3c-445a-9a0b-1f27f3f6595e.unifi-hosting.ui.com to IP: 167.99.4.18
+2025-04-21 17:00:14 [INFO] Sending Discord alert for domain: 47905e21-8c3c-445a-9a0b-1f27f3f6595e.unifi-hosting.ui.com
+2025-04-21 17:00:15 [INFO] Discord notification sent successfully
+2025-04-21 17:00:15 [INFO] Added discovered domain: 47905e21-8c3c-445a-9a0b-1f27f3f6595e.unifi-hosting.ui.com with IP: 167.99.4.18
+2025-04-21 17:00:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:00:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:00:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:00:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:01:42 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:02:57 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:03:06 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:04:36 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:04:59 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:05:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:05:47 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:05:50 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:05:56 [INFO] Domain fitness.epam.com matched wildcard: *.epam.com
+2025-04-21 17:06:00 [INFO] Couldn't resolve fitness.epam.com, adding to retry queue
+2025-04-21 17:06:34 [INFO] Domain kas.17-9-stable-security.release.gke.gitlab.net matched wildcard: *.gitlab.net
+2025-04-21 17:06:35 [INFO] Resolved domain: kas.17-9-stable-security.release.gke.gitlab.net to IP: 34.138.166.204
+2025-04-21 17:06:35 [INFO] Sending Discord alert for domain: kas.17-9-stable-security.release.gke.gitlab.net
+2025-04-21 17:06:35 [INFO] Discord notification sent successfully
+2025-04-21 17:06:35 [INFO] Added discovered domain: kas.17-9-stable-security.release.gke.gitlab.net with IP: 34.138.166.204
+2025-04-21 17:06:48 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:06:54 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:07:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:07:29 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:09:35 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:10:02 [INFO] Domain marguo.dev.ikarem.io matched wildcard: *.ikarem.io
+2025-04-21 17:10:02 [INFO] Resolved domain: marguo.dev.ikarem.io to IP: 18.197.95.46
+2025-04-21 17:10:02 [INFO] Sending Discord alert for domain: marguo.dev.ikarem.io
+2025-04-21 17:10:02 [INFO] Discord notification sent successfully
+2025-04-21 17:10:02 [INFO] Added discovered domain: marguo.dev.ikarem.io with IP: 18.197.95.46
+2025-04-21 17:10:02 [INFO] Domain marguo.dev.network-auth.ikarem.io matched wildcard: *.ikarem.io
+2025-04-21 17:10:02 [INFO] Resolved domain: marguo.dev.network-auth.ikarem.io to IP: 18.197.95.46
+2025-04-21 17:10:02 [INFO] Sending Discord alert for domain: marguo.dev.network-auth.ikarem.io
+2025-04-21 17:10:03 [INFO] Discord notification sent successfully
+2025-04-21 17:10:03 [INFO] Added discovered domain: marguo.dev.network-auth.ikarem.io with IP: 18.197.95.46
+2025-04-21 17:10:03 [INFO] Domain marguo.meraki-go.ikarem.io matched wildcard: *.ikarem.io
+2025-04-21 17:10:03 [INFO] Resolved domain: marguo.meraki-go.ikarem.io to IP: 18.197.95.46
+2025-04-21 17:10:03 [INFO] Sending Discord alert for domain: marguo.meraki-go.ikarem.io
+2025-04-21 17:10:03 [INFO] Discord notification sent successfully
+2025-04-21 17:10:03 [INFO] Added discovered domain: marguo.meraki-go.ikarem.io with IP: 18.197.95.46
+2025-04-21 17:10:03 [INFO] Domain sso.marguo.dev.ikarem.io matched wildcard: *.ikarem.io
+2025-04-21 17:10:03 [INFO] Resolved domain: sso.marguo.dev.ikarem.io to IP: 18.197.95.46
+2025-04-21 17:10:03 [INFO] Sending Discord alert for domain: sso.marguo.dev.ikarem.io
+2025-04-21 17:10:03 [INFO] Discord notification sent successfully
+2025-04-21 17:10:03 [INFO] Added discovered domain: sso.marguo.dev.ikarem.io with IP: 18.197.95.46
+2025-04-21 17:11:22 [INFO] Domain ipv6-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:11:22 [INFO] Domain ipv4-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:11:22 [INFO] Domain ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:11:22 [INFO] Couldn't resolve ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 17:12:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:12:46 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:12:46 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:12:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:12:59 [INFO] Domain 1.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 17:12:59 [INFO] Couldn't resolve 1.nflxso.net, adding to retry queue
+2025-04-21 17:12:59 [INFO] Domain a.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 17:12:59 [INFO] Couldn't resolve a.nflxso.net, adding to retry queue
+2025-04-21 17:12:59 [INFO] Domain assets.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 17:12:59 [INFO] Domain games.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 17:12:59 [INFO] Couldn't resolve games.nflxext.com, adding to retry queue
+2025-04-21 17:12:59 [INFO] Domain assets.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 17:12:59 [INFO] Domain codex.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 17:12:59 [INFO] Domain dnm.nflximg.net matched wildcard: *.nflximg.net
+2025-04-21 17:12:59 [INFO] Domain scdn.nflximg.net matched wildcard: *.nflximg.net
+2025-04-21 17:13:08 [INFO] Domain ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:13:08 [INFO] Domain ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:13:08 [INFO] Domain ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:13:08 [INFO] Couldn't resolve ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 17:13:17 [INFO] Domain 1.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 17:13:17 [INFO] Couldn't resolve 1.nflxso.net, adding to retry queue
+2025-04-21 17:13:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:13:56 [INFO] Domain faca63e8-c0a1-4914-b8d0-6c0322336a1e.unifi-hosting.ui.com matched wildcard: *.ui.com
+2025-04-21 17:13:56 [INFO] Resolved domain: faca63e8-c0a1-4914-b8d0-6c0322336a1e.unifi-hosting.ui.com to IP: 68.183.209.252
+2025-04-21 17:13:56 [INFO] Sending Discord alert for domain: faca63e8-c0a1-4914-b8d0-6c0322336a1e.unifi-hosting.ui.com
+2025-04-21 17:13:56 [INFO] Discord notification sent successfully
+2025-04-21 17:13:56 [INFO] Added discovered domain: faca63e8-c0a1-4914-b8d0-6c0322336a1e.unifi-hosting.ui.com with IP: 68.183.209.252
+2025-04-21 17:14:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:20 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:23 [INFO] Domain ftl.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:14:23 [INFO] Couldn't resolve ftl.nflxvideo.net, adding to retry queue
+2025-04-21 17:14:23 [INFO] Domain r.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 17:14:23 [INFO] Couldn't resolve r.nflxso.net, adding to retry queue
+2025-04-21 17:14:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:33 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:34 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:34 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:36 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:36 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:14:36 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:02 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:08 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:08 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:38 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:40 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:40 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:15:40 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:16:05 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:16:05 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:16:07 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:16:07 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:16:07 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:16:35 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:16:36 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:16:36 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:17:04 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:17:04 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:17:04 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:17:04 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:17:05 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:17:05 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:17:05 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:17:09 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:11 [INFO] Domain 1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:18:12 [INFO] Couldn't resolve 1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 17:18:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:18:13 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:19:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:19:03 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:19:18 [INFO] Domain www.imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:19:18 [INFO] Resolved domain: www.imperva.com to IP: 45.60.1.60
+2025-04-21 17:19:18 [INFO] Sending Discord alert for domain: www.imperva.com
+2025-04-21 17:19:18 [INFO] Discord notification sent successfully
+2025-04-21 17:19:18 [INFO] Added discovered domain: www.imperva.com with IP: 45.60.1.60
+2025-04-21 17:19:18 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:19:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:19:43 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:19:44 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:19:46 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:19:58 [INFO] Domain rcap-79e29d08.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:19:58 [INFO] Couldn't resolve rcap-79e29d08.amazon.com, adding to retry queue
+2025-04-21 17:20:09 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:09 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:09 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:09 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:09 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:09 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:09 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:10 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:10 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:10 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:10 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:14 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:14 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:14 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:14 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:15 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:15 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:16 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:17 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:20 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:20 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:20 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:20 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:20 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:23 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:23 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:23 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:23 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:20:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:21:07 [INFO] Domain billing-api-usage-events-router-grpc.kf.unified-1.internal.api.openai.org matched wildcard: *.openai.org
+2025-04-21 17:21:07 [INFO] Resolved domain: billing-api-usage-events-router-grpc.kf.unified-1.internal.api.openai.org to IP: 10.192.64.154
+2025-04-21 17:21:07 [INFO] Domain billing-api-usage-events-router-grpc.kf.unified-1.internal.api.openai.org has private IP: 10.192.64.154, skipping
+2025-04-21 17:21:25 [INFO] Domain prizmdoc.awscmhqa4.k8s.indeed.tech matched wildcard: *.indeed.tech
+2025-04-21 17:21:25 [INFO] Resolved domain: prizmdoc.awscmhqa4.k8s.indeed.tech to IP: 10.115.213.39
+2025-04-21 17:21:25 [INFO] Domain prizmdoc.awscmhqa4.k8s.indeed.tech has private IP: 10.115.213.39, skipping
+2025-04-21 17:21:30 [INFO] Domain aea-console-canary.aea.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:21:30 [INFO] Couldn't resolve aea-console-canary.aea.amazon.com, adding to retry queue
+2025-04-21 17:22:07 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:22:14 [INFO] Domain e26814d4-da2f-428c-bde1-eab45b31b983.unifi-hosting.ui.com matched wildcard: *.ui.com
+2025-04-21 17:22:14 [INFO] Resolved domain: e26814d4-da2f-428c-bde1-eab45b31b983.unifi-hosting.ui.com to IP: 67.205.143.47
+2025-04-21 17:22:14 [INFO] Sending Discord alert for domain: e26814d4-da2f-428c-bde1-eab45b31b983.unifi-hosting.ui.com
+2025-04-21 17:22:14 [INFO] Discord notification sent successfully
+2025-04-21 17:22:14 [INFO] Added discovered domain: e26814d4-da2f-428c-bde1-eab45b31b983.unifi-hosting.ui.com with IP: 67.205.143.47
+2025-04-21 17:22:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:22:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:22:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:22:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:22:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:22:32 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:31 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:41 [INFO] Domain 1.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 17:23:41 [INFO] Couldn't resolve 1.nflxso.net, adding to retry queue
+2025-04-21 17:23:41 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:41 [INFO] Domain ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:23:41 [INFO] Domain ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:23:41 [INFO] Domain ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:23:41 [INFO] Couldn't resolve ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 17:23:41 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:41 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:41 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:42 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:42 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:23:42 [INFO] Domain 1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:23:42 [INFO] Couldn't resolve 1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 17:23:55 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:24:18 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:24:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:24:20 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:24:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:24:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:24:59 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:25:07 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:25:12 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:25:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:25:29 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:25:50 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:25:50 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:25:50 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:25:50 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:25:53 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:26:06 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:26:06 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:26:06 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:26:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:26:35 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:27:00 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:27:08 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:27:08 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:27:12 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:27:52 [INFO] Domain radar.staging.cloudflare.com matched wildcard: *.cloudflare.com
+2025-04-21 17:27:53 [INFO] Resolved domain: radar.staging.cloudflare.com to IP: 104.18.22.185
+2025-04-21 17:27:53 [INFO] Sending Discord alert for domain: radar.staging.cloudflare.com
+2025-04-21 17:27:53 [INFO] Discord notification sent successfully
+2025-04-21 17:27:53 [INFO] Added discovered domain: radar.staging.cloudflare.com with IP: 104.18.22.185
+2025-04-21 17:27:53 [INFO] Domain ipv6-check-perf.radar.staging.cloudflare.com matched wildcard: *.cloudflare.com
+2025-04-21 17:27:53 [INFO] Couldn't resolve ipv6-check-perf.radar.staging.cloudflare.com, adding to retry queue
+2025-04-21 17:27:56 [INFO] Domain radar.staging.cloudflare.com matched wildcard: *.cloudflare.com
+2025-04-21 17:27:56 [INFO] Domain ipv6-check-perf.radar.staging.cloudflare.com matched wildcard: *.cloudflare.com
+2025-04-21 17:27:56 [INFO] Couldn't resolve ipv6-check-perf.radar.staging.cloudflare.com, adding to retry queue
+2025-04-21 17:28:11 [INFO] Domain 1.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 17:28:11 [INFO] Couldn't resolve 1.nflxso.net, adding to retry queue
+2025-04-21 17:28:11 [INFO] Domain a.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 17:28:11 [INFO] Couldn't resolve a.nflxso.net, adding to retry queue
+2025-04-21 17:28:11 [INFO] Domain assets.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 17:28:11 [INFO] Domain games.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 17:28:11 [INFO] Couldn't resolve games.nflxext.com, adding to retry queue
+2025-04-21 17:28:11 [INFO] Domain assets.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 17:28:11 [INFO] Domain codex.nflxext.com matched wildcard: *.nflxext.com
+2025-04-21 17:28:11 [INFO] Domain dnm.nflximg.net matched wildcard: *.nflximg.net
+2025-04-21 17:28:12 [INFO] Domain scdn.nflximg.net matched wildcard: *.nflximg.net
+2025-04-21 17:28:12 [INFO] Domain 1.nflxso.net matched wildcard: *.nflxso.net
+2025-04-21 17:28:12 [INFO] Couldn't resolve 1.nflxso.net, adding to retry queue
+2025-04-21 17:28:21 [INFO] Domain ipv6-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:28:21 [INFO] Domain ipv4-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:28:21 [INFO] Domain ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:28:21 [INFO] Couldn't resolve ipv6-only-c001-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 17:28:21 [INFO] Domain ipv6-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:28:21 [INFO] Domain ipv4-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:28:21 [INFO] Domain ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:28:21 [INFO] Couldn't resolve ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 17:28:34 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:28:37 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:28:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:28:39 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:28:41 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:28:41 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:29:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:29:49 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:31:51 [INFO] Domain radar.staging.cloudflare.com matched wildcard: *.cloudflare.com
+2025-04-21 17:31:51 [INFO] Domain ipv6-check-perf.radar.staging.cloudflare.com matched wildcard: *.cloudflare.com
+2025-04-21 17:31:51 [INFO] Couldn't resolve ipv6-check-perf.radar.staging.cloudflare.com, adding to retry queue
+2025-04-21 17:31:55 [INFO] Domain radar.cloudflare.com matched wildcard: *.cloudflare.com
+2025-04-21 17:31:55 [INFO] Resolved domain: radar.cloudflare.com to IP: 104.18.30.78
+2025-04-21 17:31:55 [INFO] Sending Discord alert for domain: radar.cloudflare.com
+2025-04-21 17:31:55 [INFO] Discord notification sent successfully
+2025-04-21 17:31:55 [INFO] Added discovered domain: radar.cloudflare.com with IP: 104.18.30.78
+2025-04-21 17:32:33 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:32:33 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:32:45 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:32:45 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:32:45 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:32:45 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:19 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:20 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:20 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:22 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:23 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:23 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:23 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:23 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:26 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:27 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain 1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:33:28 [INFO] Couldn't resolve 1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:33:28 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:34:06 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:34:11 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:34:21 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:34:50 [INFO] Domain awsc-dev.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:50 [INFO] Resolved domain: awsc-dev.aws.amazon.com to IP: 52.46.135.172
+2025-04-21 17:34:50 [INFO] Sending Discord alert for domain: awsc-dev.aws.amazon.com
+2025-04-21 17:34:50 [INFO] Discord notification sent successfully
+2025-04-21 17:34:50 [INFO] Added discovered domain: awsc-dev.aws.amazon.com with IP: 52.46.135.172
+2025-04-21 17:34:50 [INFO] Domain awsc-integ.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:50 [INFO] Resolved domain: awsc-integ.aws.amazon.com to IP: 13.248.158.44
+2025-04-21 17:34:50 [INFO] Sending Discord alert for domain: awsc-integ.aws.amazon.com
+2025-04-21 17:34:51 [INFO] Discord notification sent successfully
+2025-04-21 17:34:51 [INFO] Added discovered domain: awsc-integ.aws.amazon.com with IP: 13.248.158.44
+2025-04-21 17:34:51 [INFO] Domain awsc-preprod.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:51 [INFO] Resolved domain: awsc-preprod.aws.amazon.com to IP: 76.223.51.104
+2025-04-21 17:34:51 [INFO] Sending Discord alert for domain: awsc-preprod.aws.amazon.com
+2025-04-21 17:34:51 [INFO] Discord notification sent successfully
+2025-04-21 17:34:51 [INFO] Added discovered domain: awsc-preprod.aws.amazon.com with IP: 76.223.51.104
+2025-04-21 17:34:51 [INFO] Domain awsc-onebox.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:51 [INFO] Couldn't resolve awsc-onebox.aws.amazon.com, adding to retry queue
+2025-04-21 17:34:51 [INFO] Domain awsc-dev.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:51 [INFO] Domain awsc-integ.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:51 [INFO] Domain awsc-preprod.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:51 [INFO] Domain awsc-onebox.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:51 [INFO] Couldn't resolve awsc-onebox.aws.amazon.com, adding to retry queue
+2025-04-21 17:34:51 [INFO] Domain lightsail-devo.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:52 [INFO] Resolved domain: lightsail-devo.aws.amazon.com to IP: 13.248.211.218
+2025-04-21 17:34:52 [INFO] Sending Discord alert for domain: lightsail-devo.aws.amazon.com
+2025-04-21 17:34:52 [INFO] Discord notification sent successfully
+2025-04-21 17:34:52 [INFO] Added discovered domain: lightsail-devo.aws.amazon.com with IP: 13.248.211.218
+2025-04-21 17:34:52 [INFO] Domain lightsail-preprod.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:52 [INFO] Resolved domain: lightsail-preprod.aws.amazon.com to IP: 13.248.177.157
+2025-04-21 17:34:52 [INFO] Sending Discord alert for domain: lightsail-preprod.aws.amazon.com
+2025-04-21 17:34:52 [INFO] Discord notification sent successfully
+2025-04-21 17:34:52 [INFO] Added discovered domain: lightsail-preprod.aws.amazon.com with IP: 13.248.177.157
+2025-04-21 17:34:52 [INFO] Domain us-east-1.lightsail-preprod.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:52 [INFO] Resolved domain: us-east-1.lightsail-preprod.aws.amazon.com to IP: 99.83.202.134
+2025-04-21 17:34:52 [INFO] Sending Discord alert for domain: us-east-1.lightsail-preprod.aws.amazon.com
+2025-04-21 17:34:53 [INFO] Discord notification sent successfully
+2025-04-21 17:34:53 [INFO] Added discovered domain: us-east-1.lightsail-preprod.aws.amazon.com with IP: 99.83.202.134
+2025-04-21 17:34:53 [INFO] Domain widget.awsc-dev.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:53 [INFO] Couldn't resolve widget.awsc-dev.aws.amazon.com, adding to retry queue
+2025-04-21 17:34:53 [INFO] Domain widget.awsc-integ.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:53 [INFO] Couldn't resolve widget.awsc-integ.aws.amazon.com, adding to retry queue
+2025-04-21 17:34:53 [INFO] Domain widget.awsc-preprod.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:53 [INFO] Couldn't resolve widget.awsc-preprod.aws.amazon.com, adding to retry queue
+2025-04-21 17:34:53 [INFO] Domain widget.awsc-onebox.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:53 [INFO] Couldn't resolve widget.awsc-onebox.aws.amazon.com, adding to retry queue
+2025-04-21 17:34:53 [INFO] Domain us-east-1.awsc-integ.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:54 [INFO] Resolved domain: us-east-1.awsc-integ.aws.amazon.com to IP: 76.223.39.8
+2025-04-21 17:34:54 [INFO] Sending Discord alert for domain: us-east-1.awsc-integ.aws.amazon.com
+2025-04-21 17:34:54 [INFO] Discord notification sent successfully
+2025-04-21 17:34:54 [INFO] Added discovered domain: us-east-1.awsc-integ.aws.amazon.com with IP: 76.223.39.8
+2025-04-21 17:34:54 [INFO] Domain us-east-1.awsc-dev.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:54 [INFO] Resolved domain: us-east-1.awsc-dev.aws.amazon.com to IP: 52.46.135.172
+2025-04-21 17:34:54 [INFO] Sending Discord alert for domain: us-east-1.awsc-dev.aws.amazon.com
+2025-04-21 17:34:54 [INFO] Discord notification sent successfully
+2025-04-21 17:34:54 [INFO] Added discovered domain: us-east-1.awsc-dev.aws.amazon.com with IP: 52.46.135.172
+2025-04-21 17:34:54 [INFO] Domain us-east-1.awsc-preprod.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:54 [INFO] Resolved domain: us-east-1.awsc-preprod.aws.amazon.com to IP: 99.83.202.134
+2025-04-21 17:34:54 [INFO] Sending Discord alert for domain: us-east-1.awsc-preprod.aws.amazon.com
+2025-04-21 17:34:55 [INFO] Discord notification sent successfully
+2025-04-21 17:34:55 [INFO] Added discovered domain: us-east-1.awsc-preprod.aws.amazon.com with IP: 99.83.202.134
+2025-04-21 17:34:55 [INFO] Domain support.awsc-preprod.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:55 [INFO] Resolved domain: support.awsc-preprod.aws.amazon.com to IP: 75.2.121.14
+2025-04-21 17:34:55 [INFO] Sending Discord alert for domain: support.awsc-preprod.aws.amazon.com
+2025-04-21 17:34:55 [INFO] Discord notification sent successfully
+2025-04-21 17:34:55 [INFO] Added discovered domain: support.awsc-preprod.aws.amazon.com with IP: 75.2.121.14
+2025-04-21 17:34:55 [INFO] Domain support.awsc-integ.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:55 [INFO] Resolved domain: support.awsc-integ.aws.amazon.com to IP: 76.223.39.8
+2025-04-21 17:34:55 [INFO] Sending Discord alert for domain: support.awsc-integ.aws.amazon.com
+2025-04-21 17:34:55 [INFO] Discord notification sent successfully
+2025-04-21 17:34:55 [INFO] Added discovered domain: support.awsc-integ.aws.amazon.com with IP: 76.223.39.8
+2025-04-21 17:34:55 [INFO] Domain networkmanager.awsc-integ.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:55 [INFO] Resolved domain: networkmanager.awsc-integ.aws.amazon.com to IP: 75.2.21.109
+2025-04-21 17:34:55 [INFO] Sending Discord alert for domain: networkmanager.awsc-integ.aws.amazon.com
+2025-04-21 17:34:56 [INFO] Discord notification sent successfully
+2025-04-21 17:34:56 [INFO] Added discovered domain: networkmanager.awsc-integ.aws.amazon.com with IP: 75.2.21.109
+2025-04-21 17:34:56 [INFO] Domain resource-explorer.awsc-preprod.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:56 [INFO] Resolved domain: resource-explorer.awsc-preprod.aws.amazon.com to IP: 75.2.121.14
+2025-04-21 17:34:56 [INFO] Sending Discord alert for domain: resource-explorer.awsc-preprod.aws.amazon.com
+2025-04-21 17:34:56 [INFO] Discord notification sent successfully
+2025-04-21 17:34:56 [INFO] Added discovered domain: resource-explorer.awsc-preprod.aws.amazon.com with IP: 75.2.121.14
+2025-04-21 17:34:56 [INFO] Domain resource-explorer.awsc-integ.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:57 [INFO] Resolved domain: resource-explorer.awsc-integ.aws.amazon.com to IP: 76.223.39.8
+2025-04-21 17:34:57 [INFO] Sending Discord alert for domain: resource-explorer.awsc-integ.aws.amazon.com
+2025-04-21 17:34:57 [INFO] Discord notification sent successfully
+2025-04-21 17:34:57 [INFO] Added discovered domain: resource-explorer.awsc-integ.aws.amazon.com with IP: 76.223.39.8
+2025-04-21 17:34:57 [INFO] Domain lfr.awsc-integ.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:57 [INFO] Resolved domain: lfr.awsc-integ.aws.amazon.com to IP: 13.248.172.37
+2025-04-21 17:34:57 [INFO] Sending Discord alert for domain: lfr.awsc-integ.aws.amazon.com
+2025-04-21 17:34:57 [INFO] Discord notification sent successfully
+2025-04-21 17:34:57 [INFO] Added discovered domain: lfr.awsc-integ.aws.amazon.com with IP: 13.248.172.37
+2025-04-21 17:34:57 [INFO] Domain gamma.console-api.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:57 [INFO] Couldn't resolve gamma.console-api.aws.amazon.com, adding to retry queue
+2025-04-21 17:34:57 [INFO] Domain us-east-1.gamma.console-api.aws.amazon.com matched wildcard: *.amazon.com
+2025-04-21 17:34:57 [INFO] Resolved domain: us-east-1.gamma.console-api.aws.amazon.com to IP: 13.248.172.37
+2025-04-21 17:34:57 [INFO] Sending Discord alert for domain: us-east-1.gamma.console-api.aws.amazon.com
+2025-04-21 17:34:58 [INFO] Discord notification sent successfully
+2025-04-21 17:34:58 [INFO] Added discovered domain: us-east-1.gamma.console-api.aws.amazon.com with IP: 13.248.172.37
+2025-04-21 17:35:14 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:35:14 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:35:24 [INFO] Domain imperva.com matched wildcard: *.imperva.com
+2025-04-21 17:35:47 [INFO] Domain ipv6-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:35:47 [INFO] Domain ipv4-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:35:47 [INFO] Domain ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net matched wildcard: *.nflxvideo.net
+2025-04-21 17:35:47 [INFO] Couldn't resolve ipv6-only-c002-sjc001-nflxoc-isp.1.oca.nflxvideo.net, adding to retry queue
+2025-04-21 17:35:51 [INFO] Domain cdn.syndication.twimg.com matched wildcard: *.twimg.com
+2025-04-21 17:35:51 [INFO] Resolved domain: cdn.syndication.twimg.com to IP: 146.75.120.159
+2025-04-21 17:35:51 [INFO] Sending Discord alert for domain: cdn.syndication.twimg.com
+2025-04-21 17:35:52 [INFO] Discord notification sent successfully
+2025-04-21 17:35:52 [INFO] Added discovered domain: cdn.syndication.twimg.com with IP: 146.75.120.159
+2025-04-21 17:35:52 [INFO] Domain cdn.syndication.twitter.com matched wildcard: *.twitter.com
+2025-04-21 17:35:52 [INFO] Resolved domain: cdn.syndication.twitter.com to IP: 172.66.0.227
+2025-04-21 17:35:52 [INFO] Sending Discord alert for domain: cdn.syndication.twitter.com
+2025-04-21 17:35:52 [INFO] Discord notification sent successfully
+2025-04-21 17:35:52 [INFO] Added discovered domain: cdn.syndication.twitter.com with IP: 172.66.0.227
+2025-04-21 17:35:52 [INFO] Domain cdn.syndication.x.com matched wildcard: *.x.com
+2025-04-21 17:35:52 [INFO] Resolved domain: cdn.syndication.x.com to IP: 172.66.0.227
+2025-04-21 17:35:52 [INFO] Sending Discord alert for domain: cdn.syndication.x.com
+2025-04-21 17:35:52 [INFO] Discord notification sent successfully
+2025-04-21 17:35:52 [INFO] Added discovered domain: cdn.syndication.x.com with IP: 172.66.0.227
+2025-04-21 17:35:52 [INFO] Domain syndication-o.twimg.com matched wildcard: *.twimg.com
+2025-04-21 17:35:53 [INFO] Resolved domain: syndication-o.twimg.com to IP: 104.244.42.9
+2025-04-21 17:35:53 [INFO] Sending Discord alert for domain: syndication-o.twimg.com
+2025-04-21 17:35:53 [INFO] Discord notification sent successfully
+2025-04-21 17:35:53 [INFO] Added discovered domain: syndication-o.twimg.com with IP: 104.244.42.9
+2025-04-21 17:35:53 [INFO] Domain syndication-o.twitter.com matched wildcard: *.twitter.com
+2025-04-21 17:35:53 [INFO] Couldn't resolve syndication-o.twitter.com, adding to retry queue
+2025-04-21 17:35:53 [INFO] Domain syndication-o.x.com matched wildcard: *.x.com
+2025-04-21 17:35:53 [INFO] Couldn't resolve syndication-o.x.com, adding to retry queue
+2025-04-21 17:35:53 [INFO] Domain syndication.twimg.com matched wildcard: *.twimg.com
+2025-04-21 17:35:53 [INFO] Resolved domain: syndication.twimg.com to IP: 104.244.42.136
+2025-04-21 17:35:53 [INFO] Sending Discord alert for domain: syndication.twimg.com
+2025-04-21 17:35:54 [INFO] Discord notification sent successfully
+2025-04-21 17:35:54 [INFO] Added discovered domain: syndication.twimg.com with IP: 104.244.42.136
+2025-04-21 17:35:54 [INFO] Domain syndication.twitter.com matched wildcard: *.twitter.com
+2025-04-21 17:35:54 [INFO] Resolved domain: syndication.twitter.com to IP: 172.66.0.227
+2025-04-21 17:35:54 [INFO] Sending Discord alert for domain: syndication.twitter.com
+2025-04-21 17:35:54 [INFO] Discord notification sent successfully
+2025-04-21 17:35:54 [INFO] Added discovered domain: syndication.twitter.com with IP: 172.66.0.227
+2025-04-21 17:35:54 [INFO] Domain syndication.x.com matched wildcard: *.x.com
+2025-04-21 17:35:54 [INFO] Resolved domain: syndication.x.com to IP: 172.66.0.227
+2025-04-21 17:35:54 [INFO] Sending Discord alert for domain: syndication.x.com
+2025-04-21 17:35:54 [INFO] Discord notification sent successfully
+2025-04-21 17:35:54 [INFO] Added discovered domain: syndication.x.com with IP: 172.66.0.227

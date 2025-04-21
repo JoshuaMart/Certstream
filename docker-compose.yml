@@ -1,0 +1,24 @@
+services:
+  certstream-server:
+    image: 0rickyy0/certstream-server-go:latest
+    restart: unless-stopped
+    networks:
+      - certstream-network
+
+  certstream-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      - certstream-server
+    networks:
+      - certstream-network
+
+networks:
+  certstream-network:
+    driver: bridge
