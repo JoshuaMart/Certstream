@@ -4,6 +4,8 @@ services:
     restart: unless-stopped
     networks:
       - certstream-network
+    logging:
+      driver: none
 
   certstream-monitor:
     build:
