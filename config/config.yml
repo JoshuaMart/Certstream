@@ -13,7 +13,6 @@ certstream:
   exclusions:
     - ui.com
     - imperva.com
-  reconnect_interval: 5 # seconds
 
 # Database Configuration
 database:
