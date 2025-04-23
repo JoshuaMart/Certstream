@@ -84,8 +84,7 @@ end
 fetcher.fetch_wildcards
 
 # Setup and start the certstream monitor
-certstream = CertstreamMonitor.new
-certstream.connect_websocket(
+certstream = CertstreamMonitor.new(
   CONFIG['certstream']['url'],
   db,
   resolver,
@@ -93,6 +92,7 @@ certstream.connect_websocket(
   logger,
   CONFIG['certstream']['exclusions']
 )
+certstream.connect_websocket
 
 # Keep the main thread alive
 begin

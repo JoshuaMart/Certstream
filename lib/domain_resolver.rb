@@ -53,24 +53,4 @@ class DomainResolver
       true # Default to true (private) for safety
     end
   end
-
-  # Get all IP addresses for a domain (both IPv4 and IPv6)
-  def resolve_all(domain)
-    return [] if domain.nil? || domain.empty?
-
-    ips = []
-
-    begin
-      # Try IPv4 resolution
-      @resolver.each_address(domain) do |addr|
-        ips << addr.to_s
-      end
-    rescue Resolv::ResolvError => e
-      @logger.debug("IPv4 resolution error for domain #{domain}: #{e.message}")
-    rescue StandardError => e
-      @logger.error("Error during IPv4 resolution for domain #{domain}: #{e.message}")
-    end
-
-    ips
-  end
 end
