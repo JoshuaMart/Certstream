@@ -3,7 +3,7 @@
 require 'httparty'
 
 class FingerprinterSender
-  attr_reader :fingerprinter_url, :api_key, :logger
+  attr_reader :fingerprinter_url, :callback_url, :api_key, :logger
 
   def initialize(fingerprinter_url, callback_url, api_key, logger)
     @fingerprinter_url = fingerprinter_url
