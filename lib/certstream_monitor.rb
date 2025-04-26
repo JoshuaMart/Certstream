@@ -2,7 +2,7 @@ require 'websocket-eventmachine-client'
 require 'json'
 
 class CertstreamMonitor
-  attr_reader :ws_url, :db, :resolver, :notifier, :fingerprinter; :logger, :exclusions, :executor
+  attr_reader :ws_url, :db, :resolver, :notifier, :fingerprinter, :logger, :exclusions, :executor
 
   def initialize(ws_url, db, resolver, notifier, fingerprinter, logger, exclusions, concurrency: 10)
     @ws_url        = ws_url
