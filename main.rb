@@ -27,6 +27,10 @@ resolver = DomainResolver.new(logger)
 notifier = DiscordNotifier.new(CONFIG['discord']['webhook_url'],
                                CONFIG['discord']['username'],
                                logger)
+fingerprinter = FingerprinterSender.new(CONFIG['fingerprinter']['url'],
+                                        CONFIG['fingerprinter']['callback_url'],
+                                        CONFIG['fingerprinter']['api_key'],
+                                        logger)
 fetcher = WildcardFetcher.new(CONFIG['api']['url'],
                               CONFIG['api']['headers'],
                               db,
@@ -70,6 +74,7 @@ scheduler.every "#{CONFIG['database']['retry_interval']}s" do
         logger.info("Domain #{domain['domain']} resolved to public IP: #{ip}, sending notification")
         program_info = db.get_program_for_domain(domain['domain'])
         notifier.send_alert(domain['domain'], ip, program_info)
+        fingerprinter.send(domain)
         db.add_discovered_domain(domain['domain'], ip, program_info ? program_info['program'] : nil)
         db.remove_unresolvable_domain(domain['domain'])
       end
@@ -89,6 +94,7 @@ certstream = CertstreamMonitor.new(
   db,
   resolver,
   notifier,
+  fingerprinter,
   logger,
   CONFIG['certstream']['exclusions']
 )

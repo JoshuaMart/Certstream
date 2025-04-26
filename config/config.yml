@@ -14,6 +14,12 @@ certstream:
     - ui.com
     - imperva.com
 
+# Fingerprinter Configuration
+fingerprinter:
+  url: "http://fingerprinter.tld"
+  callback_url: "http://callback_url"
+  api_key: ""
+
 # Database Configuration
 database:
   path: "./data/certstream.db"

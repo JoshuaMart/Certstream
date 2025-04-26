@@ -2,17 +2,18 @@ require 'websocket-eventmachine-client'
 require 'json'
 
 class CertstreamMonitor
-  attr_reader :ws_url, :db, :resolver, :notifier, :logger, :exclusions, :executor
+  attr_reader :ws_url, :db, :resolver, :notifier, :fingerprinter; :logger, :exclusions, :executor
 
-  def initialize(ws_url, db, resolver, notifier, logger, exclusions, concurrency: 10)
-    @ws_url      = ws_url
-    @db          = db
-    @resolver    = resolver
-    @notifier    = notifier
-    @logger      = logger
-    @exclusions  = exclusions
-    @queue       = EM::Queue.new
-    @concurrency = concurrency
+  def initialize(ws_url, db, resolver, notifier, fingerprinter, logger, exclusions, concurrency: 10)
+    @ws_url        = ws_url
+    @db            = db
+    @resolver      = resolver
+    @notifier      = notifier
+    @fingerprinter = fingerprinter
+    @logger        = logger
+    @exclusions    = exclusions
+    @queue         = EM::Queue.new
+    @concurrency   = concurrency
   end
 
   def connect_websocket
@@ -66,6 +67,7 @@ class CertstreamMonitor
     ip = resolver.resolve(domain)
     if ip && !resolver.private_ip?(ip)
       notifier.send_alert(domain, ip, match)
+      fingerprinter.send(domain)
       db.add_discovered_domain(domain, ip, match['program'])
     elsif ip.nil?
       db.add_unresolvable_domain(domain, match['id'])
