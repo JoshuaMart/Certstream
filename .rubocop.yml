@@ -3,3 +3,12 @@ AllCops:
 
 Metrics/MethodLength:
   Max: 15
+
+Metrics/PerceivedComplexity:
+  Max: 12
+
+Metrics/CyclomaticComplexity:
+  Max: 12
+
+Style/Documentation:
+  Enabled: false
