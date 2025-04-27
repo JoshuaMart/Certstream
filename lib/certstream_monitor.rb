@@ -4,7 +4,7 @@ require 'websocket-eventmachine-client'
 require 'json'
 
 class CertstreamMonitor
-  attr_reader :ws_url, :db, :resolver, :notifier, :fingerprinter, :logger, :exclusions, :executor
+  attr_reader :ws_url, :db, :resolver, :notifier, :fingerprinter, :logger, :exclusions, :queue, :concurrency
 
   def initialize(ws_url, db, resolver, notifier, fingerprinter, logger, exclusions, concurrency: 10)
     @ws_url        = ws_url
@@ -19,40 +19,45 @@ class CertstreamMonitor
   end
 
   def connect_websocket
-    EM.threadpool_size = @concurrency * 2
+    EM.threadpool_size = concurrency * 2
     EM.run do
-      start_workers
-
-      ws = WebSocket::EventMachine::Client.connect(uri: ws_url)
-
-      ws.onopen  { logger.info('WS open') }
-      ws.onerror { |e| logger.error("WS error: #{e.message}") }
-      ws.onping  do
-        logger.info('PING received')
-        ws.pong
-      end
-      ws.onpong  { logger.info('PONG received') }
-      ws.onclose { |c, r| shutdown(c, r) }
-
-      ws.onmessage do |msg, _|
-        domains = JSON.parse(msg)['data'] || []
-        domains.each { |d| @queue.push(d) }
-      rescue StandardError => e
-        logger.error("Erreur parse message: #{e.message}")
-      end
+      setup_websocket_connection
     end
   end
 
   private
 
-  # Lance N workers qui tournent tant que la queue a des messages
-  def start_workers
-    @concurrency.times { process_next }
+  def setup_websocket_connection
+    start_workers
+
+    ws = WebSocket::EventMachine::Client.connect(uri: ws_url)
+
+    ws.onopen  { logger.info('WS open') }
+    ws.onerror { |e| logger.error("WS error: #{e.message}") }
+    ws.onpong  { logger.info('PONG received') }
+    ws.onclose { shutdown }
+
+    ws.onping  do
+      logger.info('PING received')
+      ws.pong
+    end
+
+    ws.onmessage do |msg, _|
+      domains = JSON.parse(msg)['data'] || []
+      domains.each { |d| queue.push(d) }
+    rescue StandardError => e
+      logger.error("Erreur parse message: #{e.message}")
+    end
   end
 
-  # Dès qu'un domaine arrive, EM.defer traite et rappelle process_next à la fin
+  # Launches N workers that run as long as the queue has messages
+  def start_workers
+    concurrency.times { process_next }
+  end
+
+  # As soon as a domain arrives, EM.defer processes it and calls back process_next at the end.
   def process_next
-    @queue.pop do |domain|
+    queue.pop do |domain|
       EM.defer(
         proc { process_domain(domain) },
         proc { process_next }
@@ -80,8 +85,18 @@ class CertstreamMonitor
     logger.error("Error with #{domain} : #{e.class} #{e.message}")
   end
 
-  def shutdown(code, reason)
-    logger.warn("WS closed (#{code}): #{reason}")
-    EM.stop
+  def shutdown
+    logger.warn("WebSocket connection closed")
+
+    notifier.send_alert("WebSocket", nil, {
+      'program' => 'system',
+      'message' => 'WebSocket connection closed, attempting to reconnect...'
+    })
+
+    # Wait a while before reconnecting to avoid rapid reconnection loops.
+    EM.add_timer(5) do
+      logger.info("Attempting to reconnect WebSocket...")
+      setup_websocket_connection
+    end
   end
 end
