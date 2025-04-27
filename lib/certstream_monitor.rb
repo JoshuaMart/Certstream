@@ -23,19 +23,20 @@ class CertstreamMonitor
 
       ws = WebSocket::EventMachine::Client.connect(uri: ws_url)
 
-      ws.onopen  { logger.info("WS ouvert") }
+      ws.onopen  { logger.info('WS open') }
       ws.onerror { |e| logger.error("WS error: #{e.message}") }
-      ws.onping  { logger.info("PING reçu"); ws.pong }
-      ws.onpong  { logger.info("PONG reçu") }
-      ws.onclose { |c,r| shutdown(c, r) }
+      ws.onping  do
+        logger.info('PING received')
+        ws.pong
+      end
+      ws.onpong  { logger.info('PONG received') }
+      ws.onclose { |c, r| shutdown(c, r) }
 
       ws.onmessage do |msg, _|
-        begin
-          domains = JSON.parse(msg)['data'] || []
-          domains.each { |d| @queue.push(d) }
-        rescue => e
-          logger.error("Erreur parse message: #{e.message}")
-        end
+        domains = JSON.parse(msg)['data'] || []
+        domains.each { |d| @queue.push(d) }
+      rescue StandardError => e
+        logger.error("Erreur parse message: #{e.message}")
       end
     end
   end
@@ -59,6 +60,7 @@ class CertstreamMonitor
 
   def process_domain(domain)
     return if exclusions.any? { |ex| domain.end_with?(ex) }
+
     domain = domain.sub(/\A\*\./, '')
 
     match = db.domain_matches_wildcards(domain) or return
@@ -72,12 +74,12 @@ class CertstreamMonitor
     elsif ip.nil?
       db.add_unresolvable_domain(domain, match['id'])
     end
-  rescue => e
-    logger.error("Erreur sur #{domain} : #{e.class} #{e.message}")
+  rescue StandardError => e
+    logger.error("Error with #{domain} : #{e.class} #{e.message}")
   end
 
   def shutdown(code, reason)
-    logger.warn("WS fermé (#{code}): #{reason}")
+    logger.warn("WS closed (#{code}): #{reason}")
     EM.stop
   end
 end
