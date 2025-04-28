@@ -88,7 +88,7 @@ class CertstreamMonitor
   def shutdown
     logger.warn("WebSocket connection closed")
 
-    notifier.send_alert("WebSocket", nil, {
+    notifier.send_alert("WebSocket", "N/A", {
       'program' => 'system',
       'message' => 'WebSocket connection closed, attempting to reconnect...'
     })
