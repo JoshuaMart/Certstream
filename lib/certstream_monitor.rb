@@ -27,8 +27,8 @@ class CertstreamMonitor
 
   private
 
-  def setup_websocket_connection
-    start_workers
+  def setup_websocket_connection(init = true)
+    start_workers if init
 
     ws = WebSocket::EventMachine::Client.connect(uri: ws_url)
 
@@ -88,15 +88,12 @@ class CertstreamMonitor
   def shutdown
     logger.warn("WebSocket connection closed")
 
-    notifier.send_alert("WebSocket", "N/A", {
-      'program' => 'system',
-      'message' => 'WebSocket connection closed, attempting to reconnect...'
-    })
+    notifier.send_error("WebSocket", 'WebSocket connection closed, attempting to reconnect...')
 
     # Wait a while before reconnecting to avoid rapid reconnection loops.
     EM.add_timer(5) do
       logger.info("Attempting to reconnect WebSocket...")
-      setup_websocket_connection
+      setup_websocket_connection(false)
     end
   end
 end
