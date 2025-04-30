@@ -52,7 +52,7 @@ class WildcardFetcher
     wildcards_count = 0
 
     # The JSON format from the provided example has a structure where programs are keys
-    json_data.each do |_platforms, programs|
+    json_data.each_value do |programs|
       programs.each do |name, infos|
         wildcards_count += 1
         urls = infos.dig('scopes', 'in', 'url')

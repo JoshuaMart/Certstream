@@ -71,7 +71,7 @@ class DomainResolver
       @dns_cache[domain] = result
 
       # Log cache performance periodically
-      log_cache_stats if (@cache_hits + @cache_misses) % 1000 == 0
+      log_cache_stats if ((@cache_hits + @cache_misses) % 1000).zero?
 
       result
     rescue Resolv::ResolvError => e

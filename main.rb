@@ -15,7 +15,7 @@ FileUtils.mkdir_p('data')
 CONFIG = YAML.load_file(File.expand_path('config/config.yml', __dir__))
 
 # Setup logger
-logger = Logger.new(CONFIG['logging']['file'] || STDOUT)
+logger = Logger.new(CONFIG['logging']['file'] || $stdout)
 logger.level = Logger.const_get(CONFIG['logging']['level'].upcase || 'INFO')
 logger.formatter = proc do |severity, datetime, _progname, msg|
   "#{datetime.strftime('%Y-%m-%d %H:%M:%S')} [#{severity}] #{msg}\n"
@@ -70,15 +70,14 @@ scheduler.every "#{CONFIG['database']['retry_interval']}s" do
       # Check if IP is private
       if resolver.private_ip?(ip)
         logger.info("Domain #{domain['domain']} resolved to private IP: #{ip}, removing from unresolvable")
-        db.remove_unresolvable_domain(domain['domain'])
       else
         logger.info("Domain #{domain['domain']} resolved to public IP: #{ip}, sending notification")
         program_info = db.get_program_for_domain(domain['domain'])
         notifier.send_message(domain['domain'], ip, program_info)
         fingerprinter.send(domain)
         db.add_discovered_domain(domain['domain'], ip, program_info ? program_info['program'] : nil)
-        db.remove_unresolvable_domain(domain['domain'])
       end
+      db.remove_unresolvable_domain(domain['domain'])
     else
       # Increment retry count
       db.increment_retry_count(domain['domain'])

@@ -63,7 +63,7 @@ class CertstreamMonitor
     return unless @db.respond_to?(:preload_discovered_domains_cache)
 
     cache = @db.preload_discovered_domains_cache
-    cache.each { |domain, _| @domain_cache[domain] = :discovered }
+    cache.each_key { |domain| @domain_cache[domain] = :discovered }
     @logger.info("Preloaded #{cache.size} discovered domains into memory cache")
   end
 
@@ -85,7 +85,7 @@ class CertstreamMonitor
 
     @logger.warn("Queue size is #{current_queue_size} - increased concurrency from #{old_concurrency} to #{@concurrency}")
     notifier.send_log('Performance Adjustment',
-                      "Queue size has reached #{current_queue_size} domains\n" +
+                      "Queue size has reached #{current_queue_size} domains\n" \
                       "Increased concurrency from #{old_concurrency} to #{@concurrency}",
                       :info)
   end
@@ -103,12 +103,12 @@ class CertstreamMonitor
     end
     domains_per_second = @processed_domains_count / elapsed
 
-    @logger.info('Performance stats: ' +
-                "Processed #{@processed_domains_count} domains in last #{elapsed.to_i} seconds " +
-                "(#{domains_per_second.round(2)}/sec). " +
-                "Current queue size: #{current_queue_size}, " +
-                "Max queue size: #{@queue_max_size}, " +
-                "Domain cache size: #{@domain_cache.size}")
+    @logger.info('Performance stats: ' \
+                 "Processed #{@processed_domains_count} domains in last #{elapsed.to_i} seconds " \
+                 "(#{domains_per_second.round(2)}/sec). " \
+                 "Current queue size: #{current_queue_size}, " \
+                 "Max queue size: #{@queue_max_size}, " \
+                 "Domain cache size: #{@domain_cache.size}")
 
     # Reset counters
     @processed_domains_count = 0
@@ -119,7 +119,7 @@ class CertstreamMonitor
     return unless current_queue_size.is_a?(Integer) && current_queue_size > 10_000
 
     notifier.send_log('Performance Warning',
-                      "Queue size has reached #{current_queue_size} domains!\n" +
+                      "Queue size has reached #{current_queue_size} domains!\n" \
                       "Currently processing at #{domains_per_second.round(2)} domains/sec",
                       :error)
   end
@@ -160,10 +160,11 @@ class CertstreamMonitor
       end
 
       # Mark domains as queued in memory cache
-      filtered_domains.each { |d| @domain_cache[d] = :queued }
-
-      # Add only filtered domains to the queue
-      filtered_domains.each { |d| queue.push(d) }
+      filtered_domains.each do |d|
+        @domain_cache[d] = :queued
+        # Add only filtered domains to the queue
+        queue.push(d)
+      end
     rescue StandardError => e
       logger.error("Error parsing message: #{e.message}")
     end
@@ -262,7 +263,7 @@ class CertstreamMonitor
 
     logger.warn('WebSocket connection closed')
     notifier.send_log('WebSocket',
-                      "WebSocket connection closed\nQueue size: #{@queue.size}\n\nAttempting to reconnect...", :error)
+                      "WebSocket connection closed, attempting to reconnect...\nQueue size: #{@queue.size}", :error)
 
     # Wait before reconnecting to avoid rapid reconnection loops
     EM.add_timer(5) do
