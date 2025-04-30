@@ -15,7 +15,7 @@ class DomainResolver
     IPAddress.parse('169.254.0.0/16')
   ].freeze
 
-  def initialize(logger, cache_size: 10000, timeout: 2)
+  def initialize(logger, cache_size: 10_000, timeout: 2)
     @logger = logger
     @timeout = timeout
 

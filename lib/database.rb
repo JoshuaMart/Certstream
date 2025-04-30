@@ -17,13 +17,13 @@ class Database
 
     @db = SQLite3::Database.new(@db_path)
     @db.results_as_hash = true
-    
+
     # Enable optimizations for better performance
-    @db.execute("PRAGMA journal_mode = WAL")     # Write-Ahead Logging for better concurrency
-    @db.execute("PRAGMA synchronous = NORMAL")   # Reduce disk writes while keeping reasonable safety
-    @db.execute("PRAGMA cache_size = 10000")     # Increase cache size to 10MB
-    @db.execute("PRAGMA temp_store = MEMORY")    # Store temp tables in memory
-    
+    @db.execute('PRAGMA journal_mode = WAL')     # Write-Ahead Logging for better concurrency
+    @db.execute('PRAGMA synchronous = NORMAL')   # Reduce disk writes while keeping reasonable safety
+    @db.execute('PRAGMA cache_size = 10000')     # Increase cache size to 10MB
+    @db.execute('PRAGMA temp_store = MEMORY')    # Store temp tables in memory
+
     # Create wildcards table
     @db.execute <<-SQL
       CREATE TABLE IF NOT EXISTS wildcards (
@@ -57,12 +57,12 @@ class Database
         FOREIGN KEY (wildcard_id) REFERENCES wildcards(id)
       );
     SQL
-    
+
     # Add indexes for better query performance
-    @db.execute("CREATE INDEX IF NOT EXISTS idx_wildcards_pattern ON wildcards(pattern)")
-    @db.execute("CREATE INDEX IF NOT EXISTS idx_discovered_domains_domain ON discovered_domains(domain)")
-    @db.execute("CREATE INDEX IF NOT EXISTS idx_unresolvable_domains_domain ON unresolvable_domains(domain)")
-    @db.execute("CREATE INDEX IF NOT EXISTS idx_unresolvable_domains_retry_count ON unresolvable_domains(retry_count)")
+    @db.execute('CREATE INDEX IF NOT EXISTS idx_wildcards_pattern ON wildcards(pattern)')
+    @db.execute('CREATE INDEX IF NOT EXISTS idx_discovered_domains_domain ON discovered_domains(domain)')
+    @db.execute('CREATE INDEX IF NOT EXISTS idx_unresolvable_domains_domain ON unresolvable_domains(domain)')
+    @db.execute('CREATE INDEX IF NOT EXISTS idx_unresolvable_domains_retry_count ON unresolvable_domains(retry_count)')
 
     @logger.info('Database setup complete')
   end
@@ -89,27 +89,25 @@ class Database
   end
 
   def invalidate_wildcards_cache
-    @logger.debug("Invalidating wildcards cache")
+    @logger.debug('Invalidating wildcards cache')
     @wildcards_cache = nil
   end
 
   def domain_matches_wildcards(domain)
-    begin
-      wildcards = all_wildcards
-      
-      # Extract effective domain part for matching
-      effective_domain = PublicSuffix.domain(domain)
-      return nil unless effective_domain
-      
-      # Find first matching wildcard
-      wildcards.find { |wildcard| effective_domain == wildcard['pattern'][2..] }
-    rescue PublicSuffix::DomainInvalid => e
-      @logger.debug("Invalid domain format for #{domain}: #{e.message}")
-      nil
-    rescue StandardError => e
-      @logger.error("Error in domain_matches_wildcards for #{domain}: #{e.message}")
-      nil
-    end
+    wildcards = all_wildcards
+
+    # Extract effective domain part for matching
+    effective_domain = PublicSuffix.domain(domain)
+    return nil unless effective_domain
+
+    # Find first matching wildcard
+    wildcards.find { |wildcard| effective_domain == wildcard['pattern'][2..] }
+  rescue PublicSuffix::DomainInvalid => e
+    @logger.debug("Invalid domain format for #{domain}: #{e.message}")
+    nil
+  rescue StandardError => e
+    @logger.error("Error in domain_matches_wildcards for #{domain}: #{e.message}")
+    nil
   end
 
   # Discovered domains methods
@@ -127,21 +125,21 @@ class Database
     )
     @logger.info("Added discovered domain: #{domain} with IP: #{ip}")
   end
-  
+
   # Batch insert discovered domains for better performance
   def add_discovered_domains_batch(domains_batch)
     return if domains_batch.nil? || domains_batch.empty?
-    
+
     @db.transaction do
       stmt = @db.prepare('INSERT OR IGNORE INTO discovered_domains (domain, ip, program) VALUES (?, ?, ?);')
-      
+
       domains_batch.each do |domain, ip, program|
         stmt.execute(domain, ip, program)
       end
-      
+
       stmt.close
     end
-    
+
     @logger.info("Added #{domains_batch.size} discovered domains in batch")
   end
 
@@ -153,22 +151,22 @@ class Database
     )
     @logger.debug("Added unresolvable domain: #{domain}")
   end
-  
+
   # Batch insert unresolvable domains
   def add_unresolvable_domains_batch(domains_batch)
     return if domains_batch.nil? || domains_batch.empty?
-    
+
     # Use a SQLite transaction for bulk insertions
     @db.transaction do
       stmt = @db.prepare('INSERT OR IGNORE INTO unresolvable_domains (domain, wildcard_id) VALUES (?, ?);')
-      
+
       domains_batch.each do |domain, wildcard_id|
         stmt.execute(domain, wildcard_id)
       end
-      
+
       stmt.close
     end
-    
+
     @logger.debug("Added #{domains_batch.size} unresolvable domains in batch")
   end
 
@@ -193,41 +191,41 @@ class Database
   def get_program_for_domain(domain)
     domain_matches_wildcards(domain)
   end
-  
+
   # Preload cache of discovered domains to avoid repeated DB lookups
   def preload_discovered_domains_cache
     # Reset cache if it's expired
     if @domain_cache && @domain_cache_expiry < Time.now
       @domain_cache = nil
-      @logger.info("Domain cache expired, resetting")
+      @logger.info('Domain cache expired, resetting')
     end
-    
+
     # Return existing cache if available
     return @domain_cache if @domain_cache
-    
-    @logger.info("Preloading discovered domains cache")
+
+    @logger.info('Preloading discovered domains cache')
     discovered = {}
-    
+
     # Limit to a reasonable number of recent domains to avoid memory overload
     @db.execute('SELECT domain FROM discovered_domains ORDER BY discovered_at DESC LIMIT 100000;').each do |row|
       discovered[row['domain']] = true
     end
-    
+
     @domain_cache = discovered
     @domain_cache_expiry = Time.now + 3600 # Cache for 1 hour
     @logger.info("Preloaded #{discovered.size} domains into cache")
-    
+
     discovered
   end
-  
+
   # Method to cleanup database (can be run periodically)
   def cleanup_database
     # Remove old unresolvable domains that have exceeded max retries
     count = @db.execute('DELETE FROM unresolvable_domains WHERE retry_count > 10 AND last_retry < datetime("now", "-7 days");')
     @logger.info("Cleaned up #{count} old unresolvable domains")
-    
+
     # Optimize database
     @db.execute('VACUUM;')
-    @logger.info("Database optimized")
+    @logger.info('Database optimized')
   end
 end
