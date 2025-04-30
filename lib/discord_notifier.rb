@@ -16,7 +16,7 @@ class DiscordNotifier
   end
 
   def send_message(domain, ip, wildcard_info = nil)
-    @logger.info("Sending Discord alert for domain: #{domain}")
+    @logger.info("Sending Discord message for domain: #{domain}")
 
     program_name     = wildcard_info&.dig('program') || 'Unknown Program'
     wildcard_pattern = wildcard_info&.dig('pattern') || 'Unknown Pattern'
@@ -38,7 +38,7 @@ class DiscordNotifier
   end
 
   def send_log(title, description, type)
-    @logger.error("Sending Discord log: #{title} - #{description}")
+    @logger.error("Sending Discord log for title: #{title}")
     color = type == :error ? ERROR_COLOR : SUCCESS_COLOR
 
     send(
