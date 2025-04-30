@@ -140,33 +140,29 @@ class CertstreamMonitor
     end
 
     ws.onmessage do |msg, _|
-      parsed = JSON.parse(msg)
-      # Extract domains efficiently from the message structure
-      domains = parsed.dig('data', 'leaf_cert', 'all_domains') || []
+      begin
+        # Modification ici - reviens à l'accès JSON original
+        domains = JSON.parse(msg)['data'] || []
 
-      # Update statistics
-      current_size = begin
-        @queue.size
-      rescue StandardError
-        0
-      end
-      @queue_max_size = current_size if current_size > @queue_max_size
+        # Update statistics
+        current_size = @queue.size rescue 0
+        @queue_max_size = current_size if current_size > @queue_max_size
 
-      # Pre-filter domains before adding to queue
-      filtered_domains = domains.reject do |domain|
-        domain.nil? || domain.empty? ||
+        # Pre-filter domains before adding to queue
+        filtered_domains = domains.reject do |domain|
+          domain.nil? || domain.empty? ||
           @exclusions_set.any? { |ex| domain.end_with?(ex) } ||
           @domain_cache[domain]
-      end
+        end
 
-      # Mark domains as queued in memory cache
-      filtered_domains.each do |d|
-        @domain_cache[d] = :queued
+        # Mark domains as queued in memory cache
+        filtered_domains.each { |d| @domain_cache[d] = :queued }
+
         # Add only filtered domains to the queue
-        queue.push(d)
+        filtered_domains.each { |d| queue.push(d) }
+      rescue StandardError => e
+        logger.error("Error parsing message: #{e.message}")
       end
-    rescue StandardError => e
-      logger.error("Error parsing message: #{e.message}")
     end
   end
 
