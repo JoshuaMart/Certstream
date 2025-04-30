@@ -4,19 +4,18 @@ require 'httparty'
 require 'json'
 
 class DiscordNotifier
-  DEFAULT_USERNAME = 'Certstream Monitor'.freeze
-  SUCCESS_COLOR = 3_447_003  # Blue
+  SUCCESS_COLOR = 5_763_719  # Green
   ERROR_COLOR   = 14_549_051 # Red
+  INFO_COLOR = 3_447_003     # Blue
 
-  def initialize(webhook_url, username, logger)
-    @webhook_url = webhook_url
-    @username    = username
-    @logger      = logger
+  def initialize(messages_webhook, logs_webhook, username, logger)
+    @messages_webhook = messages_webhook
+    @logs_webhook     = logs_webhook
+    @username         = username
+    @logger           = logger
   end
 
-  def send_alert(domain, ip, wildcard_info = nil)
-    return unless valid_webhook?
-
+  def send_message(domain, ip, wildcard_info = nil)
     @logger.info("Sending Discord alert for domain: #{domain}")
 
     program_name     = wildcard_info&.dig('program') || 'Unknown Program'
@@ -29,39 +28,36 @@ class DiscordNotifier
       { name: 'Matching Wildcard', value: wildcard_pattern, inline: false }
     ]
 
-    send_message(
+    send(
+      @messages_webhook,
       title: 'New Domain Detected',
       description: 'A new domain matching a monitored wildcard has been detected',
       fields: fields,
-      color: SUCCESS_COLOR
+      color: INFO_COLOR
     )
   end
 
-  def send_error(title, description)
-    return unless valid_webhook?
+  def send_log(title, description, type)
+    @logger.error("Sending Discord log: #{title} - #{description}")
+    color = type == :error ? ERROR_COLOR : SUCCESS_COLOR
 
-    @logger.error("Sending Discord error: #{title} - #{description}")
-
-    send_message(
+    send(
+      @logs_webhook,
       title: title,
       description: description,
       fields: [],
-      color: ERROR_COLOR
+      color: color
     )
   end
 
   private
 
-  def valid_webhook?
-    @webhook_url && !@webhook_url.empty? && !@webhook_url.include?('your-webhook-url-here')
-  end
-
-  def send_message(title:, description:, fields:, color:)
+  def send(webhook_url, title:, description:, fields:, color:)
     embed = build_embed(title, description, fields, color)
     payload = { username: @username, embeds: [embed] }
 
     response = HTTParty.post(
-      @webhook_url,
+      webhook_url,
       body: payload.to_json,
       headers: { 'Content-Type' => 'application/json' }
     )

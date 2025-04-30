@@ -32,10 +32,14 @@ class CertstreamMonitor
 
     ws = WebSocket::EventMachine::Client.connect(uri: ws_url)
 
-    ws.onopen  { logger.info('WS open') }
     ws.onerror { |e| logger.error("WS error: #{e.message}") }
     ws.onpong  { logger.info('PONG received') }
     ws.onclose { shutdown }
+
+    ws.onopen do
+      logger.info('WS open')
+      notifier.send_log("WebSocket", 'WebSocket connection open', :success)
+    end
 
     ws.onping  do
       logger.info('PING received')
@@ -75,7 +79,7 @@ class CertstreamMonitor
 
     ip = resolver.resolve(domain)
     if ip && !resolver.private_ip?(ip)
-      notifier.send_alert(domain, ip, match)
+      notifier.send_message(domain, ip, match)
       fingerprinter.send(domain)
       db.add_discovered_domain(domain, ip, match['program'])
     elsif ip.nil?
@@ -88,7 +92,7 @@ class CertstreamMonitor
   def shutdown
     logger.warn("WebSocket connection closed")
 
-    notifier.send_error("WebSocket", 'WebSocket connection closed, attempting to reconnect...')
+    notifier.send_log("WebSocket", 'WebSocket connection closed, attempting to reconnect...', :error)
 
     # Wait a while before reconnecting to avoid rapid reconnection loops.
     EM.add_timer(5) do

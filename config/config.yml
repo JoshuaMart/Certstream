@@ -28,9 +28,9 @@ database:
 
 # Discord Configuration
 discord:
-  webhook_url: "your-webhook-url-here"
+  messages_webhook: "your-webhook-url-here"
+  logs_webhook: "your-webhook-url-here"
   username: "Certstream Monitor"
-  avatar_url: "https://example.com/avatar.png" # Optional
 
 # Logging Configuration
 logging:

@@ -24,7 +24,8 @@ end
 # Initialize components
 db = Database.new(CONFIG['database']['path'], logger)
 resolver = DomainResolver.new(logger)
-notifier = DiscordNotifier.new(CONFIG['discord']['webhook_url'],
+notifier = DiscordNotifier.new(CONFIG['discord']['messages_webhook'],
+                               CONFIG['discord']['logs_webhook'],
                                CONFIG['discord']['username'],
                                logger)
 fingerprinter = FingerprinterSender.new(CONFIG['fingerprinter']['url'],
@@ -73,7 +74,7 @@ scheduler.every "#{CONFIG['database']['retry_interval']}s" do
       else
         logger.info("Domain #{domain['domain']} resolved to public IP: #{ip}, sending notification")
         program_info = db.get_program_for_domain(domain['domain'])
-        notifier.send_alert(domain['domain'], ip, program_info)
+        notifier.send_message(domain['domain'], ip, program_info)
         fingerprinter.send(domain)
         db.add_discovered_domain(domain['domain'], ip, program_info ? program_info['program'] : nil)
         db.remove_unresolvable_domain(domain['domain'])
