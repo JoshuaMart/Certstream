@@ -18,7 +18,7 @@ class DomainResolver
   def initialize(logger, cache_size: 10000, timeout: 2)
     @logger = logger
     @timeout = timeout
-    
+
     # Create a resolver with custom options for better performance
     @resolver = Resolv::DNS.new(
       nameserver_port: [
@@ -35,11 +35,11 @@ class DomainResolver
     Resolv::DNS.open do |dns|
       dns.timeouts = @timeout
     end
-    
+
     # Create LRU cache for DNS results
-    @dns_cache = LRURedux::Cache.new(cache_size)
-    @ip_check_cache = LRURedux::Cache.new(cache_size)
-    
+    @dns_cache = LruRedux::Cache.new(cache_size)
+    @ip_check_cache = LruRedux::Cache.new(cache_size)
+
     @cache_hits = 0
     @cache_misses = 0
   end
@@ -54,7 +54,7 @@ class DomainResolver
         @cache_hits += 1
         return @dns_cache[domain]
       end
-      
+
       @cache_misses += 1
       @logger.debug("Resolving domain: #{domain}")
 
@@ -66,13 +66,13 @@ class DomainResolver
       end
 
       @logger.debug("Domain #{domain} resolved to IP: #{result}")
-      
+
       # Cache the result (including nil for failures)
       @dns_cache[domain] = result
 
       # Log cache performance periodically
       log_cache_stats if (@cache_hits + @cache_misses) % 1000 == 0
-      
+
       result
     rescue Resolv::ResolvError => e
       @logger.debug("Resolution error for domain #{domain}: #{e.message}")
@@ -95,11 +95,11 @@ class DomainResolver
     begin
       # Check cache first
       return @ip_check_cache[ip] if @ip_check_cache.key?(ip)
-      
+
       # Parse IP address
       ip_addr = IPAddress.parse(ip)
       result = false
-      
+
       # Check if it's a private IP address
       if ip_addr.ipv4?
         result = PRIVATE_NETWORKS.any? { |network| network.include?(ip_addr) }
@@ -107,7 +107,7 @@ class DomainResolver
       elsif ip_addr.ipv6?
         result = ip_addr.loopback? || ip_addr.mapped? || ip_addr.link_local?
       end
-      
+
       # Cache the result
       @ip_check_cache[ip] = result
       result
@@ -116,13 +116,13 @@ class DomainResolver
       true # Default to true (private) for safety
     end
   end
-  
+
   private
-  
+
   def log_cache_stats
     total = @cache_hits + @cache_misses
     hit_rate = (@cache_hits.to_f / total) * 100
-    
+
     @logger.info(
       "DNS Cache stats: #{@cache_hits} hits, #{@cache_misses} misses, " \
       "#{hit_rate.round(2)}% hit rate, #{@dns_cache.size} cached entries"
