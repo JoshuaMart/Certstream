@@ -2,11 +2,11 @@
 
 source 'https://rubygems.org'
 
-gem 'httparty', '~> 0.23.1'
-gem 'ipaddress', '~> 0.8.3'
-gem 'json', '~> 2.10.2'
-gem 'logger', '~> 1.7.0'
-gem 'lru_redux', '~> 1.1.0' # For efficient caching
+gem 'httparty'
+gem 'ipaddress'
+gem 'json'
+gem 'logger'
+gem 'lru_redux'
 gem 'public_suffix'
 gem 'resolv', '~> 0.6.0'
 gem 'rufus-scheduler', '~> 3.9.2'
