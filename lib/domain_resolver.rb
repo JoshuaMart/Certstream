@@ -2,11 +2,46 @@
 
 require 'resolv'
 require 'ipaddress'
+require 'lru_redux'
 
 class DomainResolver
-  def initialize(logger)
+  # Common private network CIDR ranges
+  PRIVATE_NETWORKS = [
+    IPAddress.parse('10.0.0.0/8'),
+    IPAddress.parse('172.16.0.0/12'),
+    IPAddress.parse('192.168.0.0/16'),
+    IPAddress.parse('127.0.0.0/8'),
+    IPAddress.parse('0.0.0.0/8'),
+    IPAddress.parse('169.254.0.0/16')
+  ].freeze
+
+  def initialize(logger, cache_size: 10000, timeout: 2)
     @logger = logger
-    @resolver = Resolv::DNS.new
+    @timeout = timeout
+    
+    # Create a resolver with custom options for better performance
+    @resolver = Resolv::DNS.new(
+      nameserver_port: [
+        ['1.1.1.1', 53],  # Cloudflare primary
+        ['1.0.0.1', 53],  # Cloudflare secondary
+        ['8.8.8.8', 53],  # Google primary
+        ['8.8.4.4', 53]   # Google secondary
+      ],
+      search: [],
+      ndots: 1
+    )
+
+    # Configure timeout to avoid hanging on unresolvable domains
+    Resolv::DNS.open do |dns|
+      dns.timeouts = @timeout
+    end
+    
+    # Create LRU cache for DNS results
+    @dns_cache = LRURedux::Cache.new(cache_size)
+    @ip_check_cache = LRURedux::Cache.new(cache_size)
+    
+    @cache_hits = 0
+    @cache_misses = 0
   end
 
   # Resolve a domain name to an IP address
@@ -14,16 +49,38 @@ class DomainResolver
     return nil if domain.nil? || domain.empty?
 
     begin
+      # Try to get from cache first
+      if @dns_cache.key?(domain)
+        @cache_hits += 1
+        return @dns_cache[domain]
+      end
+      
+      @cache_misses += 1
       @logger.debug("Resolving domain: #{domain}")
 
-      # Try to resolve as IPv4 first
-      ip = @resolver.getaddress(domain).to_s
+      # Set timeout for DNS resolution
+      result = nil
+      Timeout.timeout(@timeout) do
+        # Try to resolve as IPv4 first
+        result = @resolver.getaddress(domain).to_s
+      end
 
-      @logger.debug("Domain #{domain} resolved to IP: #{ip}")
+      @logger.debug("Domain #{domain} resolved to IP: #{result}")
+      
+      # Cache the result (including nil for failures)
+      @dns_cache[domain] = result
 
-      ip
+      # Log cache performance periodically
+      log_cache_stats if (@cache_hits + @cache_misses) % 1000 == 0
+      
+      result
     rescue Resolv::ResolvError => e
       @logger.debug("Resolution error for domain #{domain}: #{e.message}")
+      @dns_cache[domain] = nil
+      nil
+    rescue Timeout::Error => e
+      @logger.debug("Timeout resolving domain #{domain}: #{e.message}")
+      @dns_cache[domain] = nil
       nil
     rescue StandardError => e
       @logger.error("Error resolving domain #{domain}: #{e.message}")
@@ -36,21 +93,39 @@ class DomainResolver
     return true if ip.nil? || ip.empty?
 
     begin
+      # Check cache first
+      return @ip_check_cache[ip] if @ip_check_cache.key?(ip)
+      
+      # Parse IP address
       ip_addr = IPAddress.parse(ip)
-
+      result = false
+      
       # Check if it's a private IP address
       if ip_addr.ipv4?
-        # IPv4 link-local addresses are in the range 169.254.0.0/16
-        is_link_local = ip_addr.to_string.start_with?('169.254.')
-        return true if ip_addr.private? || ip_addr.loopback? || is_link_local
+        result = PRIVATE_NETWORKS.any? { |network| network.include?(ip_addr) }
+        result ||= ip_addr.private? || ip_addr.loopback?
       elsif ip_addr.ipv6?
-        return true if ip_addr.loopback?
+        result = ip_addr.loopback? || ip_addr.mapped? || ip_addr.link_local?
       end
-
-      false
+      
+      # Cache the result
+      @ip_check_cache[ip] = result
+      result
     rescue ArgumentError => e
       @logger.error("Error parsing IP address #{ip}: #{e.message}")
       true # Default to true (private) for safety
     end
+  end
+  
+  private
+  
+  def log_cache_stats
+    total = @cache_hits + @cache_misses
+    hit_rate = (@cache_hits.to_f / total) * 100
+    
+    @logger.info(
+      "DNS Cache stats: #{@cache_hits} hits, #{@cache_misses} misses, " \
+      "#{hit_rate.round(2)}% hit rate, #{@dns_cache.size} cached entries"
+    )
   end
 end
