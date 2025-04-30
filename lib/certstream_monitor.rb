@@ -68,26 +68,33 @@ class CertstreamMonitor
   end
 
   def perform_health_check
-    current_queue_size = begin
-      @queue.size
-    rescue StandardError
-      0
+    current_queue_size = @queue.size rescue 0
+
+    # If the queue is too big, increase the concurrency
+    if current_queue_size > 50000 && @concurrency < 50
+      old_concurrency = @concurrency
+      @concurrency = [(@concurrency * 1.5).to_i, 50].min
+
+      # Start additional workers
+      (@concurrency - old_concurrency).times { process_next }
+
+      @logger.warn("Queue size is #{current_queue_size} - increased concurrency from #{old_concurrency} to #{@concurrency}")
+      notifier.send_log('Performance Adjustment',
+                       "Queue size has reached #{current_queue_size} domains\n" +
+                       "Increased concurrency from #{old_concurrency} to #{@concurrency}",
+                       :info)
+
+    # If the queue is small and concurrency is high, reduce concurrency
+    elsif current_queue_size < 5000 && @concurrency > 20
+      old_concurrency = @concurrency
+      @concurrency = [(@concurrency * 0.8).to_i, 20].max
+
+      @logger.info("Queue size is #{current_queue_size} - decreased concurrency from #{old_concurrency} to #{@concurrency}")
+      notifier.send_log('Performance Adjustment',
+                       "Queue size has decreased to #{current_queue_size} domains\n" +
+                       "Decreased concurrency from #{old_concurrency} to #{@concurrency}",
+                       :info)
     end
-
-    # If queue is growing too large, dynamically increase concurrency
-    return unless current_queue_size > 50_000 && @concurrency < 50
-
-    old_concurrency = @concurrency
-    @concurrency = [(@concurrency * 1.5).to_i, 50].min
-
-    # Start additional workers
-    (@concurrency - old_concurrency).times { process_next }
-
-    @logger.warn("Queue size is #{current_queue_size} - increased concurrency from #{old_concurrency} to #{@concurrency}")
-    notifier.send_log('Performance Adjustment',
-                      "Queue size has reached #{current_queue_size} domains\n" \
-                      "Increased concurrency from #{old_concurrency} to #{@concurrency}",
-                      :info)
   end
 
   def log_performance_stats
