@@ -135,35 +135,33 @@ module Certstream
         end
 
         def log_cache_stats
-          total = @cache_hits + @cache_misses
-          return if total.zero?
+          # Use a lock to prevent simultaneous logging
+          @log_mutex ||= Mutex.new
+          return unless @log_mutex.try_lock
 
-          hit_rate = (@cache_hits.to_f / total) * 100
+          begin
+            total = @cache_hits + @cache_misses
+            return if total.zero?
 
-          # Utiliser count au lieu de size pour LruRedux::Cache
-          dns_cache_count = begin
-            @dns_cache.count
-          rescue StandardError
-            0
+            hit_rate = (@cache_hits.to_f / total) * 100
+            dns_cache_count = @dns_cache.count rescue 0
+            ip_cache_count = @ip_check_cache.count rescue 0
+
+            Core.container.logger.info(
+              "DNS Cache stats: #{@cache_hits} hits, #{@cache_misses} misses, " \
+              "#{hit_rate.round(2)}% hit rate, #{dns_cache_count} cached DNS entries, " \
+              "#{ip_cache_count} cached IP entries"
+            )
+
+            Core.container.discord_notifier.send_log(
+              'DNS Cache',
+              "#{@cache_hits} hits, #{@cache_misses} misses\n#{hit_rate.round(2)}% hit rate, " \
+              "#{dns_cache_count} cached DNS entries, #{ip_cache_count} cached IP entries",
+              :info
+            )
+          ensure
+            @log_mutex.unlock
           end
-
-          ip_cache_count = begin
-            @ip_check_cache.count
-          rescue StandardError
-            0
-          end
-
-          Core.container.logger.info(
-            "DNS Cache stats: #{@cache_hits} hits, #{@cache_misses} misses, " \
-            "#{hit_rate.round(2)}% hit rate, #{dns_cache_count} cached DNS entries, " \
-            "#{ip_cache_count} cached IP entries"
-          )
-          Core.container.discord_notifier.send_log(
-            'DNS Cache',
-            "#{@cache_hits} hits, #{@cache_misses} misses\n#{hit_rate.round(2)}% hit rate, " \
-            "#{dns_cache_count} cached DNS entries, #{ip_cache_count} cached IP entries",
-            :info
-          )
         end
       end
     end
