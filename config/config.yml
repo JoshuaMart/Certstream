@@ -13,6 +13,7 @@ certstream:
   exclusions:
     - ui.com
     - imperva.com
+    - nflxvideo.net
 
 # Fingerprinter Configuration
 fingerprinter:
