@@ -1,4 +1,2 @@
-logs/certstream.log
-data/certstream.db
-data/certstream.db-shm
-data/certstream.db-wal
+logs/
+mysql_data/

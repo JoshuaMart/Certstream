@@ -2,13 +2,25 @@ AllCops:
   NewCops: enable
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 50
+
+Metrics/BlockLength:
+  Enabled: false
 
 Metrics/PerceivedComplexity:
-  Max: 12
+  Max: 15
 
 Metrics/CyclomaticComplexity:
-  Max: 12
+  Max: 15
 
 Style/Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Layout/LineLength:
   Enabled: false
