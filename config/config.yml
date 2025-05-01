@@ -36,3 +36,8 @@ discord:
 logging:
   level: "info" # debug, info, warn, error, fatal
   file: "./logs/certstream.log"
+
+# Concurrency Configuration
+concurrency:
+  min: 20
+  max: 40

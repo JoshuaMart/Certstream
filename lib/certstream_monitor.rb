@@ -5,19 +5,21 @@ require 'json'
 require 'set'
 
 class CertstreamMonitor
-  attr_reader :ws_url, :db, :resolver, :notifier, :fingerprinter, :logger, :exclusions, :queue, :concurrency
+  attr_reader :db, :resolver, :notifier, :fingerprinter, :logger, :exclusions, :queue, :concurrency, :max_concurrency
 
   # Increased default concurrency
-  def initialize(ws_url, db, resolver, notifier, fingerprinter, logger, exclusions, concurrency: 20)
-    @ws_url        = ws_url
-    @db            = db
-    @resolver      = resolver
-    @notifier      = notifier
-    @fingerprinter = fingerprinter
-    @logger        = logger
-    @exclusions    = exclusions
-    @queue         = EM::Queue.new
-    @concurrency   = concurrency
+  def initialize(ws_url, db, resolver, notifier, fingerprinter, logger, exclusions, min_concurrency, max_concurrency)
+    @ws_url          = ws_url
+    @db              = db
+    @resolver        = resolver
+    @notifier        = notifier
+    @fingerprinter   = fingerprinter
+    @logger          = logger
+    @exclusions      = exclusions
+    @queue           = EM::Queue.new
+    @concurrency     = min_concurrency
+    @min_concurrency = min_concurrency
+    @max_concurrency = max_concurrency
 
     # In-memory cache to avoid repeated database lookups
     @domain_cache = {}
@@ -71,9 +73,9 @@ class CertstreamMonitor
     current_queue_size = @queue.size rescue 0
 
     # If the queue is too big, increase the concurrency
-    if current_queue_size > 50000 && @concurrency < 50
+    if current_queue_size > 50000 && @concurrency < @max_concurrency
       old_concurrency = @concurrency
-      @concurrency = [(@concurrency * 1.5).to_i, 50].min
+      @concurrency = [(@concurrency * 1.5).to_i, @max_concurrency].min
 
       # Start additional workers
       (@concurrency - old_concurrency).times { process_next }
@@ -85,9 +87,9 @@ class CertstreamMonitor
                        :info)
 
     # If the queue is small and concurrency is high, reduce concurrency
-    elsif current_queue_size < 5000 && @concurrency > 20
+    elsif current_queue_size < 10000 && @concurrency > @min_concurrency
       old_concurrency = @concurrency
-      @concurrency = [(@concurrency * 0.8).to_i, 20].max
+      @concurrency = @min_concurrency
 
       @logger.info("Queue size is #{current_queue_size} - decreased concurrency from #{old_concurrency} to #{@concurrency}")
       notifier.send_log('Performance Adjustment',
@@ -134,15 +136,15 @@ class CertstreamMonitor
   def setup_websocket_connection(init)
     start_workers if init
 
-    ws = WebSocket::EventMachine::Client.connect(uri: ws_url)
+    ws = WebSocket::EventMachine::Client.connect(uri: @ws_url)
 
-    ws.onerror { |e| logger.error("WS error: #{e.message}") }
+    ws.onerror { |e| @logger.error("WS error: #{e.message}") }
     ws.onping  { ws.pong }
-    ws.onpong  { logger.info('PONG received') }
+    ws.onpong  { @logger.info('PONG received') }
     ws.onclose { shutdown }
 
     ws.onopen do
-      logger.info('WS open')
+      @logger.info('WS open')
       notifier.send_log('WebSocket', "WebSocket connection open\nQueue size: #{@queue.size}", :success)
     end
 
@@ -168,7 +170,7 @@ class CertstreamMonitor
         # Add only filtered domains to the queue
         filtered_domains.each { |d| queue.push(d) }
       rescue StandardError => e
-        logger.error("Error parsing message: #{e.message}")
+        @logger.error("Error parsing message: #{e.message}")
       end
     end
   end
@@ -225,7 +227,7 @@ class CertstreamMonitor
       add_to_unresolvable_batch(clean_domain, match['id'])
     end
   rescue StandardError => e
-    logger.error("Error processing domain #{domain}: #{e.class} #{e.message}")
+    @logger.error("Error processing domain #{domain}: #{e.class} #{e.message}")
   end
 
   # Add domain to unresolvable batch
@@ -264,13 +266,13 @@ class CertstreamMonitor
     # Save any remaining unresolvable domains before closing
     flush_unresolvable_domains_batch
 
-    logger.warn('WebSocket connection closed')
+    @logger.warn('WebSocket connection closed')
     notifier.send_log('WebSocket',
                       "WebSocket connection closed, attempting to reconnect...\nQueue size: #{@queue.size}", :error)
 
     # Wait before reconnecting to avoid rapid reconnection loops
     EM.add_timer(5) do
-      logger.info('Attempting to reconnect WebSocket...')
+      @logger.info('Attempting to reconnect WebSocket...')
       setup_websocket_connection(false)
     end
   end

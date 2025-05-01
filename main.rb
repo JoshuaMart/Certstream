@@ -96,7 +96,9 @@ certstream = CertstreamMonitor.new(
   notifier,
   fingerprinter,
   logger,
-  CONFIG['certstream']['exclusions']
+  CONFIG['certstream']['exclusions'],
+  CONFIG['concurrency']['min'],
+  CONFIG['concurrency']['max']
 )
 certstream.connect_websocket
 
