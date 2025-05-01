@@ -18,6 +18,7 @@ class DomainResolver
   def initialize(logger, cache_size: 10_000, timeout: 2)
     @logger = logger
     @timeout = timeout
+    @last_stats_time = Time.now
 
     # Create a resolver with custom options for better performance
     @resolver = Resolv::DNS.new(
@@ -52,6 +53,7 @@ class DomainResolver
       # Try to get from cache first
       if @dns_cache.key?(domain)
         @cache_hits += 1
+        check_stats_logging_time
         return @dns_cache[domain]
       end
 
@@ -70,8 +72,8 @@ class DomainResolver
       # Cache the result (including nil for failures)
       @dns_cache[domain] = result
 
-      # Log cache performance periodically
-      log_cache_stats if ((@cache_hits + @cache_misses) % 1000).zero?
+      # Check if it's time to log stats
+      check_stats_logging_time
 
       result
     rescue Resolv::ResolvError => e
@@ -119,8 +121,20 @@ class DomainResolver
 
   private
 
+  # Check if it's time to log cache stats based on time interval
+  def check_stats_logging_time
+    now = Time.now
+    # Log stats every 5 minutes or after 10,000 operations, whichever comes first
+    if (now - @last_stats_time) >= 300 || (@cache_hits + @cache_misses) % 10_000 == 0
+      log_cache_stats
+      @last_stats_time = now
+    end
+  end
+
   def log_cache_stats
     total = @cache_hits + @cache_misses
+    return if total.zero?
+
     hit_rate = (@cache_hits.to_f / total) * 100
 
     @logger.info(
