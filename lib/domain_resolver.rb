@@ -15,8 +15,9 @@ class DomainResolver
     IPAddress.parse('169.254.0.0/16')
   ].freeze
 
-  def initialize(logger, cache_size: 10_000, timeout: 2)
+  def initialize(logger, notifier, cache_size: 10_000, timeout: 2)
     @logger = logger
+    @notifier = notifier
     @timeout = timeout
     @last_stats_time = Time.now
 
@@ -140,6 +141,11 @@ class DomainResolver
     @logger.info(
       "DNS Cache stats: #{@cache_hits} hits, #{@cache_misses} misses, " \
       "#{hit_rate.round(2)}% hit rate, #{@dns_cache.size} cached entries"
+    )
+    @notifier.send_log(
+      'DNS Cache',
+      "#{@cache_hits} hits, #{@cache_misses} misses\n#{hit_rate.round(2)}% hit rate, #{@dns_cache.size} cached entries",
+      :info
     )
   end
 end

@@ -73,7 +73,7 @@ class CertstreamMonitor
     current_queue_size = @queue.size rescue 0
 
     # If the queue is too big, increase the concurrency
-    if current_queue_size > 50000 && @concurrency < @max_concurrency
+    if current_queue_size > 20000 && @concurrency < @max_concurrency
       old_concurrency = @concurrency
       @concurrency = [(@concurrency * 1.5).to_i, @max_concurrency].min
 

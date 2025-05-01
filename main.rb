@@ -23,11 +23,11 @@ end
 
 # Initialize components
 db = Database.new(CONFIG['database']['path'], logger)
-resolver = DomainResolver.new(logger)
 notifier = DiscordNotifier.new(CONFIG['discord']['messages_webhook'],
                                CONFIG['discord']['logs_webhook'],
                                CONFIG['discord']['username'],
                                logger)
+resolver = DomainResolver.new(logger, notifier)
 fingerprinter = FingerprinterSender.new(CONFIG['fingerprinter']['url'],
                                         CONFIG['fingerprinter']['callback_url'],
                                         CONFIG['fingerprinter']['api_key'],
@@ -50,7 +50,7 @@ end
 scheduler.every "#{CONFIG['database']['retry_interval']}s" do
   logger.info('Starting scheduled retry of unresolvable domains')
 
-  domains = db.get_unresolvable_domains
+  domains = db.unresolvable_domains
   domains.each do |domain|
     logger.debug("Retrying resolution for domain: #{domain['domain']}")
 
