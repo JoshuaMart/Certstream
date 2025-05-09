@@ -56,22 +56,22 @@ module Certstream
           json_data.each_value do |programs|
             programs.each do |name, infos|
               wildcards_count += 1
-              urls = infos.dig('scopes', 'in', 'url')
-              next unless urls
+              scopes = infos.dig('scopes', 'in', 'web')
+              next unless scopes
 
-              process_scope(urls, name)
+              process_scope(scopes, name)
             end
           end
 
           Core.container.logger.info("Extracted wildcards for #{wildcards_count} programs")
         end
 
-        def process_scope(urls, program_name)
-          urls.each do |url|
-            # Check if the URL contains a wildcard
-            if url.start_with?('*.')
-              Core.container.logger.debug("Found wildcard: #{url} in program: #{program_name}")
-              Core.container.database.add_wildcard(url, program_name)
+        def process_scope(scopes, program_name)
+          scopes.each do |scope|
+            # Check if the scope contains a wildcard
+            if scope.start_with?('*.')
+              Core.container.logger.debug("Found wildcard: #{scope} in program: #{program_name}")
+              Core.container.database.add_wildcard(scope, program_name)
             end
           end
         end
