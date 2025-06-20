@@ -2,25 +2,37 @@ services:
   certstream-server:
     image: 0rickyy0/certstream-server-go:latest
     restart: unless-stopped
-    networks:
-      - certstream-network
     logging:
       driver: none
 
-  certstream-monitor:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  mysql:
+    image: mysql:9.3
     restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: certstream
+      MYSQL_DATABASE: certstream
+      MYSQL_USER: certstream
+      MYSQL_PASSWORD: certstream
     volumes:
-      - ./config:/app/config
-      - ./data:/app/data
-      - ./logs:/app/logs
-    depends_on:
-      - certstream-server
-    networks:
-      - certstream-network
+      - ./mysql_data:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
 
-networks:
-  certstream-network:
-    driver: bridge
+  certstream-monitor:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./:/app
+      - ./logs:/app/logs
+    environment:
+      - RACK_ENV=production
+      - TZ=UTC
+
+volumes:
+  mysql_data:

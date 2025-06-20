@@ -1,13 +1,11 @@
-# Configuration file for Certstream monitor
+# Certstream Monitor Configuration
 
-# API Configuration
-api:
-  url: http://scopes.jomar.ovh
-  headers:
-    X-API-Key: "your-api-key-here"
-  update_interval: 86400 # 24 hours in seconds
+# Logging configuration
+logging:
+  file: "logs/certstream.log" # Set to 'stdout' for console output
+  level: "info" # debug, info, warn, error, fatal
 
-# Certstream Configuration
+# Certstream configuration
 certstream:
   url: "ws://certstream-server:8080/domains-only"
   exclusions:
@@ -15,30 +13,33 @@ certstream:
     - imperva.com
     - nflxvideo.net
 
-# Fingerprinter Configuration
-fingerprinter:
-  url: "http://fingerprinter.tld"
-  callback_url: "http://callback_url"
-  api_key: ""
+# API configuration for wildcard fetching
+api:
+  url: "https://scopes.domain.tld"
+  headers:
+    X-API-Key: ""
+    Content-Type: "application/json"
+    Accept: "application/json"
+  update_interval: 86400 # 24 hours in seconds
 
-# Database Configuration
+# Database configuration
 database:
-  path: "./data/certstream.db"
   retry_interval: 10800 # 3 hours in seconds
-  max_retries: 336 # 14 days worth of retries (112 * 3 hours)
+  max_retries: 3
 
-# Discord Configuration
+# Fingerprinter configuration
+fingerprinter:
+  url: "https://fingerprinter.domain.tld/api/fingerprint"
+  api_key: ""
+  callback_url: "https://recon.domain.tld/api/fingerprinter"
+
+# Discord notifications
 discord:
-  messages_webhook: "your-webhook-url-here"
-  logs_webhook: "your-webhook-url-here"
+  messages_webhook: "https://discord.com/api/webhooks/xxxx/xxxx-xxxx"
+  logs_webhook: "https://discord.com/api/webhooks/xxxx/xxx-xxxx"
   username: "Certstream Monitor"
 
-# Logging Configuration
-logging:
-  level: "info" # debug, info, warn, error, fatal
-  file: "./logs/certstream.log"
-
-# Concurrency Configuration
+# Concurrency settings
 concurrency:
   min: 20
   max: 40
