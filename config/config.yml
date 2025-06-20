@@ -31,7 +31,8 @@ database:
 fingerprinter:
   url: "https://fingerprinter.domain.tld/api/fingerprint"
   api_key: ""
-  callback_url: "https://recon.domain.tld/api/fingerprinter"
+  callback_urls:
+    - "https://recon.domain.tld/api/fingerprinter"
 
 # Discord notifications
 discord:

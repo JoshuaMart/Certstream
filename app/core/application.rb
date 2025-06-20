@@ -90,7 +90,7 @@ module Certstream
         Core.container.register(:fingerprinter) do
           Certstream::Services::Notification::Fingerprinter.new(
             @config['fingerprinter']['url'],
-            @config['fingerprinter']['callback_url'],
+            @config['fingerprinter']['callback_urls'],
             @config['fingerprinter']['api_key']
           )
         end

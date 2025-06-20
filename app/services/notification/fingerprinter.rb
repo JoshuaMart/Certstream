@@ -6,12 +6,12 @@ module Certstream
   module Services
     module Notification
       class Fingerprinter
-        attr_reader :fingerprinter_url, :callback_url, :api_key
+        attr_reader :fingerprinter_url, :callback_urls, :api_key
 
-        def initialize(fingerprinter_url, callback_url, api_key)
+        def initialize(fingerprinter_url, callback_urls, api_key)
           @fingerprinter_url = fingerprinter_url
           @api_key = api_key
-          @callback_url = callback_url
+          @callback_urls = callback_urls
         end
 
         def send(domain)
@@ -19,7 +19,7 @@ module Certstream
 
           payload = {
             urls: [domain],
-            callback_url: callback_url
+            callback_urls: callback_urls
           }
 
           headers = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{api_key}" }
