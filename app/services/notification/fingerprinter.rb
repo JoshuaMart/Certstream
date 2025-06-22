@@ -14,6 +14,8 @@ module Certstream
 
         # Ports and protocols to test
         CONNECTIVITY_TESTS = [
+          { protocol: 'http', port: nil },   # Default HTTP port (80)
+          { protocol: 'https', port: nil },  # Default HTTPS port (443)
           { protocol: 'http', port: 80 },
           { protocol: 'https', port: 443 },
           { protocol: 'http', port: 8080 },
@@ -57,7 +59,13 @@ module Certstream
           # Use concurrent execution to test multiple ports simultaneously
           futures = CONNECTIVITY_TESTS.map do |test|
             Concurrent::Future.execute do
-              url = "#{test[:protocol]}://#{domain}:#{test[:port]}"
+              # Build URL with or without explicit port
+              url = if test[:port].nil?
+                      "#{test[:protocol]}://#{domain}"
+                    else
+                      "#{test[:protocol]}://#{domain}:#{test[:port]}"
+                    end
+              
               if test_url_connectivity(url)
                 Core.container.logger.debug("✓ #{url} is reachable")
                 url
