@@ -16,8 +16,6 @@ module Certstream
         CONNECTIVITY_TESTS = [
           { protocol: 'http', port: nil },   # Default HTTP port (80)
           { protocol: 'https', port: nil },  # Default HTTPS port (443)
-          { protocol: 'http', port: 80 },
-          { protocol: 'https', port: 443 },
           { protocol: 'http', port: 8080 },
           { protocol: 'https', port: 8443 },
           { protocol: 'https', port: 9090 },
@@ -55,7 +53,7 @@ module Certstream
 
         def test_connectivity(domain)
           reachable_urls = []
-          
+
           # Use concurrent execution to test multiple ports simultaneously
           futures = CONNECTIVITY_TESTS.map do |test|
             Concurrent::Future.execute do
@@ -65,7 +63,7 @@ module Certstream
                     else
                       "#{test[:protocol]}://#{domain}:#{test[:port]}"
                     end
-              
+
               if test_url_connectivity(url)
                 Core.container.logger.debug("✓ #{url} is reachable")
                 url
@@ -94,14 +92,14 @@ module Certstream
         def test_url_connectivity(url)
           begin
             uri = URI.parse(url)
-            
+
             # Create HTTP connection with timeout
             http = Net::HTTP.new(uri.host, uri.port)
             http.use_ssl = (uri.scheme == 'https')
             http.verify_mode = OpenSSL::SSL::VERIFY_NONE if uri.scheme == 'https' # Skip SSL verification for connectivity test
             http.open_timeout = 3
             http.read_timeout = 3
-            
+
             # Make a simple HEAD request to test connectivity
             Timeout.timeout(5) do
               response = http.request_head('/')
