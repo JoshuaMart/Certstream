@@ -26,23 +26,10 @@ ruby main.rb
 ## 📊 Performance Features
 
 - **High throughput**: Handles ~90k domains/minute
-- **Optimized matching**: Uses `end_with?` for fast wildcard matching  
+- **Optimized matching**: Uses `end_with?` for fast wildcard matching
 - **Real-time stats**: Monitor processing rates and match ratios
 - **Background updates**: Wildcards refresh automatically
 - **Thread-safe**: Safe concurrent access to wildcard list
-
-## 🔧 Testing
-
-### Test wildcard matching performance:
-```bash
-ruby test_performance.rb
-```
-
-### Start test API server:
-```bash
-ruby test_api_server.rb
-# Then use config.test.yml
-```
 
 ## 📈 Expected Output
 
