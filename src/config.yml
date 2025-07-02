@@ -7,15 +7,15 @@ logging:
 
 # Certstream configuration
 certstream:
-  url: "ws://certstream-server:8080/domains-only"
+  url: "ws://127.0.0.1:8080/domains-only"
   exclusions:
-    - ui.com
-    - imperva.com
-    - nflxvideo.net
+    - .ui.com
+    - .imperva.com
+    - .nflxvideo.net
 
 # API configuration for wildcard fetching
 api:
-  url: "https://scopes.domain.tld"
+  url: "https://scopes.jomar.ovh"
   headers:
     X-API-Key: ""
     Content-Type: "application/json"
@@ -29,18 +29,14 @@ database:
 
 # Fingerprinter configuration
 fingerprinter:
-  url: "https://fingerprinter.domain.tld/api/fingerprint"
+  url: "https://fingerprinter.jomar.ovh/api/fingerprint"
   api_key: ""
   callback_urls:
-    - "https://recon.domain.tld/api/fingerprinter"
+    - "https://recon.jomar.ovh/api/fingerprinter"
+    - "https://bro.reptou.me/process-single"
 
 # Discord notifications
 discord:
-  messages_webhook: "https://discord.com/api/webhooks/xxxx/xxxx-xxxx"
-  logs_webhook: "https://discord.com/api/webhooks/xxxx/xxx-xxxx"
+  messages_webhook: "https://discord.com/api/webhooks/XXX/XXXX"
+  logs_webhook: "https://discord.com/api/webhooks/XXXX/XXXX"
   username: "Certstream Monitor"
-
-# Concurrency settings
-concurrency:
-  min: 20
-  max: 40
