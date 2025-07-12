@@ -35,6 +35,19 @@ fingerprinter:
     - "https://recon.jomar.ovh/api/fingerprinter"
     - "https://bro.reptou.me/process-single"
 
+# HTTP probing configuration
+http:
+  ports:
+    - protocol: "http"
+      port: 80
+    - protocol: "https"
+      port: 443
+    - protocol: "http"
+      port: 8080
+    - protocol: "https"
+      port: 8443
+  timeout: 10 # seconds
+
 # Discord notifications
 discord:
   messages_webhook: "https://discord.com/api/webhooks/XXX/XXXX"

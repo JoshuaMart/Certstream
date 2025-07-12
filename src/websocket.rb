@@ -2,6 +2,7 @@
 
 require 'websocket-eventmachine-client'
 require 'json'
+require 'yaml'
 require 'concurrent-ruby'
 require 'resolv'
 require 'ipaddr'
@@ -14,6 +15,7 @@ module Certstream
 
       @ws_url = config.dig('certstream', 'url')
       @wildcard_manager = WildcardManager.new(config)
+      @http_config = config['http']
       @processing_pool = Concurrent::ThreadPoolExecutor.new(
         min_threads: 2,
         max_threads: 10,
@@ -28,6 +30,8 @@ module Certstream
         dns_resolved: 0,
         dns_failed: 0,
         private_ips: 0,
+        http_responses: 0,
+        http_timeouts: 0,
         start_time: Time.now
       }
     end
@@ -83,7 +87,7 @@ module Certstream
       begin
         # Resolve domain to IP addresses
         ips = @resolver.getaddresses(domain)
-        
+
         if ips.empty?
           @stats[:dns_failed] += 1
           return
@@ -91,17 +95,17 @@ module Certstream
 
         # Filter out private IPs
         public_ips = ips.reject { |ip| private_ip?(ip.to_s) }
-        
+
         if public_ips.empty?
           @stats[:private_ips] += 1
           return
         end
 
         @stats[:dns_resolved] += 1
-        
+
         # Domain resolves to public IP(s) - process it
         process_resolved_domain(domain, public_ips)
-        
+
       rescue Resolv::ResolvError, Resolv::ResolvTimeout => e
         @stats[:dns_failed] += 1
         # Silent fail - DNS resolution failed
@@ -113,16 +117,16 @@ module Certstream
 
     def private_ip?(ip_string)
       ip = IPAddr.new(ip_string)
-      
+
       # RFC 1918 private ranges + localhost + link-local
       private_ranges = [
         IPAddr.new('10.0.0.0/8'),
-        IPAddr.new('172.16.0.0/12'), 
+        IPAddr.new('172.16.0.0/12'),
         IPAddr.new('192.168.0.0/16'),
         IPAddr.new('127.0.0.0/8'),
         IPAddr.new('169.254.0.0/16')
       ]
-      
+
       private_ranges.any? { |range| range.include?(ip) }
     rescue IPAddr::InvalidAddressError
       true # Consider invalid IPs as private
@@ -130,8 +134,78 @@ module Certstream
 
     def process_resolved_domain(domain, ips)
       puts "[RESOLVED] #{domain} -> #{ips.join(', ')}"
-      # TODO: Add your processing logic here
-      # This is where you'd call fingerprinter, save to DB, etc.
+
+      # Probe HTTP/HTTPS on different ports
+      probe_http_services(domain)
+    end
+
+    def probe_http_services(domain)
+      return unless @http_config && @http_config['ports']
+
+      # Generate URLs to test
+      urls = generate_probe_urls(domain)
+      return if urls.empty?
+
+      # Use Hydra for parallel requests
+      hydra = Typhoeus::Hydra.new(max_concurrency: 4)
+      requests = []
+
+      urls.each do |url|
+        request = Typhoeus::Request.new(
+          url,
+          timeout: @http_config['timeout'] || 10,
+          ssl_verifypeer: false,
+          ssl_verifyhost: 0
+        )
+
+        request.on_complete do |response|
+          handle_http_response(domain, url, response)
+        end
+
+        hydra.queue(request)
+        requests << request
+      end
+
+      # Execute all requests in parallel
+      hydra.run
+    end
+
+    def generate_probe_urls(domain)
+      urls = []
+
+      @http_config['ports'].each do |port_config|
+        protocol = port_config['protocol']
+        port = port_config['port']
+
+        # Build URL
+        url = "#{protocol}://#{domain}"
+
+        # Add port if not default
+        if port && !default_port?(protocol, port)
+          url += ":#{port}"
+        end
+
+        urls << url
+      end
+
+      urls
+    end
+
+    def default_port?(protocol, port)
+      (protocol == 'http' && port == 80) || (protocol == 'https' && port == 443)
+    end
+
+    def handle_http_response(domain, url, response)
+      if response.timed_out?
+        @stats[:http_timeouts] += 1
+        return
+      end
+
+      # Any response (regardless of status code) is considered a hit
+      if response.response_code > 0
+        @stats[:http_responses] += 1
+        puts "[HTTP] #{url} -> #{response.response_code} (#{response.total_time.round(2)}s)"
+      end
     end
 
     def start_stats_reporter
@@ -148,25 +222,27 @@ module Certstream
       rate = @stats[:total_processed] / uptime
       match_rate = (@stats[:matched_domains].to_f / @stats[:total_processed] * 100).round(2) if @stats[:total_processed] > 0
       resolve_rate = (@stats[:dns_resolved].to_f / @stats[:matched_domains] * 100).round(2) if @stats[:matched_domains] > 0
-      
+      http_rate = (@stats[:http_responses].to_f / @stats[:dns_resolved] * 100).round(2) if @stats[:dns_resolved] > 0
+
       queue_size = @processing_pool.queue_length
       active_threads = @processing_pool.length
 
       puts "[STATS] Processed: #{@stats[:total_processed]} | Matched: #{@stats[:matched_domains]} (#{match_rate || 0}%)"
       puts "        DNS: #{@stats[:dns_resolved]} resolved (#{resolve_rate || 0}%) | #{@stats[:dns_failed]} failed | #{@stats[:private_ips]} private"
+      puts "        HTTP: #{@stats[:http_responses]} responses (#{http_rate || 0}%) | #{@stats[:http_timeouts]} timeouts"
       puts "        Pool: #{active_threads} active threads | #{queue_size} queued | Rate: #{rate.round(1)}/s"
     end
 
     def shutdown
       puts '[Monitor] Shutting down...'
-      
+
       # Gracefully shutdown the thread pool
       @processing_pool.shutdown
       unless @processing_pool.wait_for_termination(10)
         puts '[Monitor] Thread pool shutdown timeout, forcing...'
         @processing_pool.kill
       end
-      
+
       puts '[Monitor] WebSocket closed'
       EM.stop
     end
