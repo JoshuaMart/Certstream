@@ -16,6 +16,7 @@ module Certstream
       @ws_url = config.dig('certstream', 'url')
       @wildcard_manager = WildcardManager.new(config)
       @http_config = config['http']
+      @fingerprinter_config = config['fingerprinter']
       @processing_pool = Concurrent::ThreadPoolExecutor.new(
         min_threads: 2,
         max_threads: 10,
@@ -32,6 +33,8 @@ module Certstream
         private_ips: 0,
         http_responses: 0,
         http_timeouts: 0,
+        fingerprinter_sent: 0,
+        fingerprinter_failed: 0,
         start_time: Time.now
       }
     end
@@ -67,6 +70,8 @@ module Certstream
     def process_domains(domains)
       domains.each do |domain|
         @stats[:total_processed] += 1
+
+        next if domain.start_with?('*.')
 
         # Fast wildcard matching - this should be very quick
         next unless @wildcard_manager.match_domain?(domain)
@@ -146,6 +151,9 @@ module Certstream
       urls = generate_probe_urls(domain)
       return if urls.empty?
 
+      # Collect valid URLs that respond
+      valid_urls = []
+
       # Use Hydra for parallel requests
       hydra = Typhoeus::Hydra.new(max_concurrency: 4)
       requests = []
@@ -159,7 +167,9 @@ module Certstream
         )
 
         request.on_complete do |response|
-          handle_http_response(domain, url, response)
+          if handle_http_response(domain, url, response)
+            valid_urls << url
+          end
         end
 
         hydra.queue(request)
@@ -168,6 +178,9 @@ module Certstream
 
       # Execute all requests in parallel
       hydra.run
+
+      # Send valid URLs to fingerprinter if any
+      send_to_fingerprinter(valid_urls) unless valid_urls.empty?
     end
 
     def generate_probe_urls(domain)
@@ -198,13 +211,56 @@ module Certstream
     def handle_http_response(domain, url, response)
       if response.timed_out?
         @stats[:http_timeouts] += 1
-        return
+        return false
       end
 
       # Any response (regardless of status code) is considered a hit
       if response.response_code > 0
         @stats[:http_responses] += 1
         puts "[HTTP] #{url} -> #{response.response_code} (#{response.total_time.round(2)}s)"
+        return true
+      end
+
+      false
+    end
+
+    def send_to_fingerprinter(urls)
+      return unless @fingerprinter_config && !urls.empty?
+
+      payload = {
+        "urls" => urls,
+        "callback_urls" => @fingerprinter_config['callback_urls'] || []
+      }
+
+      headers = {
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json'
+      }
+
+      # Add API key to headers if configured
+      if @fingerprinter_config['api_key']
+        headers['Authorization'] = "Bearer #{@fingerprinter_config['api_key']}"
+      end
+
+      begin
+        response = Typhoeus.post(
+          @fingerprinter_config['url'],
+          body: payload.to_json,
+          headers: headers,
+          timeout: 30
+        )
+
+        if response.success?
+          @stats[:fingerprinter_sent] += urls.length
+          puts "[FINGERPRINTER] Sent #{urls.length} URLs -> #{response.response_code}"
+        else
+          @stats[:fingerprinter_failed] += urls.length
+          puts "[FINGERPRINTER] Failed to send URLs -> #{response.response_code}: #{response.response_body}"
+        end
+
+      rescue => e
+        @stats[:fingerprinter_failed] += urls.length
+        puts "[FINGERPRINTER] Error sending URLs: #{e.message}"
       end
     end
 
@@ -223,6 +279,7 @@ module Certstream
       match_rate = (@stats[:matched_domains].to_f / @stats[:total_processed] * 100).round(2) if @stats[:total_processed] > 0
       resolve_rate = (@stats[:dns_resolved].to_f / @stats[:matched_domains] * 100).round(2) if @stats[:matched_domains] > 0
       http_rate = (@stats[:http_responses].to_f / @stats[:dns_resolved] * 100).round(2) if @stats[:dns_resolved] > 0
+      fingerprint_rate = (@stats[:fingerprinter_sent].to_f / @stats[:http_responses] * 100).round(2) if @stats[:http_responses] > 0
 
       queue_size = @processing_pool.queue_length
       active_threads = @processing_pool.length
@@ -230,6 +287,7 @@ module Certstream
       puts "[STATS] Processed: #{@stats[:total_processed]} | Matched: #{@stats[:matched_domains]} (#{match_rate || 0}%)"
       puts "        DNS: #{@stats[:dns_resolved]} resolved (#{resolve_rate || 0}%) | #{@stats[:dns_failed]} failed | #{@stats[:private_ips]} private"
       puts "        HTTP: #{@stats[:http_responses]} responses (#{http_rate || 0}%) | #{@stats[:http_timeouts]} timeouts"
+      puts "        Fingerprinter: #{@stats[:fingerprinter_sent]} sent (#{fingerprint_rate || 0}%) | #{@stats[:fingerprinter_failed]} failed"
       puts "        Pool: #{active_threads} active threads | #{queue_size} queued | Rate: #{rate.round(1)}/s"
     end
 
