@@ -4,3 +4,11 @@ services:
     restart: unless-stopped
     logging:
       driver: none
+
+  certstream-monitor:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - certstream-server
+    volumes:
+      - ./:/app
