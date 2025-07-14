@@ -1,13 +1,8 @@
 # Certstream Monitor Configuration
 
-# Logging configuration
-logging:
-  file: "logs/certstream.log" # Set to 'stdout' for console output
-  level: "info" # debug, info, warn, error, fatal
-
 # Certstream configuration
 certstream:
-  url: "ws://127.0.0.1:8080/domains-only"
+  url: "ws://certstream-server:8080/domains-only"
   exclusions:
     - .ui.com
     - .imperva.com
