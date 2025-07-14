@@ -41,7 +41,7 @@ http:
       port: 8080
     - protocol: "https"
       port: 8443
-  timeout: 10 # seconds
+  timeout: 5 # seconds
 
 # Discord notifications
 discord:
