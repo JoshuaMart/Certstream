@@ -3,7 +3,7 @@ FROM ruby:3.4-alpine
 WORKDIR /app
 
 # Install system dependencies
-RUN apk add --no-cache build-base mysql-dev
+RUN apk add --no-cache build-base libcurl
 
 # Copy Gemfile and install dependencies
 COPY Gemfile ./

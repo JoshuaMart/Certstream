@@ -1,0 +1,50 @@
+# Certstream Monitor Configuration
+
+# Certstream configuration
+certstream:
+  url: "ws://certstream-server:8080/domains-only"
+  exclusions:
+    - .ui.com
+    - .imperva.com
+    - .nflxvideo.net
+
+# API configuration for wildcard fetching
+api:
+  url: "https://scopes.jomar.ovh"
+  headers:
+    X-API-Key: ""
+    Content-Type: "application/json"
+    Accept: "application/json"
+  update_interval: 86400 # 24 hours in seconds
+
+# Database configuration
+database:
+  retry_interval: 10800 # 3 hours in seconds
+  max_retries: 3
+
+# Fingerprinter configuration
+fingerprinter:
+  url: "https://fingerprinter.jomar.ovh/api/fingerprint"
+  api_key: ""
+  callback_urls:
+    - "https://recon.jomar.ovh/api/fingerprinter"
+    - "https://bro.reptou.me/process-single"
+
+# HTTP probing configuration
+http:
+  ports:
+    - protocol: "http"
+      port: 80
+    - protocol: "https"
+      port: 443
+    - protocol: "http"
+      port: 8080
+    - protocol: "https"
+      port: 8443
+  timeout: 5 # seconds
+
+# Discord notifications
+discord:
+  messages_webhook: "https://discord.com/api/webhooks/XXX/XXXX"
+  logs_webhook: "https://discord.com/api/webhooks/XXXX/XXXX"
+  username: "Certstream Monitor"

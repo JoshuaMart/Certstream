@@ -1,77 +1,76 @@
-A tool that monitors SSL/TLS certificate issuance via Certstream to detect new domains matching specified wildcards. Perfect for bug bounty hunters, security researchers, and organizations monitoring their digital footprint.
+# Certstream Monitor with Wildcard Filtering
 
-## ✨ Features
+Monitor Certificate Transparency logs and filter domains based on wildcards fetched from an API.
 
-- 🚀 **Real-time monitoring** of certificate transparency logs via Certstream
-- 🎯 **Automatic detection** of domains matching your configured wildcards
-- 🔄 **Periodic wildcard updates** from your API endpoint
-- 🧩 **Domain resolution** with intelligent handling of unresolvable domains
-- 🚫 **IP filtering** to exclude private/internal IP addresses
-- 📊 **Persistent storage** using SQLite
-- 🔔 **Discord notifications** for newly discovered domains
-- 🐳 **Docker integration** for easy deployment and management
+## 🚀 Quick Start
 
-## 📋 Prerequisites
-
-- Docker and Docker Compose
-- Access to a Discord webhook URL (for notifications)
-- [ScopesExtractor](https://github.com/JoshuaMart/ScopesExtractor/) API access for wildcard retrieval
-
-## 🛠️ Installation
-
-1. **Clone this repository**
-
-```bash
-git clone https://github.com/JoshuaMart/Certstream.git
-cd Certstream
+### 1. Configure your API endpoint
+```yaml
+# src/config.yml
+api:
+  url: "https://your-api.com/wildcards"
+  update_interval: 3600  # Update every hour
+  headers:
+    X-API-Key: "your-api-key"
 ```
 
-2. **Configure the application**
-
-Edit the `config/config.yml` file with the needed informations
-
-3. **Start the application**
-
+### 2. Run the monitor
 ```bash
-docker-compose up -d
+# Start with Docker Compose
+docker-compose up
+
+# Or run locally
+ruby main.rb
 ```
 
-## 🏗️ Architecture
+## 📊 Performance Features
 
-The application consists of several components:
+- **High throughput**: Handles ~90k domains/minute
+- **Optimized matching**: Uses `end_with?` for fast wildcard matching
+- **Real-time stats**: Monitor processing rates and match ratios
+- **Background updates**: Wildcards refresh automatically
+- **Thread-safe**: Safe concurrent access to wildcard list
 
-- **Certstream Server**: A Docker container running the [certstream-server-go](https://github.com/d-Rickyy-b/certstream-server-go) service
-- **Certstream Monitor**: A Ruby application that:
-  - Connects to the Certstream server via WebSocket
-  - Fetches wildcards from your API
-  - Processes new domain registrations
-  - Resolves domains and filters by IP
-  - Sends notifications via Discord
-  - Maintains a database of discovered domains
+## 📈 Expected Output
 
-## 📊 How It Works
+```
+[Monitor] Wildcard manager started
+[Monitor] WebSocket connected
+[WildcardManager] Updated 25 wildcards
+[MATCH] app.example.com
+[MATCH] api.github.com
+[STATS] Processed: 45000 | Matched: 123 (0.27%) | Rate: 1502.3/s
+```
 
-1. **Wildcard collection**: The application fetches wildcards (e.g., `*.example.com`) from ScopesExtractor API endpoint every 24 hours.
+## 🎛️ Configuration
 
-2. **Certstream monitoring**: The application connects to the Certstream server to receive real-time updates about new certificate issuances.
+The system expects wildcards from your API in JSON format:
+```json
+["example.com", "test.org", "github.com"]
+```
 
-3. **Domain matching**: When a new domain is detected in the certificate transparency logs, the application checks if it matches any of your wildcards.
+Or nested format:
+```json
+{"wildcards": ["example.com", "test.org"]}
+```
 
-4. **Domain processing**:
-   - The domain is resolved to an IP address
-   - If the domain resolves to a private IP, it's ignored
-   - If the domain cannot be resolved, it's added to a retry queue
+## 🚨 Performance Notes
 
-5. **Retry queue**: Unresolvable domains are retried every 3 hours for up to 14 days before being discarded.
+- Synchronous processing is usually sufficient for most workloads
+- The system includes built-in performance monitoring
+- For extreme loads (>100k/minute), consider the thread pool optimization
+- Monitor memory usage with large wildcard lists
 
-6. **Notification**: When a valid domain (with public IP) is discovered, a Discord notification is sent with details about the domain and the matching wildcard.
+## 🔍 Architecture
 
-7. **Deduplication**: The application maintains a database of discovered domains to avoid duplicate notifications.
-
-### Logs
-
-Application logs are stored in the `logs` directory. Check these logs for detailed information about any issues:
-
-```bash
-docker-compose logs -f certstream-monitor
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Certstream    │───▶│  Wildcard Filter │───▶│  Match Handler  │
+│   WebSocket     │    │  (end_with?)     │    │  (Discord/etc)  │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                                │
+                       ┌──────────────────┐
+                       │  Wildcard API    │
+                       │  (Auto-refresh)  │
+                       └──────────────────┘
 ```

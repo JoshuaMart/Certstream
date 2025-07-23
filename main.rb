@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # Load all application files
-require_relative 'app/core/dependency_container'
-require_relative 'app/core/application'
+require_relative 'src/websocket'
+require_relative 'src/wildcard_manager'
 
 # Start the application
-app = Certstream::Core::Application.new
-app.start
+app = Certstream::Monitor.new
+app.run
