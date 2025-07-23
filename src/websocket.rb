@@ -37,6 +37,7 @@ module Certstream
         fingerprinter_failed: 0,
         start_time: Time.now
       }
+      @discord_config = config['discord']
     end
 
     def run
@@ -46,6 +47,7 @@ module Certstream
 
       # Start stats reporter
       start_stats_reporter
+      start_discord_stats_reporter
 
       EM.run do
         ws = WebSocket::EventMachine::Client.connect(uri: @ws_url)
@@ -267,7 +269,7 @@ module Certstream
     def start_stats_reporter
       Thread.new do
         loop do
-          sleep(60) # Report every minute
+          sleep(600) # Report every 10 minute
           print_stats
         end
       end
@@ -289,6 +291,87 @@ module Certstream
       puts "        HTTP: #{@stats[:http_responses]} responses (#{http_rate || 0}%) | #{@stats[:http_timeouts]} timeouts"
       puts "        Fingerprinter: #{@stats[:fingerprinter_sent]} sent (#{fingerprint_rate || 0}%) | #{@stats[:fingerprinter_failed]} failed"
       puts "        Pool: #{active_threads} active threads | #{queue_size} queued | Rate: #{rate.round(1)}/s"
+    end
+
+    def start_discord_stats_reporter
+      return unless @discord_config && @discord_config['logs_webhook']
+
+      Thread.new do
+        loop do
+          sleep(21600) # 6 heures = 21600 secondes
+          send_stats_to_discord
+        end
+      end
+    end
+
+    def send_stats_to_discord
+      uptime = Time.now - @stats[:start_time]
+      uptime_hours = (uptime / 3600).round(1)
+      rate = @stats[:total_processed] / uptime
+
+      match_rate = (@stats[:matched_domains].to_f / @stats[:total_processed] * 100).round(2) if @stats[:total_processed] > 0
+      resolve_rate = (@stats[:dns_resolved].to_f / @stats[:matched_domains] * 100).round(2) if @stats[:matched_domains] > 0
+      http_rate = (@stats[:http_responses].to_f / @stats[:dns_resolved] * 100).round(2) if @stats[:dns_resolved] > 0
+      fingerprint_rate = (@stats[:fingerprinter_sent].to_f / @stats[:http_responses] * 100).round(2) if @stats[:http_responses] > 0
+
+      queue_size = @processing_pool.queue_length
+      active_threads = @processing_pool.length
+
+      embed = {
+        title: "📊 Certstream Monitor - Rapport 6h",
+        color: 0x00ff00,
+        timestamp: Time.now.iso8601,
+        fields: [
+          {
+            name: "⚡ Performance",
+            value: "```\nUptime: #{uptime_hours}h\nRate: #{rate.round(1)}/s\nThreads: #{active_threads} actifs | #{queue_size} en queue\n```",
+            inline: false
+          },
+          {
+            name: "🔍 Domaines",
+            value: "```\nProcessed: #{@stats[:total_processed]}\nMatched: #{@stats[:matched_domains]} (#{match_rate || 0}%)\n```",
+            inline: true
+          },
+          {
+            name: "🌐 DNS",
+            value: "```\nResolved: #{@stats[:dns_resolved]} (#{resolve_rate || 0}%)\nFailed: #{@stats[:dns_failed]}\nPrivate: #{@stats[:private_ips]}\n```",
+            inline: true
+          },
+          {
+            name: "🌍 HTTP",
+            value: "```\nResponses: #{@stats[:http_responses]} (#{http_rate || 0}%)\nTimeouts: #{@stats[:http_timeouts]}\n```",
+            inline: true
+          },
+          {
+            name: "🔬 Fingerprinter",
+            value: "```\nSent: #{@stats[:fingerprinter_sent]} (#{fingerprint_rate || 0}%)\nFailed: #{@stats[:fingerprinter_failed]}\n```",
+            inline: true
+          }
+        ]
+      }
+
+      payload = {
+        username: @discord_config['username'] || "Certstream Monitor",
+        embeds: [embed]
+      }
+
+      begin
+        response = Typhoeus.post(
+          @discord_config['logs_webhook'],
+          body: payload.to_json,
+          headers: { 'Content-Type' => 'application/json' },
+          timeout: 10
+        )
+
+        if response.success?
+          puts "[DISCORD] Stats sent successfully"
+        else
+          puts "[DISCORD] Failed to send stats: #{response.response_code}"
+        end
+
+      rescue => e
+        puts "[DISCORD] Error sending stats: #{e.message}"
+      end
     end
 
     def shutdown
