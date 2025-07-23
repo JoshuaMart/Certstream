@@ -4,6 +4,8 @@
 require_relative 'src/websocket'
 require_relative 'src/wildcard_manager'
 
+$stdout.sync = true
+
 # Start the application
 app = Certstream::Monitor.new
 app.run
