@@ -1,5 +1,6 @@
 AllCops:
   NewCops: enable
+  TargetRubyVersion: 3.4
 
 Metrics/MethodLength:
   Max: 50
