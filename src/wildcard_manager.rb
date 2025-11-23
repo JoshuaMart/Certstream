@@ -3,7 +3,6 @@
 require 'typhoeus'
 require 'json'
 require 'yaml'
-require 'set'
 
 module Certstream
   class WildcardManager
@@ -11,7 +10,7 @@ module Certstream
 
     def initialize(config)
       @api_config = config['api']
-      @update_interval = @api_config['update_interval'] || 86400
+      @update_interval = @api_config['update_interval'] || 86_400
       @wildcards = Set.new
       @exclusions = config.dig('certstream', 'exclusions') || []
       @last_update = nil
@@ -51,7 +50,7 @@ module Certstream
       headers = {}
       @api_config['headers']&.each { |key, value| headers[key] = value }
 
-      response = Typhoeus.get(@api_config['url'], headers:)
+      response = Typhoeus.get(@api_config['url'], headers: headers)
 
       if response.code == 200
         new_wildcards = parse_response(response.body)
@@ -60,7 +59,7 @@ module Certstream
       else
         puts "[WildcardManager] Failed to fetch wildcards: HTTP #{response.code}"
       end
-    rescue => e
+    rescue StandardError => e
       puts "[WildcardManager] Error fetching wildcards: #{e.message}"
     end
 
@@ -69,7 +68,7 @@ module Certstream
 
       data = JSON.parse(body)
       data.each_value do |programs|
-        programs.each do |name, infos|
+        programs.each do |_name, infos|
           scopes = infos.dig('scopes', 'in', 'web')
           next unless scopes
 
