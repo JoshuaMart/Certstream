@@ -7,6 +7,7 @@ GEM
     eventmachine (1.2.7)
     ffi (1.17.2)
     ffi (1.17.2-arm64-darwin)
+    openssl (3.3.2)
     typhoeus (1.5.0)
       ethon (>= 0.9.0, < 0.16.0)
     websocket (1.2.11)
@@ -24,6 +25,7 @@ PLATFORMS
 
 DEPENDENCIES
   concurrent-ruby
+  openssl (~> 3.3)
   typhoeus
   websocket-eventmachine-client
 

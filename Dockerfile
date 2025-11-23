@@ -3,7 +3,7 @@ FROM ruby:3.4-alpine
 WORKDIR /app
 
 # Install system dependencies
-RUN apk add --no-cache build-base libcurl
+RUN apk add --no-cache build-base libcurl openssl openssl-dev
 
 # Copy Gemfile and install dependencies
 COPY Gemfile ./
