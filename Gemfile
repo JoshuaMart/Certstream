@@ -3,6 +3,6 @@
 source 'https://rubygems.org'
 
 # Base dependencies
-gem 'websocket-eventmachine-client'
-gem 'typhoeus'
 gem 'concurrent-ruby'
+gem 'typhoeus'
+gem 'websocket-eventmachine-client'
