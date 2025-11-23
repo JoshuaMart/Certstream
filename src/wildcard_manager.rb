@@ -68,7 +68,7 @@ module Certstream
 
       data = JSON.parse(body)
       data.each_value do |programs|
-        programs.each do |_name, infos|
+        programs.each_value do |infos|
           scopes = infos.dig('scopes', 'in', 'web')
           next unless scopes
 
