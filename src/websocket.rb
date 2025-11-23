@@ -210,7 +210,7 @@ module Certstream
       end
 
       # Any response (regardless of status code) is considered a hit
-      if response.response_code > 0
+      if response.response_code.positive?
         @stats[:http_responses] += 1
         puts "[HTTP] #{url} -> #{response.response_code} (#{response.total_time.round(2)}s)"
         return true
@@ -268,10 +268,10 @@ module Certstream
     def print_stats
       uptime = Time.now - @stats[:start_time]
       rate = @stats[:total_processed] / uptime
-      match_rate = (@stats[:matched_domains].to_f / @stats[:total_processed] * 100).round(2) if @stats[:total_processed] > 0
-      resolve_rate = (@stats[:dns_resolved].to_f / @stats[:matched_domains] * 100).round(2) if @stats[:matched_domains] > 0
-      http_rate = (@stats[:http_responses].to_f / @stats[:dns_resolved] * 100).round(2) if @stats[:dns_resolved] > 0
-      fingerprint_rate = (@stats[:fingerprinter_sent].to_f / @stats[:http_responses] * 100).round(2) if @stats[:http_responses] > 0
+      match_rate = (@stats[:matched_domains].to_f / @stats[:total_processed] * 100).round(2) if @stats[:total_processed].positive?
+      resolve_rate = (@stats[:dns_resolved].to_f / @stats[:matched_domains] * 100).round(2) if @stats[:matched_domains].positive?
+      http_rate = (@stats[:http_responses].to_f / @stats[:dns_resolved] * 100).round(2) if @stats[:dns_resolved].positive?
+      fingerprint_rate = (@stats[:fingerprinter_sent].to_f / @stats[:http_responses] * 100).round(2) if @stats[:http_responses].positive?
 
       queue_size = @processing_pool.queue_length
       active_threads = @processing_pool.length
@@ -299,10 +299,10 @@ module Certstream
       uptime_hours = (uptime / 3600).round(1)
       rate = @stats[:total_processed] / uptime
 
-      match_rate = (@stats[:matched_domains].to_f / @stats[:total_processed] * 100).round(2) if @stats[:total_processed] > 0
-      resolve_rate = (@stats[:dns_resolved].to_f / @stats[:matched_domains] * 100).round(2) if @stats[:matched_domains] > 0
-      http_rate = (@stats[:http_responses].to_f / @stats[:dns_resolved] * 100).round(2) if @stats[:dns_resolved] > 0
-      fingerprint_rate = (@stats[:fingerprinter_sent].to_f / @stats[:http_responses] * 100).round(2) if @stats[:http_responses] > 0
+      match_rate = (@stats[:matched_domains].to_f / @stats[:total_processed] * 100).round(2) if @stats[:total_processed].positive?
+      resolve_rate = (@stats[:dns_resolved].to_f / @stats[:matched_domains] * 100).round(2) if @stats[:matched_domains].positive?
+      http_rate = (@stats[:http_responses].to_f / @stats[:dns_resolved] * 100).round(2) if @stats[:dns_resolved].positive?
+      fingerprint_rate = (@stats[:fingerprinter_sent].to_f / @stats[:http_responses] * 100).round(2) if @stats[:http_responses].positive?
 
       queue_size = @processing_pool.queue_length
       active_threads = @processing_pool.length
