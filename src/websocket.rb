@@ -166,7 +166,7 @@ module Certstream
         )
 
         request.on_complete do |response|
-          valid_urls << url if handle_http_response(domain, url, response)
+          valid_urls << url if valid_http_response?(domain, url, response)
         end
 
         hydra.queue(request)
@@ -203,7 +203,7 @@ module Certstream
       (protocol == 'http' && port == 80) || (protocol == 'https' && port == 443)
     end
 
-    def handle_http_response(_domain, url, response)
+    def valid_http_response?(_domain, url, response)
       if response.timed_out?
         @stats[:http_timeouts] += 1
         return false
