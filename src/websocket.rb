@@ -43,7 +43,7 @@ module Certstream
     def run
       # Start wildcard updater in background
       @wildcard_manager.start_updater
-      puts "[Monitor] Wildcard manager started"
+      puts '[Monitor] Wildcard manager started'
 
       # Start stats reporter
       start_stats_reporter
@@ -91,35 +91,32 @@ module Certstream
     end
 
     def resolve_and_process_domain(domain)
-      begin
-        # Resolve domain to IP addresses
-        ips = @resolver.getaddresses(domain)
+      # Resolve domain to IP addresses
+      ips = @resolver.getaddresses(domain)
 
-        if ips.empty?
-          @stats[:dns_failed] += 1
-          return
-        end
-
-        # Filter out private IPs
-        public_ips = ips.reject { |ip| private_ip?(ip.to_s) }
-
-        if public_ips.empty?
-          @stats[:private_ips] += 1
-          return
-        end
-
-        @stats[:dns_resolved] += 1
-
-        # Domain resolves to public IP(s) - process it
-        process_resolved_domain(domain, public_ips)
-
-      rescue Resolv::ResolvError, Resolv::ResolvTimeout => e
+      if ips.empty?
         @stats[:dns_failed] += 1
-        # Silent fail - DNS resolution failed
-      rescue => e
-        @stats[:dns_failed] += 1
-        puts "[ERROR] DNS resolution error for #{domain}: #{e.message}"
+        return
       end
+
+      # Filter out private IPs
+      public_ips = ips.reject { |ip| private_ip?(ip.to_s) }
+
+      if public_ips.empty?
+        @stats[:private_ips] += 1
+        return
+      end
+
+      @stats[:dns_resolved] += 1
+
+      # Domain resolves to public IP(s) - process it
+      process_resolved_domain(domain, public_ips)
+    rescue Resolv::ResolvError, Resolv::ResolvTimeout
+      @stats[:dns_failed] += 1
+      # Silent fail - DNS resolution failed
+    rescue StandardError => e
+      @stats[:dns_failed] += 1
+      puts "[ERROR] DNS resolution error for #{domain}: #{e.message}"
     end
 
     def private_ip?(ip_string)
@@ -169,9 +166,7 @@ module Certstream
         )
 
         request.on_complete do |response|
-          if handle_http_response(domain, url, response)
-            valid_urls << url
-          end
+          valid_urls << url if handle_http_response(domain, url, response)
         end
 
         hydra.queue(request)
@@ -196,9 +191,7 @@ module Certstream
         url = "#{protocol}://#{domain}"
 
         # Add port if not default
-        if port && !default_port?(protocol, port)
-          url += ":#{port}"
-        end
+        url += ":#{port}" if port && !default_port?(protocol, port)
 
         urls << url
       end
@@ -210,7 +203,7 @@ module Certstream
       (protocol == 'http' && port == 80) || (protocol == 'https' && port == 443)
     end
 
-    def handle_http_response(domain, url, response)
+    def handle_http_response(_domain, url, response)
       if response.timed_out?
         @stats[:http_timeouts] += 1
         return false
@@ -230,8 +223,8 @@ module Certstream
       return unless @fingerprinter_config && !urls.empty?
 
       payload = {
-        "urls" => urls,
-        "callback_urls" => @fingerprinter_config['callback_urls'] || []
+        'urls' => urls,
+        'callback_urls' => @fingerprinter_config['callback_urls'] || []
       }
 
       headers = {
@@ -240,9 +233,7 @@ module Certstream
       }
 
       # Add API key to headers if configured
-      if @fingerprinter_config['api_key']
-        headers['Authorization'] = "Bearer #{@fingerprinter_config['api_key']}"
-      end
+      headers['Authorization'] = "Bearer #{@fingerprinter_config['api_key']}" if @fingerprinter_config['api_key']
 
       begin
         response = Typhoeus.post(
@@ -259,8 +250,7 @@ module Certstream
           @stats[:fingerprinter_failed] += urls.length
           puts "[FINGERPRINTER] Failed to send URLs -> #{response.response_code}: #{response.response_body}"
         end
-
-      rescue => e
+      rescue StandardError => e
         @stats[:fingerprinter_failed] += urls.length
         puts "[FINGERPRINTER] Error sending URLs: #{e.message}"
       end
@@ -298,7 +288,7 @@ module Certstream
 
       Thread.new do
         loop do
-          sleep(21600) # 6 heures = 21600 secondes
+          sleep(21_600) # 6 heures = 21600 secondes
           send_stats_to_discord
         end
       end
@@ -318,32 +308,32 @@ module Certstream
       active_threads = @processing_pool.length
 
       embed = {
-        title: "📊 Certstream Monitor - Rapport 6h",
+        title: '📊 Certstream Monitor - Rapport 6h',
         color: 0x00ff00,
         timestamp: Time.now.iso8601,
         fields: [
           {
-            name: "⚡ Performance",
+            name: '⚡ Performance',
             value: "```\nUptime: #{uptime_hours}h\nRate: #{rate.round(1)}/s\nThreads: #{active_threads} actifs | #{queue_size} en queue\n```",
             inline: false
           },
           {
-            name: "🔍 Domaines",
+            name: '🔍 Domaines',
             value: "```\nProcessed: #{@stats[:total_processed]}\nMatched: #{@stats[:matched_domains]} (#{match_rate || 0}%)\n```",
             inline: true
           },
           {
-            name: "🌐 DNS",
+            name: '🌐 DNS',
             value: "```\nResolved: #{@stats[:dns_resolved]} (#{resolve_rate || 0}%)\nFailed: #{@stats[:dns_failed]}\nPrivate: #{@stats[:private_ips]}\n```",
             inline: true
           },
           {
-            name: "🌍 HTTP",
+            name: '🌍 HTTP',
             value: "```\nResponses: #{@stats[:http_responses]} (#{http_rate || 0}%)\nTimeouts: #{@stats[:http_timeouts]}\n```",
             inline: true
           },
           {
-            name: "🔬 Fingerprinter",
+            name: '🔬 Fingerprinter',
             value: "```\nSent: #{@stats[:fingerprinter_sent]} (#{fingerprint_rate || 0}%)\nFailed: #{@stats[:fingerprinter_failed]}\n```",
             inline: true
           }
@@ -351,7 +341,7 @@ module Certstream
       }
 
       payload = {
-        username: @discord_config['username'] || "Certstream Monitor",
+        username: @discord_config['username'] || 'Certstream Monitor',
         embeds: [embed]
       }
 
@@ -364,12 +354,11 @@ module Certstream
         )
 
         if response.success?
-          puts "[DISCORD] Stats sent successfully"
+          puts '[DISCORD] Stats sent successfully'
         else
           puts "[DISCORD] Failed to send stats: #{response.response_code}"
         end
-
-      rescue => e
+      rescue StandardError => e
         puts "[DISCORD] Error sending stats: #{e.message}"
       end
     end
