@@ -302,7 +302,7 @@ module Certstream
 
       Thread.new do
         loop do
-          sleep(21_600) # 6 heures = 21600 secondes
+          sleep(10_800) # 3 heures = 10800 secondes
           send_stats_to_discord
         end
       end
@@ -322,7 +322,7 @@ module Certstream
       active_threads = @processing_pool.length
 
       embed = {
-        title: '📊 Certstream Monitor - Rapport 6h',
+        title: '📊 Certstream Monitor - Rapport 3h',
         color: 0x00ff00,
         timestamp: Time.now.iso8601,
         fields: [
