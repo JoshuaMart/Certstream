@@ -10,6 +10,15 @@ require_relative 'wildcard_manager'
 
 module Certstream
   class Monitor
+    # RFC 1918 private ranges + localhost + link-local
+    PRIVATE_RANGES = [
+      IPAddr.new('10.0.0.0/8'),
+      IPAddr.new('172.16.0.0/12'),
+      IPAddr.new('192.168.0.0/16'),
+      IPAddr.new('127.0.0.0/8'),
+      IPAddr.new('169.254.0.0/16')
+    ].freeze
+
     def initialize(config_path = 'src/config.yml')
       config = YAML.load_file(config_path)
 
@@ -122,16 +131,7 @@ module Certstream
     def private_ip?(ip_string)
       ip = IPAddr.new(ip_string)
 
-      # RFC 1918 private ranges + localhost + link-local
-      private_ranges = [
-        IPAddr.new('10.0.0.0/8'),
-        IPAddr.new('172.16.0.0/12'),
-        IPAddr.new('192.168.0.0/16'),
-        IPAddr.new('127.0.0.0/8'),
-        IPAddr.new('169.254.0.0/16')
-      ]
-
-      private_ranges.any? { |range| range.include?(ip) }
+      PRIVATE_RANGES.any? { |range| range.include?(ip) }
     rescue IPAddr::InvalidAddressError
       true # Consider invalid IPs as private
     end
