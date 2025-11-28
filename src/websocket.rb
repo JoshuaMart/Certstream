@@ -235,7 +235,6 @@ module Certstream
     end
 
     def perform_fingerprinter_request(urls)
-
       payload = {
         'urls' => urls,
         'callback_urls' => @fingerprinter_config['callback_urls'] || []
@@ -389,9 +388,7 @@ module Certstream
       end
 
       @reporting_pool.shutdown
-      unless @reporting_pool.wait_for_termination(5)
-        @reporting_pool.kill
-      end
+      @reporting_pool.kill unless @reporting_pool.wait_for_termination(5)
 
       puts '[Monitor] WebSocket closed'
       EM.stop

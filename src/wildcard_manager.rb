@@ -41,7 +41,7 @@ module Certstream
 
       parts.each do |part|
         return false unless node
-        
+
         # If we hit a terminal node, it means we matched a wildcard
         # e.g. domain: app.example.com -> com -> example (terminal) -> match
         return true if node[:_end_]
@@ -69,7 +69,7 @@ module Certstream
       if response.code == 200
         new_wildcards = parse_response(response.body)
         update_wildcards(new_wildcards)
-        puts "[WildcardManager] Updated wildcards (Trie built)"
+        puts '[WildcardManager] Updated wildcards (Trie built)'
       else
         puts "[WildcardManager] Failed to fetch wildcards: HTTP #{response.code}"
       end
@@ -105,7 +105,7 @@ module Certstream
         # wildcard is like ".example.com"
         # We strip the leading dot and split
         parts = wildcard[1..].split('.').reverse
-        
+
         node = trie
         parts.each do |part|
           node[part] ||= {}
