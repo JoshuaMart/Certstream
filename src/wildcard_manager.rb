@@ -11,7 +11,7 @@ module Certstream
     def initialize(config)
       @api_config = config['api']
       @update_interval = @api_config['update_interval'] || 86_400
-      @wildcards = Set.new
+      @wildcards_trie = {}
       @exclusions = config.dig('certstream', 'exclusions') || []
       @last_update = nil
       @mutex = Mutex.new
@@ -34,8 +34,24 @@ module Certstream
       # Check exclusions first (early return)
       return false if excluded_domain?(domain)
 
-      # Thread-safe read access without mutex (relying on atomic reference update)
-      @wildcards.any? { |wildcard| domain.end_with?(wildcard) }
+      # Fast Trie traversal (O(L) where L is number of domain parts)
+      # No mutex needed as we read the atomic reference @wildcards_trie
+      node = @wildcards_trie
+      parts = domain.split('.').reverse
+
+      parts.each do |part|
+        return false unless node
+        
+        # If we hit a terminal node, it means we matched a wildcard
+        # e.g. domain: app.example.com -> com -> example (terminal) -> match
+        return true if node[:_end_]
+
+        node = node[part]
+      end
+
+      # Check if the last node was terminal (exact match)
+      # e.g. domain: example.com -> com -> example (terminal)
+      node && node[:_end_]
     end
 
     private
@@ -53,7 +69,7 @@ module Certstream
       if response.code == 200
         new_wildcards = parse_response(response.body)
         update_wildcards(new_wildcards)
-        puts "[WildcardManager] Updated #{@wildcards.size} wildcards"
+        puts "[WildcardManager] Updated wildcards (Trie built)"
       else
         puts "[WildcardManager] Failed to fetch wildcards: HTTP #{response.code}"
       end
@@ -83,10 +99,24 @@ module Certstream
     end
 
     def update_wildcards(new_wildcards)
-      @mutex.synchronize do
-        @wildcards = new_wildcards
-        @last_update = Time.now
+      trie = {}
+
+      new_wildcards.each do |wildcard|
+        # wildcard is like ".example.com"
+        # We strip the leading dot and split
+        parts = wildcard[1..].split('.').reverse
+        
+        node = trie
+        parts.each do |part|
+          node[part] ||= {}
+          node = node[part]
+        end
+        node[:_end_] = true
       end
+
+      # Atomic update
+      @wildcards_trie = trie
+      @last_update = Time.now
     end
   end
 end
