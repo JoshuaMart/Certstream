@@ -31,13 +31,11 @@ module Certstream
     end
 
     def match_domain?(domain)
-      # Thread-safe read access
-      @mutex.synchronize do
-        # Check exclusions first (early return)
-        return false if excluded_domain?(domain)
+      # Check exclusions first (early return)
+      return false if excluded_domain?(domain)
 
-        @wildcards.any? { |wildcard| domain.end_with?(wildcard) }
-      end
+      # Thread-safe read access without mutex (relying on atomic reference update)
+      @wildcards.any? { |wildcard| domain.end_with?(wildcard) }
     end
 
     private
