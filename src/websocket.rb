@@ -32,6 +32,12 @@ module Certstream
         max_queue: 100,
         fallback_policy: :caller_runs
       )
+      @reporting_pool = Concurrent::ThreadPoolExecutor.new(
+        min_threads: 1,
+        max_threads: 5,
+        max_queue: 1000,
+        fallback_policy: :discard # Drop reports if overloaded rather than blocking scan
+      )
       @resolver = Resolv::DNS.new
       @resolver.timeouts = [2, 4] # 2s first try, 4s retry
       @stats = {
@@ -222,6 +228,14 @@ module Certstream
     def send_to_fingerprinter(urls)
       return unless @fingerprinter_config && !urls.empty?
 
+      # Offload to reporting pool to avoid blocking scanner threads
+      @reporting_pool.post do
+        perform_fingerprinter_request(urls)
+      end
+    end
+
+    def perform_fingerprinter_request(urls)
+
       payload = {
         'urls' => urls,
         'callback_urls' => @fingerprinter_config['callback_urls'] || []
@@ -281,6 +295,7 @@ module Certstream
       puts "        HTTP: #{@stats[:http_responses]} responses (#{http_rate || 0}%) | #{@stats[:http_timeouts]} timeouts"
       puts "        Fingerprinter: #{@stats[:fingerprinter_sent]} sent (#{fingerprint_rate || 0}%) | #{@stats[:fingerprinter_failed]} failed"
       puts "        Pool: #{active_threads} active threads | #{queue_size} queued | Rate: #{rate.round(1)}/s"
+      puts "        Reporting: #{@reporting_pool.length} active | #{@reporting_pool.queue_length} queued"
     end
 
     def start_discord_stats_reporter
@@ -371,6 +386,11 @@ module Certstream
       unless @processing_pool.wait_for_termination(10)
         puts '[Monitor] Thread pool shutdown timeout, forcing...'
         @processing_pool.kill
+      end
+
+      @reporting_pool.shutdown
+      unless @reporting_pool.wait_for_termination(5)
+        @reporting_pool.kill
       end
 
       puts '[Monitor] WebSocket closed'
