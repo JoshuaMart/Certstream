@@ -3,6 +3,7 @@
 require_relative 'certstream/version'
 require_relative 'certstream/logger'
 require_relative 'certstream/config'
+require_relative 'certstream/context'
 require_relative 'certstream/stats'
 require_relative 'certstream/wildcard_manager'
 require_relative 'certstream/dns_resolver'

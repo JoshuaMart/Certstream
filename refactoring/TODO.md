@@ -80,15 +80,15 @@ refactoring/
 
 ### Phase 5 : Traitement des domaines
 
-- [ ] Créer `lib/certstream/dns_resolver.rb`
+- [x] Créer `lib/certstream/dns_resolver.rb`
   - Résolution A et AAAA
   - Filtrage IPs privées (RFC 1918)
   - Timeout configurable
-- [ ] Créer `lib/certstream/http_prober.rb`
+- [x] Créer `lib/certstream/http_prober.rb`
   - Sondage parallèle via httpx
   - Ports configurables (80, 443, 8080, 8443)
   - Détection serveurs actifs
-- [ ] Créer `lib/certstream/domain_processor.rb`
+- [x] Créer `lib/certstream/domain_processor.rb`
   - Pipeline : DNS → filtrage IPs → HTTP probe
   - Traitement async (Fibers)
 

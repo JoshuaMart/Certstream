@@ -24,3 +24,7 @@ Metrics/BlockLength:
 
 Layout/LineLength:
   Max: 120
+
+Metrics/ParameterLists:
+  Exclude:
+    - 'lib/certstream/context.rb'
