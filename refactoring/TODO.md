@@ -94,11 +94,11 @@ refactoring/
 
 ### Phase 6 : Intégrations externes
 
-- [ ] Créer `lib/certstream/fingerprinter.rb`
+- [ ] Créer `lib/certstream/fingerprinter.rb` (stub créé, à compléter)
   - Envoi POST vers service fingerprinting
   - Gestion API key
   - Callback URLs
-- [ ] Créer `lib/certstream/discord_notifier.rb`
+- [x] Créer `lib/certstream/discord_notifier.rb`
   - Webhook messages (domaines matchés)
   - Webhook logs (erreurs, stats)
   - Embeds formatés pour les rapports
