@@ -204,30 +204,6 @@ shutdown:
   timeout: 30 # secondes pour terminer les tâches en cours
 ```
 
-### 3.10. Health Check
-
-- Le service doit exposer un endpoint HTTP simple pour les health checks.
-- Utile pour Docker et les orchestrateurs (Kubernetes, etc.).
-
-```yaml
-# Configuration du health check
-health:
-  enabled: true
-  port: 8081
-  path: "/health"
-```
-
-Réponse attendue :
-```json
-{
-  "status": "healthy",
-  "uptime": 3600,
-  "websocket_connected": true,
-  "wildcards_count": 1234,
-  "last_wildcard_update": "2026-01-23T10:00:00Z"
-}
-```
-
 ## 4. Interface CLI (Thor)
 
 Le service doit fournir une interface en ligne de commande via `thor` :
@@ -312,12 +288,6 @@ logging:
 # Configuration du shutdown
 shutdown:
   timeout: 30
-
-# Configuration du health check
-health:
-  enabled: true
-  port: 8081
-  path: "/health"
 ```
 
 ## 6. Docker
