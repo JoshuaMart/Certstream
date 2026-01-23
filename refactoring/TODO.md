@@ -63,7 +63,7 @@ refactoring/
 
 ### Phase 3 : Gestion des Wildcards
 
-- [ ] Créer `lib/certstream/wildcard_manager.rb`
+- [x] Créer `lib/certstream/wildcard_manager.rb`
   - Structure Trie pour stockage
   - Fetch multi-APIs (httpx)
   - Méthode `match?(domain)` performante
