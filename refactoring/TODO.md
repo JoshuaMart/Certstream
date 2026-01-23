@@ -72,7 +72,7 @@ refactoring/
 
 ### Phase 4 : Connexion WebSocket
 
-- [ ] Créer `lib/certstream/websocket_client.rb`
+- [x] Créer `lib/certstream/websocket_client.rb`
   - Connexion via async-websocket
   - Reconnexion automatique avec backoff
   - Parsing JSON des messages
