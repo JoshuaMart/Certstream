@@ -115,7 +115,7 @@ refactoring/
 
 ### Phase 8 : Orchestration
 
-- [ ] Créer `lib/certstream/monitor.rb`
+- [x] Créer `lib/certstream/monitor.rb`
   - Initialisation de tous les composants
   - Boucle principale async
   - Graceful shutdown (SIGTERM, SIGINT)
