@@ -125,7 +125,7 @@ refactoring/
 
 - [ ] Mettre à jour `Dockerfile` (Ruby 4.0.1-alpine)
 - [ ] Mettre à jour `docker-compose.yml`
-- [ ] Créer `config.yml` par défaut
+- [X] Créer `config.yml` par défaut
 - [ ] Vérifier Rubocop clean
 - [ ] Tests manuels end-to-end
 - [ ] Mettre à jour `README.md`
