@@ -105,11 +105,11 @@ refactoring/
 
 ### Phase 7 : Statistiques et Monitoring
 
-- [ ] Créer `lib/certstream/stats.rb`
+- [x] Créer `lib/certstream/stats.rb`
   - Compteurs thread-safe
   - Calcul des taux et ratios
   - Export pour Discord et console
-- [ ] Intégrer reporting périodique
+- [x] Intégrer reporting périodique
   - Console : toutes les 10 minutes
   - Discord : toutes les 3 heures
 
