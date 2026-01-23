@@ -209,18 +209,9 @@ shutdown:
 Le service doit fournir une interface en ligne de commande via `thor` :
 
 ```bash
-# Commandes principales
 certstream start                      # Démarrer le moniteur
 certstream start --config ./custom.yml # Avec config personnalisée
 certstream start --log-level DEBUG    # Niveau de log spécifique
-
-# Gestion des wildcards
-certstream wildcards refresh          # Forcer un rafraîchissement
-certstream wildcards list             # Lister les wildcards chargés
-certstream wildcards count            # Afficher le nombre de wildcards
-
-# Utilitaires
-certstream health                     # Vérifier le health check
 certstream version                    # Afficher la version
 ```
 
@@ -306,8 +297,6 @@ RUN bundle install --without development test
 
 COPY . .
 
-EXPOSE 8081
-
 CMD ["ruby", "main.rb", "start"]
 ```
 
@@ -328,11 +317,4 @@ services:
       - certstream-server
     volumes:
       - ./config.yml:/app/config.yml:ro
-    ports:
-      - "8081:8081"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 ```
