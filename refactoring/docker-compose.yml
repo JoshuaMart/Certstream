@@ -1,0 +1,14 @@
+services:
+  certstream-server:
+    image: 0rickyy0/certstream-server-go:latest
+    restart: unless-stopped
+    logging:
+      driver: none
+
+  certstream-monitor:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - certstream-server
+    volumes:
+      - ./config.yml:/app/config.yml:ro

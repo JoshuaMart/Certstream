@@ -123,8 +123,8 @@ refactoring/
 
 ### Phase 9 : Docker et finalisation
 
-- [ ] Mettre à jour `Dockerfile` (Ruby 4.0.1-alpine)
-- [ ] Mettre à jour `docker-compose.yml`
+- [x] Créer `Dockerfile` (Ruby 4.0.1-alpine)
+- [x] Créer `docker-compose.yml`
 - [x] Créer `config.yml` par défaut
 - [ ] Vérifier Rubocop clean
 - [ ] Tests manuels end-to-end
