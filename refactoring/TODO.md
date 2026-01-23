@@ -48,18 +48,18 @@ refactoring/
 
 ### Phase 2 : Configuration et CLI
 
-- [ ] Créer `lib/certstream/config.rb`
+- [x] Créer `lib/certstream/config.rb`
   - Chargement YAML
   - Validation des clés obligatoires
   - Valeurs par défaut
-- [ ] Créer `lib/certstream/cli.rb` (Thor)
+- [x] Créer `lib/certstream/cli.rb` (Thor)
   - Commande `start` avec options `--config`, `--log-level`
   - Commande `version`
-- [ ] Créer `lib/certstream/logger.rb`
+- [x] Créer `lib/certstream/logger.rb`
   - Logger Ruby standard
   - Formatter coloré (colorize)
   - Format : `[TIMESTAMP] [LEVEL] [COMPONENT] Message`
-- [ ] Mettre à jour `main.rb` pour lancer la CLI
+- [x] Créer `main.rb` pour lancer la CLI
 
 ### Phase 3 : Gestion des Wildcards
 
