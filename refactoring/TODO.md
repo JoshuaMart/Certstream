@@ -34,17 +34,17 @@ refactoring/
 
 ### Phase 1 : Setup du projet
 
-- [ ] Créer la structure de dossiers `lib/certstream/`
-- [ ] Créer le `Gemfile` avec les nouvelles dépendances
+- [x] Créer la structure de dossiers `lib/certstream/`
+- [x] Créer le `Gemfile` avec les nouvelles dépendances
   - async
   - async-websocket
   - httpx
   - thor
   - colorize
   - rubocop
-- [ ] Configurer `.rubocop.yml`
-- [ ] Créer `lib/certstream.rb` (module principal + requires)
-- [ ] Créer `lib/certstream/version.rb`
+- [x] Configurer `.rubocop.yml`
+- [x] Créer `lib/certstream.rb` (module principal + requires)
+- [x] Créer `lib/certstream/version.rb`
 
 ### Phase 2 : Configuration et CLI
 
