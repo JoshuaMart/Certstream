@@ -5,6 +5,7 @@ certstream:
     - .ui.com
     - .imperva.com
     - .nflxvideo.net
+    - .nflxext.com
 
 # Configuration des APIs pour les wildcards
 apis:
