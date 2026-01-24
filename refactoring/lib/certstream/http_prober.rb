@@ -42,8 +42,7 @@ module Certstream
     end
 
     def send_requests(urls)
-      http = HTTPX.plugin(:follow_redirects)
-                  .with(timeout: { connect_timeout: @timeout, request_timeout: @timeout })
+      http = HTTPX.with(timeout: { connect_timeout: @timeout, request_timeout: @timeout })
                   .with(ssl: { verify_mode: OpenSSL::SSL::VERIFY_NONE })
 
       http.head(*urls)
