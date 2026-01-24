@@ -157,7 +157,6 @@ Every 3 hours (configurable), a statistics report is sent:
 | HTTP Client | HTTPX |
 | Concurrency | Async (Fibers) |
 | CLI | Thor |
-| Containerization | Docker |
 
 ## License
 
