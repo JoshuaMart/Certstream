@@ -52,11 +52,13 @@ module Certstream
     def extract_active_urls(responses)
       responses = [responses] unless responses.is_a?(Array)
 
-      responses.filter_map do |response|
+      urls = responses.filter_map do |response|
         next if response.is_a?(HTTPX::ErrorResponse)
 
         response.uri.to_s
       end
+
+      urls.uniq
     end
   end
 end

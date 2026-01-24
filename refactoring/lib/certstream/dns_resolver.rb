@@ -23,7 +23,7 @@ module Certstream
 
     def resolve(domain)
       ips = resolve_all(domain)
-      public_ips = filter_private(ips)
+      public_ips = filter_private(ips).uniq
 
       @logger.debug('DNS', "#{domain} -> #{public_ips.join(', ')}") if public_ips.any?
 
