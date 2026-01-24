@@ -1,23 +1,12 @@
-FROM ruby:3.4-alpine
+FROM ruby:4.0.1-alpine
+
+RUN apk add --no-cache build-base
 
 WORKDIR /app
 
-# Install system dependencies
-RUN apk add --no-cache build-base libcurl openssl openssl-dev
+COPY Gemfile Gemfile.lock ./
+RUN bundle config set without 'development test' && bundle install
 
-# Copy Gemfile and install dependencies
-COPY Gemfile ./
-RUN bundle config set --local without 'development test' && \
-    bundle install
-
-# Copy application code
 COPY . .
 
-# Create directories for persistent data
-RUN mkdir -p /app/data /app/logs
-
-# Set execution permissions for the main script
-RUN chmod +x /app/main.rb
-
-# Run the application
-CMD ["ruby", "main.rb"]
+CMD ["ruby", "main.rb", "start"]

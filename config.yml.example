@@ -1,0 +1,59 @@
+# Certstream WebSocket configuration
+certstream:
+  url: "ws://certstream-server:8080/domains-only"
+  exclusions:
+    - .ui.com
+    - .imperva.com
+    - .nflxvideo.net
+
+# APIs for wildcard fetching (supports multiple sources)
+apis:
+  - name: "primary-scopes"
+    url: "https://your-api.com/wildcards"
+    headers:
+      X-API-Key: "your-api-key"
+      Content-Type: "application/json"
+    enabled: true
+
+  - name: "secondary-source"
+    url: "https://another-api.com/wildcards"
+    headers:
+      Authorization: "Bearer token"
+    enabled: false
+
+wildcards_update_interval: 86400 # 24 hours in seconds
+
+# HTTP probing configuration
+http:
+  ports:
+    - protocol: "http"
+      port: 80
+    - protocol: "https"
+      port: 443
+    - protocol: "http"
+      port: 8080
+    - protocol: "https"
+      port: 8443
+  timeout: 5 # seconds
+
+# Fingerprinter integration
+fingerprinter:
+  url: "https://your-fingerprinter.com/fingerprint"
+  api_key: "your-api-key"
+  callback_urls:
+    - "https://your-callback.com/api/fingerprinter"
+
+# Discord webhooks
+discord:
+  messages_webhook: "https://discord.com/api/webhooks/xxx/xxx"
+  logs_webhook: "https://discord.com/api/webhooks/xxx/xxx"
+  stats_interval: 10800 # 3 hours in seconds
+
+# Logging configuration
+logging:
+  level: "INFO" # DEBUG, INFO, WARN, ERROR, FATAL
+  console_colors: true
+
+# Graceful shutdown configuration
+shutdown:
+  timeout: 30 # seconds

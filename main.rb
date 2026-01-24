@@ -1,11 +1,9 @@
+#!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# Load all application files
-require_relative 'src/websocket'
-require_relative 'src/wildcard_manager'
-
 $stdout.sync = true
+$stderr.sync = true
 
-# Start the application
-app = Certstream::Monitor.new
-app.run
+require_relative 'lib/certstream'
+
+Certstream::CLI.start(ARGV)
