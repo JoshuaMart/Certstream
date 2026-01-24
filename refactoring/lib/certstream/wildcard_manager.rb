@@ -23,7 +23,11 @@ module Certstream
     end
 
     def match?(domain)
-      return false if excluded?(domain)
+      !find_match(domain).nil?
+    end
+
+    def find_match(domain)
+      return nil if excluded?(domain)
 
       parts = domain.downcase.split('.').reverse
       @mutex.synchronize { traverse_trie(parts) }
@@ -41,13 +45,16 @@ module Certstream
 
     def traverse_trie(parts)
       node = @trie
-      parts.each do |part|
-        return false unless node.key?(part)
+      matched_parts = []
 
+      parts.each do |part|
+        return nil unless node.key?(part)
+
+        matched_parts << part
         node = node[part]
-        return true if node[TRIE_END_MARKER]
+        return "*.#{matched_parts.reverse.join('.')}" if node[TRIE_END_MARKER]
       end
-      false
+      nil
     end
 
     def count_wildcards(node, total = 0)

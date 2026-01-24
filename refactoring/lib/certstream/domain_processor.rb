@@ -14,6 +14,8 @@ module Certstream
       @fingerprinter = context.fingerprinter
       @discord_notifier = context.discord_notifier
       @exclusions = @config.certstream['exclusions'] || []
+      @seen_domains = Set.new
+      @seen_mutex = Mutex.new
     end
 
     def process(domains)
@@ -27,12 +29,15 @@ module Certstream
 
     def process_domain(domain)
       return if skip_domain?(domain)
-      return unless @wildcard_manager.match?(domain)
+
+      matched_wildcard = @wildcard_manager.find_match(domain)
+      return unless matched_wildcard
+      return if already_seen?(domain)
 
       @stats.increment(:matched_domains)
-      @logger.info('Processor', "Match: #{domain}")
+      @logger.info('Processor', "Match: #{domain} (#{matched_wildcard})")
 
-      Async { process_matched_domain(domain) }
+      Async { process_matched_domain(domain, matched_wildcard) }
     end
 
     def skip_domain?(domain)
@@ -46,9 +51,16 @@ module Certstream
       @exclusions.any? { |exclusion| domain.end_with?(exclusion) }
     end
 
-    def process_matched_domain(domain)
-      @discord_notifier.notify_match(domain)
+    def already_seen?(domain)
+      @seen_mutex.synchronize do
+        return true if @seen_domains.include?(domain)
 
+        @seen_domains.add(domain)
+        false
+      end
+    end
+
+    def process_matched_domain(domain, matched_wildcard)
       ips = @dns_resolver.resolve(domain)
       if ips.empty?
         @stats.increment(:dns_failed)
@@ -62,6 +74,13 @@ module Certstream
         return
       end
       @stats.increment(:http_responses)
+
+      @discord_notifier.notify_match(
+        domain: domain,
+        wildcard: matched_wildcard,
+        ips: ips,
+        urls: urls
+      )
 
       @fingerprinter.send(domain, urls)
     end

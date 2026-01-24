@@ -24,10 +24,10 @@ module Certstream
       @logger = logger
     end
 
-    def notify_match(domain)
+    def notify_match(domain:, wildcard:, ips:, urls:)
       return unless @messages_webhook
 
-      send_webhook(@messages_webhook, build_match_message(domain))
+      send_webhook(@messages_webhook, build_match_embed(domain, wildcard, ips, urls))
     end
 
     def notify_error(message)
@@ -50,9 +50,22 @@ module Certstream
       @logger.error('Discord', "Failed to send webhook: #{e.message}")
     end
 
-    def build_match_message(domain)
+    def build_match_embed(domain, wildcard, ips, urls)
       {
-        content: ":mag: New domain match: `#{domain}`"
+        embeds: [
+          {
+            title: 'New Domain Match',
+            color: 5_025_616,
+            fields: [
+              { name: 'Domain', value: "`#{domain}`", inline: false },
+              { name: 'Matched Wildcard', value: "`#{wildcard}`", inline: true },
+              { name: 'IPs', value: ips.join(', '), inline: true },
+              { name: 'Active URLs', value: urls.size.to_s, inline: true },
+              { name: 'URLs', value: urls.map { |u| "<#{u}>" }.join("\n").slice(0, 1024), inline: false }
+            ],
+            timestamp: Time.now.utc.iso8601
+          }
+        ]
       }
     end
 
