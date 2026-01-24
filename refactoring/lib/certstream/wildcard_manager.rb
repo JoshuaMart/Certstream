@@ -47,12 +47,14 @@ module Certstream
       node = @trie
       matched_parts = []
 
-      parts.each do |part|
+      parts.each_with_index do |part, index|
         return nil unless node.key?(part)
 
         matched_parts << part
         node = node[part]
-        return "*.#{matched_parts.reverse.join('.')}" if node[TRIE_END_MARKER]
+
+        remaining_parts = parts.size - index - 1
+        return "*.#{matched_parts.reverse.join('.')}" if node[TRIE_END_MARKER] && remaining_parts >= 1
       end
       nil
     end
