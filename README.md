@@ -142,7 +142,7 @@ Every 3 hours (configurable), a statistics report is sent:
 
 ## Performance
 
-- Processes ~90k+ domains per minute
+- Processes ~50k+ entries per minute
 - Trie-based matching: O(L) complexity
 - Concurrent HTTP probing with HTTPX
 - Async processing with Ruby Fibers
