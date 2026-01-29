@@ -81,8 +81,11 @@ module Certstream
         @logger.error('WildcardManager', "Failed to fetch from #{api['name']}: #{e.message}")
       end
 
+      old_count = count
       @mutex.synchronize { @trie = new_trie }
-      @logger.info('WildcardManager', "Total wildcards loaded: #{count}")
+      new_count = count
+      @logger.info('WildcardManager', "Total wildcards loaded: #{new_count} (was: #{old_count})")
+      @logger.warn('WildcardManager', 'Trie is now EMPTY after refresh!') if new_count.zero?
     end
 
     def fetch_from_api(api)
@@ -128,6 +131,8 @@ module Certstream
           @logger.info('WildcardManager', 'Refreshing wildcards...')
           fetch_all_wildcards
         end
+      rescue StandardError => e
+        @logger.error('WildcardManager', "Periodic update crashed: #{e.class} - #{e.message}")
       end
     end
   end

@@ -46,9 +46,12 @@ module Certstream
     def process_message(message)
       data = JSON.parse(message.to_str)
       domains = extract_domains(data)
+      @logger.debug('WebSocket', "Received #{domains.size} domains") if domains.any?
       @on_domains.call(domains) if domains.any?
     rescue JSON::ParserError => e
       @logger.debug('WebSocket', "Invalid JSON: #{e.message}")
+    rescue StandardError => e
+      @logger.error('WebSocket', "Error in process_message: #{e.class} - #{e.message}")
     end
 
     def extract_domains(data)

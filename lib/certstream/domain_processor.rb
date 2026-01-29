@@ -19,10 +19,13 @@ module Certstream
     end
 
     def process(domains)
+      @logger.debug('Processor', "Processing batch of #{domains.size} domains")
       domains.each do |domain|
         @stats.increment(:total_processed)
         process_domain(domain)
       end
+    rescue StandardError => e
+      @logger.error('Processor', "Error in process: #{e.class} - #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}")
     end
 
     private
@@ -38,6 +41,8 @@ module Certstream
       @logger.info('Processor', "Match: #{domain} (#{matched_wildcard})")
 
       Async { process_matched_domain(domain, matched_wildcard) }
+    rescue StandardError => e
+      @logger.error('Processor', "Error in process_domain for #{domain}: #{e.class} - #{e.message}")
     end
 
     def skip_domain?(domain)
