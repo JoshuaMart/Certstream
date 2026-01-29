@@ -16,6 +16,7 @@ module Certstream
     def send(domain, urls)
       return if @url.nil? || @url.empty?
 
+      @logger.debug('Fingerprinter', "Send URLs to fingerprinter")
       response = perform_request(urls)
       handle_response(response, domain, urls.size)
     rescue StandardError => e
