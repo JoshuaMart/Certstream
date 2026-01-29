@@ -47,6 +47,7 @@ module Certstream
     def send_webhook(url, payload)
       @logger.debug('Discord', "Send message to Discord: #{payload}")
       HTTPX.post(url, json: payload)
+      @logger.debug('Discord', "Message sent successfully")
     rescue StandardError => e
       @logger.error('Discord', "Failed to send webhook: #{e.message}")
     end
