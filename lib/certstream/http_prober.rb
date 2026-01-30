@@ -14,7 +14,9 @@ module Certstream
       urls = build_urls(domain)
       return [] if urls.empty?
 
+      @logger.debug('HTTP', "Probing #{domain}...")
       responses = send_requests(urls)
+      @logger.debug('HTTP', "Probe complete for #{domain}")
       return [] if responses.empty?
 
       active_urls = extract_active_urls(responses)
