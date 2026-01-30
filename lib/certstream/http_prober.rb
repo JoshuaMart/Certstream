@@ -15,11 +15,16 @@ module Certstream
       return [] if urls.empty?
 
       responses = send_requests(urls)
+      return [] if responses.empty?
+
       active_urls = extract_active_urls(responses)
 
       @logger.debug('HTTP', "#{domain} -> #{active_urls.size} active URLs") if active_urls.any?
 
       active_urls
+    rescue StandardError => e
+      @logger.error('HTTP', "Error probing #{domain}: #{e.class} - #{e.message}")
+      []
     end
 
     private
@@ -46,6 +51,9 @@ module Certstream
                   .with(ssl: { verify_mode: OpenSSL::SSL::VERIFY_NONE })
 
       http.head(*urls)
+    rescue HTTPX::Error => e
+      @logger.error('HTTP', "HTTPX error during requests: #{e.message}")
+      []
     end
 
     def extract_active_urls(responses)

@@ -40,7 +40,11 @@ module Certstream
       @stats.increment(:matched_domains)
       @logger.info('Processor', "Match: #{domain} (#{matched_wildcard})")
 
-      Async { process_matched_domain(domain, matched_wildcard) }
+      Async do
+        process_matched_domain(domain, matched_wildcard)
+      rescue StandardError => e
+        @logger.error('Processor', "Error processing #{domain}: #{e.class} - #{e.message}")
+      end
     rescue StandardError => e
       @logger.error('Processor', "Error in process_domain for #{domain}: #{e.class} - #{e.message}")
     end
