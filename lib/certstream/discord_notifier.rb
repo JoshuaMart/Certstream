@@ -46,10 +46,16 @@ module Certstream
 
     def send_webhook(url, payload)
       @logger.debug('Discord', "Send message to Discord: #{payload}")
-      HTTPX.post(url, json: payload)
-      @logger.debug('Discord', "Message sent successfully")
+      response = HTTPX.with(timeout: { connect_timeout: 5, request_timeout: 10 })
+                      .post(url, json: payload)
+
+      if response.is_a?(HTTPX::ErrorResponse)
+        @logger.error('Discord', "Webhook failed: #{response.error.message}")
+      else
+        @logger.debug('Discord', "Message sent successfully (#{response.status})")
+      end
     rescue StandardError => e
-      @logger.error('Discord', "Failed to send webhook: #{e.message}")
+      @logger.error('Discord', "Failed to send webhook: #{e.class} - #{e.message}")
     end
 
     def build_match_embed(domain, wildcard, ips, urls)

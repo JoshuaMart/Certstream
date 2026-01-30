@@ -26,13 +26,16 @@ module Certstream
     private
 
     def perform_request(urls)
-      HTTPX.with(timeout: { request_timeout: 30 })
+      HTTPX.with(timeout: { connect_timeout: 5, request_timeout: 30 })
            .with(headers: build_headers)
            .post(@url, json: build_payload(urls))
     end
 
     def handle_response(response, domain, count)
-      if response.status.between?(200, 299)
+      if response.is_a?(HTTPX::ErrorResponse)
+        @stats.increment(:fingerprinter_failed, count)
+        @logger.error('Fingerprinter', "Request failed for #{domain}: #{response.error.message}")
+      elsif response.status.between?(200, 299)
         @stats.increment(:fingerprinter_sent, count)
         @logger.debug('Fingerprinter', "Sent #{count} URLs for #{domain} -> #{response.status}")
       else
