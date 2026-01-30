@@ -32,9 +32,7 @@ module Certstream
     def process_domain(domain)
       return if skip_domain?(domain)
 
-      @logger.debug('Processor', "Checking match for: #{domain}")
       matched_wildcard = @wildcard_manager.find_match(domain)
-      @logger.debug('Processor', "Match result for #{domain}: #{matched_wildcard || 'none'}")
       return unless matched_wildcard
       return if already_seen?(domain)
 
