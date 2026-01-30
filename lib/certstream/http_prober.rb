@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require 'httpx'
+require 'async'
 
 module Certstream
   class HttpProber
+    PROBE_TIMEOUT = 15 # seconds
+
     def initialize(config, logger)
       @ports = config.http['ports']
       @timeout = config.http['timeout']
@@ -15,9 +18,9 @@ module Certstream
       return [] if urls.empty?
 
       @logger.debug('HTTP', "Probing #{domain}...")
-      responses = send_requests(urls)
+      responses = send_requests_with_timeout(urls, domain)
       @logger.debug('HTTP', "Probe complete for #{domain}")
-      return [] if responses.empty?
+      return [] if responses.nil? || responses.empty?
 
       active_urls = extract_active_urls(responses)
 
@@ -46,6 +49,17 @@ module Certstream
 
     def default_port?(protocol, port)
       (protocol == 'http' && port == 80) || (protocol == 'https' && port == 443)
+    end
+
+    def send_requests_with_timeout(urls, domain)
+      Async do |task|
+        task.with_timeout(PROBE_TIMEOUT) do
+          send_requests(urls)
+        end
+      rescue Async::TimeoutError
+        @logger.error('HTTP', "Probe timeout for #{domain} (#{PROBE_TIMEOUT}s)")
+        []
+      end.wait
     end
 
     def send_requests(urls)
