@@ -30,7 +30,13 @@ module Certstream
       return nil if excluded?(domain)
 
       parts = domain.downcase.split('.').reverse
-      @mutex.synchronize { traverse_trie(parts) }
+      @mutex.synchronize do
+        if @trie.empty?
+          @logger.warn('WildcardManager', 'Trie is empty during find_match!')
+          return nil
+        end
+        traverse_trie(parts)
+      end
     end
 
     def count
@@ -82,10 +88,15 @@ module Certstream
       end
 
       old_count = count
+      new_count = count_wildcards(new_trie)
+
+      if new_count.zero? && old_count.positive?
+        @logger.error('WildcardManager', "Refresh returned 0 wildcards, keeping old trie (#{old_count} wildcards)")
+        return
+      end
+
       @mutex.synchronize { @trie = new_trie }
-      new_count = count
       @logger.info('WildcardManager', "Total wildcards loaded: #{new_count} (was: #{old_count})")
-      @logger.warn('WildcardManager', 'Trie is now EMPTY after refresh!') if new_count.zero?
     end
 
     def fetch_from_api(api)
