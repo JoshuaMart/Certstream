@@ -2,15 +2,18 @@
 
 require 'httpx'
 require 'async'
+require 'async/semaphore'
 
 module Certstream
   class HttpProber
     PROBE_TIMEOUT = 15 # seconds
+    MAX_CONCURRENT_PROBES = 5
 
     def initialize(config, logger)
       @ports = config.http['ports']
       @timeout = config.http['timeout']
       @logger = logger
+      @semaphore = Async::Semaphore.new(MAX_CONCURRENT_PROBES)
     end
 
     def probe(domain)
@@ -52,14 +55,16 @@ module Certstream
     end
 
     def send_requests_with_timeout(urls, domain)
-      Async do |task|
-        task.with_timeout(PROBE_TIMEOUT) do
-          send_requests(urls)
-        end
-      rescue Async::TimeoutError
-        @logger.error('HTTP', "Probe timeout for #{domain} (#{PROBE_TIMEOUT}s)")
-        []
-      end.wait
+      @semaphore.acquire do
+        Async do |task|
+          task.with_timeout(PROBE_TIMEOUT) do
+            send_requests(urls)
+          end
+        rescue Async::TimeoutError
+          @logger.error('HTTP', "Probe timeout for #{domain} (#{PROBE_TIMEOUT}s)")
+          []
+        end.wait
+      end
     end
 
     def send_requests(urls)
