@@ -35,10 +35,7 @@ module Certstream
         @logger.info('WebSocket', "Connected to #{@url}")
         @reconnect_attempt = 0
 
-        message_count = 0
         while @running && (message = connection.read)
-          message_count += 1
-          @logger.debug('WebSocket', "Still alive, message ##{message_count}") if (message_count % 10_000).zero?
           process_message(message)
         end
       end

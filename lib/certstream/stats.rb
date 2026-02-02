@@ -57,7 +57,6 @@ module Certstream
 
     def start_console_reporting
       Async do
-        @logger.debug('Stats', 'Console reporting loop started')
         loop do
           sleep @console_interval
           log_to_console
@@ -71,7 +70,6 @@ module Certstream
       return unless @stats_interval&.positive?
 
       Async do
-        @logger.debug('Stats', 'Discord reporting loop started')
         loop do
           sleep @stats_interval
           @discord_notifier.notify_stats(to_h)

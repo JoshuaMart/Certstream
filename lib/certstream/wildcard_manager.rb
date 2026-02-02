@@ -30,13 +30,7 @@ module Certstream
       return nil if excluded?(domain)
 
       parts = domain.downcase.split('.').reverse
-      @mutex.synchronize do
-        if @trie.empty?
-          @logger.warn('WildcardManager', 'Trie is empty during find_match!')
-          return nil
-        end
-        traverse_trie(parts)
-      end
+      @mutex.synchronize { traverse_trie(parts) }
     end
 
     def count
