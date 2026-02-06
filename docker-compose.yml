@@ -1,0 +1,27 @@
+services:
+  certstream-server:
+    image: 0rickyy0/certstream-server-go:latest
+    restart: unless-stopped
+    logging:
+      driver: none
+
+  certstream-monitor:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - certstream-server
+    volumes:
+      - ./config.yml:/app/config.yml:ro
+
+  autorestart:
+      image: docker:cli
+      restart: unless-stopped
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      entrypoint: ["/bin/sh", "-c"]
+      command:
+        - |
+          while true; do
+            sleep 86700
+            docker restart certstream-certstream-monitor-1 certstream-certstream-server-1
+          done
