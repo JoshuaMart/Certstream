@@ -8,7 +8,7 @@ A high-performance, real-time Certificate Transparency log monitor. It filters d
 ## Features
 
 - **Real-time monitoring** - Connects to Certstream via WebSocket to receive new certificates as they are issued
-- **Multi-API wildcard management** - Fetch wildcards from multiple APIs with automatic periodic updates
+- **Wildcard management** - Define wildcards manually and/or fetch them from multiple APIs with automatic periodic updates
 - **Efficient matching** - Uses a Trie data structure for O(L) domain matching (where L = domain parts)
 - **DNS resolution** - Resolves A and AAAA records, filters out private IPs (RFC 1918)
 - **HTTP probing** - Concurrent probing on configurable ports (80, 443, 8080, 8443)
@@ -74,9 +74,23 @@ ruby main.rb start --log-level DEBUG
 ruby main.rb version
 ```
 
-## API Response Format
+## Wildcard Configuration
 
-The wildcard APIs should return JSON in the following format:
+### Manual wildcards
+
+You can define wildcards directly in `config.yml`:
+
+```yaml
+wildcards:
+  - "*.example.com"
+  - "*.target.org"
+
+apis: []
+```
+
+### API-based wildcards
+
+Wildcards can also be fetched from external APIs. The APIs should return JSON in the following format:
 
 ```json
 {
@@ -91,6 +105,8 @@ The wildcard APIs should return JSON in the following format:
 ```
 
 Only the `value` field is required. The monitor extracts wildcards from `*.domain.com` format.
+
+Both sources can be combined — manual wildcards and API wildcards are merged into the same Trie.
 
 ## Architecture
 

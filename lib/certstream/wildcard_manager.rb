@@ -9,6 +9,7 @@ module Certstream
 
     def initialize(config, logger)
       @apis = config.apis
+      @manual_wildcards = config.wildcards
       @update_interval = config.wildcards_update_interval
       @exclusions = config.certstream['exclusions'] || []
       @logger = logger
@@ -18,7 +19,7 @@ module Certstream
 
     def start
       fetch_all_wildcards
-      start_periodic_update
+      start_periodic_update unless @apis.empty?
     end
 
     def match?(domain)
@@ -72,6 +73,8 @@ module Certstream
     def fetch_all_wildcards
       new_trie = {}
 
+      load_manual_wildcards(new_trie)
+
       @apis.each do |api|
         wildcards = fetch_from_api(api)
         wildcards.each { |wildcard| insert_into_trie(new_trie, wildcard) }
@@ -90,6 +93,16 @@ module Certstream
 
       @mutex.synchronize { @trie = new_trie }
       @logger.info('WildcardManager', "Total wildcards loaded: #{new_count} (was: #{old_count})")
+    end
+
+    def load_manual_wildcards(trie)
+      return if @manual_wildcards.empty?
+
+      @manual_wildcards.each do |entry|
+        wildcard = entry.strip.downcase.sub(/^\*\./, '')
+        insert_into_trie(trie, wildcard) unless wildcard.empty?
+      end
+      @logger.info('WildcardManager', "Loaded #{@manual_wildcards.size} manual wildcards")
     end
 
     def fetch_from_api(api)

@@ -18,7 +18,11 @@ module Certstream
     end
 
     def apis
-      @data['apis'].reject { |api| api['enabled'] == false }
+      (@data['apis'] || []).reject { |api| api['enabled'] == false }
+    end
+
+    def wildcards
+      @data['wildcards'] || []
     end
 
     def wildcards_update_interval
