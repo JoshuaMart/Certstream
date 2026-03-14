@@ -6,6 +6,11 @@ certstream:
     - .imperva.com
     - .nflxvideo.net
 
+# Manual wildcards (optional, in addition to APIs)
+wildcards:
+  # - "*.example.com"
+  # - "*.target.org"
+
 # APIs for wildcard fetching (supports multiple sources)
 apis:
   - name: "primary-scopes"
