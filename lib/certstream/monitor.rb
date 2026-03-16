@@ -31,7 +31,7 @@ module Certstream
       @wildcard_manager = WildcardManager.new(@config, @logger)
       @dns_resolver = DnsResolver.new(@logger)
       @http_prober = HttpProber.new(@config, @logger)
-      @fingerprinter = Fingerprinter.new(@config, @logger, @stats)
+      @recon_api = ReconApi.new(@config, @logger, @stats)
 
       @context = Context.new(
         config: @config,
@@ -40,7 +40,7 @@ module Certstream
         wildcard_manager: @wildcard_manager,
         dns_resolver: @dns_resolver,
         http_prober: @http_prober,
-        fingerprinter: @fingerprinter,
+        recon_api: @recon_api,
         discord_notifier: @discord_notifier
       )
 

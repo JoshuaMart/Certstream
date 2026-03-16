@@ -33,8 +33,8 @@ module Certstream
       @data['http']
     end
 
-    def fingerprinter
-      @data['fingerprinter']
+    def recon_api
+      @data['recon_api']
     end
 
     def discord

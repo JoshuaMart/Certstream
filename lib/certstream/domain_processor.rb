@@ -11,7 +11,7 @@ module Certstream
       @wildcard_manager = context.wildcard_manager
       @dns_resolver = context.dns_resolver
       @http_prober = context.http_prober
-      @fingerprinter = context.fingerprinter
+      @recon_api = context.recon_api
       @discord_notifier = context.discord_notifier
       @exclusions = @config.certstream['exclusions'] || []
       @seen_domains = Set.new
@@ -90,7 +90,7 @@ module Certstream
         urls: urls
       )
 
-      @fingerprinter.send(domain, urls)
+      @recon_api.send(urls)
     end
   end
 end
