@@ -41,12 +41,10 @@ http:
       port: 8443
   timeout: 5 # seconds
 
-# Fingerprinter integration
-fingerprinter:
-  url: "https://your-fingerprinter.com/fingerprint"
-  api_key: "your-api-key"
-  callback_urls:
-    - "https://your-callback.com/api/fingerprinter"
+# Recon API integration
+recon_api:
+  url: "https://your-recon-api.com/api/ingest/certstream"
+  api_key: "your-ingest-api-key"
 
 # Discord webhooks
 discord:
