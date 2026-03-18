@@ -1,9 +1,15 @@
-# Certstream Monitor
+![Image](https://github.com/user-attachments/assets/89c7112c-43b1-4f5d-aebc-bf4426842025)
+
+<p align="center">
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green"></a>
+  <img src="https://img.shields.io/badge/docker-supported-blue?logo=docker">
+  <img src="https://img.shields.io/badge/ruby-4.0.2-blue?logo=ruby">
+</p>
 
 A high-performance, real-time Certificate Transparency log monitor. It filters domains against a list of wildcards fetched from external APIs, performs DNS resolution and HTTP probing, and sends notifications to Discord.
 
 > [!IMPORTANT]  
-> This project is primarily intended to work with (ScopesExtractor)[https://github.com/JoshuaMart/ScopesExtractor] and another component that is not open source.
+> This project is primarily intended to work with (ScopesExtractor)[https://github.com/JoshuaMart/ScopesExtractor] and (Recon)[https://github.com/JoshuaMart/Recon] and another component that is not open source.
 
 ## Features
 
