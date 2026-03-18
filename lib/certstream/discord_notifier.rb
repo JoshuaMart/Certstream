@@ -12,7 +12,7 @@ module Certstream
       ['DNS Failed', :dns_failed, ''],
       ['HTTP Responses', :http_responses, ''],
       ['HTTP Timeouts', :http_timeout, ''],
-      ['Fingerprinter Sent', :fingerprinter_sent, ''],
+      ['Recon API Sent', :recon_api_sent, ''],
       ['Rate', :rate, '/s']
     ].freeze
 

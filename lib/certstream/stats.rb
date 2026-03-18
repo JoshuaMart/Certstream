@@ -11,8 +11,8 @@ module Certstream
       dns_failed
       http_responses
       http_timeout
-      fingerprinter_sent
-      fingerprinter_failed
+      recon_api_sent
+      recon_api_failed
     ].freeze
 
     def initialize(config, logger, discord_notifier)
@@ -90,7 +90,7 @@ module Certstream
         "Processed: #{data[:total_processed]}",
         "DNS: #{data[:dns_resolved]}/#{data[:dns_failed]}",
         "HTTP: #{data[:http_responses]}/#{data[:http_timeout]}",
-        "Fingerprinter: #{data[:fingerprinter_sent]}",
+        "Recon API: #{data[:recon_api_sent]}",
         "Rate: #{data[:rate]}/s"
       ]
       parts.join(' | ')
