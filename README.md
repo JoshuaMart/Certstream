@@ -14,7 +14,7 @@ Real-time Certificate Transparency log monitor. Filters domains against wildcard
 ## Pipeline
 
 ```
-1. Certstream WebSocket — receive new certificate domains in real time
+1. Certstream WebSocket — receive new certificate domains in real time (~50k+/min)
         |
         v
 2. Wildcard matching — filter against Trie built from manual wildcards + API sources
