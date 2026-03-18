@@ -1,4 +1,4 @@
-![Image](https://github.com/user-attachments/assets/89c7112c-43b1-4f5d-aebc-bf4426842025)
+![Image](https://github.com/user-attachments/assets/fa117fd7-b6e1-46b9-8b57-fc880747dd74)
 
 <p align="center">
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green"></a>
