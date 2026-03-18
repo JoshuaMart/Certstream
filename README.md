@@ -6,97 +6,125 @@
   <img src="https://img.shields.io/badge/ruby-4.0.2-blue?logo=ruby">
 </p>
 
-A high-performance, real-time Certificate Transparency log monitor. It filters domains against a list of wildcards fetched from external APIs, performs DNS resolution and HTTP probing, and sends notifications to Discord.
+Real-time Certificate Transparency log monitor. Filters domains against wildcards, resolves DNS, probes HTTP services, and forwards active URLs to an external Recon API with Discord notifications.
 
-> [!IMPORTANT]  
-> This project is primarily intended to work with (ScopesExtractor)[https://github.com/JoshuaMart/ScopesExtractor] and (Recon)[https://github.com/JoshuaMart/Recon] and another component that is not open source.
+> [!IMPORTANT]
+> This project is primarily intended to work with [ScopesExtractor](https://github.com/JoshuaMart/ScopesExtractor) and [Recon](https://github.com/JoshuaMart/Recon).
 
-## Features
+## Pipeline
 
-- **Real-time monitoring** - Connects to Certstream via WebSocket to receive new certificates as they are issued
-- **Wildcard management** - Define wildcards manually and/or fetch them from multiple APIs with automatic periodic updates
-- **Efficient matching** - Uses a Trie data structure for O(L) domain matching (where L = domain parts)
-- **DNS resolution** - Resolves A and AAAA records, filters out private IPs (RFC 1918)
-- **HTTP probing** - Concurrent probing on configurable ports (80, 443, 8080, 8443)
-- **Discord notifications** - Rich embeds with domain, matched wildcard, IPs, and active URLs
-- **Statistics** - Detailed stats reported to console (10 min) and Discord (3 hours)
-- **Graceful shutdown** - Handles SIGTERM/SIGINT with final stats report
-- **Deduplication** - Prevents duplicate notifications for the same domain
-
-## Requirements
-
-- Ruby 4.0+
-- Docker & Docker Compose (recommended)
+```
+1. Certstream WebSocket — receive new certificate domains in real time
+        |
+        v
+2. Wildcard matching — filter against Trie built from manual wildcards + API sources
+        |
+        v
+3. Deduplication — skip already-seen domains
+        |
+        v
+4. DNS resolution — resolve A/AAAA records, filter out private IPs (RFC 1918)
+        |
+        v
+5. HTTP probing — concurrent HEAD requests on ports 80, 443, 8080, 8443
+        |
+        v
+6. Recon API — POST each active URL to external API for further processing
+        |
+        v
+7. Discord notification — rich embed with domain, wildcard, IPs, and active URLs
+```
 
 ## Quick Start
 
-### Using Docker Compose (recommended)
+### Docker Compose (recommended)
 
-1. Clone the repository and navigate to the project directory
-
-2. Copy and edit the configuration file:
 ```bash
 cp config.yml.example config.yml
 # Edit config.yml with your settings
-```
-
-3. Start the services:
-```bash
 docker-compose up -d
 ```
 
-4. View logs:
-```bash
-docker-compose logs -f certstream-monitor
-```
+### Manual
 
-### Manual Installation
-
-1. Install dependencies:
 ```bash
 bundle install
-```
-
-2. Configure `config.yml` with your settings
-
-3. Run the monitor:
-```bash
 ruby main.rb start
 ```
 
-## CLI Usage
+<details>
+<summary>CLI flags</summary>
 
 ```bash
-# Start the monitor
-ruby main.rb start
-
-# Start with custom config file
-ruby main.rb start --config /path/to/config.yml
-
-# Start with debug logging
-ruby main.rb start --log-level DEBUG
-
-# Display version
-ruby main.rb version
+ruby main.rb start                          # Start the monitor
+ruby main.rb start --config /path/to.yml    # Custom config file
+ruby main.rb start --log-level DEBUG        # Debug logging
+ruby main.rb version                        # Display version
 ```
 
-## Wildcard Configuration
+</details>
 
-### Manual wildcards
+## Configuration
 
-You can define wildcards directly in `config.yml`:
+Copy `config.yml.example` to `config.yml` and edit as needed:
 
 ```yaml
+certstream:
+  url: "ws://certstream-server:8080/domains-only"
+  exclusions:
+    - .internal.com
+
 wildcards:
   - "*.example.com"
   - "*.target.org"
 
-apis: []
+apis:
+  - name: "scopes"
+    url: "https://scopes.example.com/wildcards"
+    headers:
+      X-API-Key: "your-api-key"
+    enabled: true
+
+wildcards_update_interval: 86400
+
+http:
+  ports:
+    - protocol: "http"
+      port: 80
+    - protocol: "https"
+      port: 443
+    - protocol: "http"
+      port: 8080
+    - protocol: "https"
+      port: 8443
+  timeout: 5
+
+recon_api:
+  url: "https://recon.example.com/api/ingest/certstream"
+  api_key: "your-api-key"
+
+discord:
+  messages_webhook: "https://discord.com/api/webhooks/..."
+  logs_webhook: "https://discord.com/api/webhooks/..."
+  stats_interval: 10800
+
+logging:
+  level: "INFO"
+  console_colors: true
+
+shutdown:
+  timeout: 30
 ```
 
-### API-based wildcards
+## Wildcard Sources
 
-Wildcards can also be fetched from external APIs. The APIs should return JSON in the following format:
+### Manual
+
+Define wildcards directly in `config.yml` under the `wildcards` key.
+
+### API-based
+
+APIs should return JSON in the following format:
 
 ```json
 {
@@ -110,79 +138,8 @@ Wildcards can also be fetched from external APIs. The APIs should return JSON in
 }
 ```
 
-Only the `value` field is required. The monitor extracts wildcards from `*.domain.com` format.
-
-Both sources can be combined — manual wildcards and API wildcards are merged into the same Trie.
-
-## Architecture
-
-```
-┌─────────────────┐
-│   Certstream    │
-│   WebSocket     │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐     ┌─────────────────┐
-│  Domain Filter  │────▶│ Wildcard Manager│
-│  (exclusions)   │     │     (Trie)      │
-└────────┬────────┘     └─────────────────┘
-         │
-         ▼
-┌─────────────────┐
-│  DNS Resolver   │
-│ (A/AAAA records)│
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  HTTP Prober    │
-│ (ports 80,443..)│
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐     ┌─────────────────┐
-│    Discord      │     │  Fingerprinter  │
-│  Notification   │     │   (external)    │
-└─────────────────┘     └─────────────────┘
-```
-
-## Discord Notifications
-
-### Domain Match
-When a domain matches a wildcard and has active URLs, a rich embed is sent:
-- **Domain** - The matched domain
-- **Matched Wildcard** - The wildcard pattern that matched
-- **IPs** - Resolved public IP addresses
-- **Active URLs** - Number and list of responding URLs
-
-### Statistics Report
-Every 3 hours (configurable), a statistics report is sent:
-- Uptime
-- Total domains processed
-- Matched domains and match rate
-- DNS resolution success/failure
-- HTTP responses/timeouts
-- Processing rate (domains/second)
-
-## Performance
-
-- Processes ~50k+ entries per minute
-- Trie-based matching: O(L) complexity
-- Concurrent HTTP probing with HTTPX
-- Async processing with Ruby Fibers
-- Deduplication prevents redundant work
-
-## Tech Stack
-
-| Component | Technology |
-|-----------|------------|
-| Runtime | Ruby 4.0 |
-| WebSocket | async-websocket |
-| HTTP Client | HTTPX |
-| Concurrency | Async (Fibers) |
-| CLI | Thor |
+Only the `value` field is required. Both sources are merged into the same Trie and refreshed periodically.
 
 ## License
 
-MIT
+[MIT](LICENSE)
