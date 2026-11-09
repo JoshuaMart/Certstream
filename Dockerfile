@@ -1,6 +1,6 @@
 FROM ruby:4.0.2-alpine
 
-RUN apk add --no-cache build-base
+RUN apk add --no-cache build-base openssl-dev
 
 WORKDIR /app
 
